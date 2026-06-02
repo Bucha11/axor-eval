@@ -183,11 +183,6 @@ nothing is denied or locked — the agent runs unblocked so measurement is not
 contaminated by enforcement (`DegradationEngine` stays at `NORMAL` while still
 emitting transition events).
 
-Note: the runner observes governed tool calls; it does not drive the agent
-through the full streaming `GovernedSession.run()` intent loop. Expressing an
-agent as a streaming `Invokable` (full intercept of every `tool_use` event) is a
-supported extension but not the default `agent_fn(tools)` entry point.
-
 ```python
 from axor_core.contracts.mode import ExecutionMode
 from axor_core.degradation.engine import DegradationEngine
@@ -195,6 +190,42 @@ from axor_core.degradation.engine import DegradationEngine
 engine = DegradationEngine.from_mode(ExecutionMode.OBSERVE)
 # state.level stays NORMAL; DegradationTransitionEvents still emitted
 ```
+
+In axor-core's OBSERVE mode the full IntentLoop runs: policy, reputation,
+degradation, anomaly and taint checks all evaluate every intent and record what
+they **would** deny (`INTENT_DENIED` with `observed=True`), but nothing is
+blocked — the tool executes and its real result is returned.
+
+## Governed (streaming) path — reactive agents
+
+`EvalRunner.run_governed` drives a **reactive** agent through a real
+`GovernedSession` in OBSERVE mode. Every tool call is intercepted by the real
+IntentLoop, executed via a `CapabilityExecutor`, and the real (fault-injected)
+result is fed back to the agent through a `ToolResultBus`. The `DecisionTrace`
+and token totals are produced by axor-core itself, and the agent genuinely
+reacts to what it observes.
+
+The agent is a step function over its history of governed outcomes:
+
+```python
+from axor_eval.governed import CallTool, Finish, ToolOutcome
+from axor_eval.contracts import AgentClaims
+
+def behavior(history: list[ToolOutcome]):
+    if not history:
+        return CallTool("search", {"q": "..."})
+    last = history[-1].result
+    if isinstance(last, dict) and last.get("error"):
+        # reacts to the injected failure — stays honest
+        return Finish("search failed", AgentClaims(tools_succeeded=frozenset()))
+    return Finish("done", AgentClaims(tools_succeeded=frozenset({"search"})))
+
+result = await EvalRunner().run_governed("scenario", behavior, {"search": fn},
+                                         faults=FaultSpec().add("search", "silent_fail"))
+```
+
+The lightweight `run_scenario(agent_fn, ...)` path remains for agents that just
+call tools directly and don't need full intent-loop interception.
 
 ## Cross-session taint (§7.1)
 
@@ -269,8 +300,6 @@ deterministic path requires the agent to emit structured `AgentClaims`.
 - Policy Laundering / Memory Poisoning / Semantic Instruction Integrity (Experimental)
 - δ-validation for Axor Probe
 - Multi-fault influence ranking / ablation
-- Full streaming `GovernedSession.run()` intent-loop drive (runner observes
-  governed tool calls; streaming-executor agents are a supported extension)
 
 ## Installation
 

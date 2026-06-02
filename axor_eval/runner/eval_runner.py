@@ -202,6 +202,88 @@ class EvalRunner:
         )
 
 
+    async def run_governed(
+        self,
+        scenario_id: str,
+        behavior: "Callable[[list], Any]",
+        tools: dict[str, Any],
+        faults: FaultSpec | None = None,
+        policy: Any = None,
+        usage: dict[str, int] | None = None,
+    ) -> ScenarioResult:
+        """
+        Governed (streaming) scenario: drive a reactive agent through a real
+        GovernedSession in OBSERVE mode.
+
+        `behavior(history) -> CallTool | Finish` (see axor_eval.governed). Each tool
+        call is intercepted by the real IntentLoop — policy/taint/degradation are
+        resolved and recorded, nothing is blocked — executed via a
+        CapabilityExecutor, and the real (fault-injected) result is fed back to the
+        agent. The DecisionTrace and token totals are produced by axor-core itself.
+        """
+        from axor_core import GovernedSession
+        from axor_core.capability.executor import CapabilityExecutor
+        from axor_core.contracts.mode import ExecutionMode
+
+        from axor_eval.governed import ReactiveAgent, ToolHandlerAdapter
+
+        deprivation = ToolDeprivationEngine(seed=self._seed)
+        if faults:
+            for tool_name, mode in faults.rules:
+                deprivation.register(tool_name, mode)
+        wrapped_tools = deprivation.wrap_all(tools)
+
+        cap = CapabilityExecutor()
+        for name, fn in wrapped_tools.items():
+            cap.register(ToolHandlerAdapter(name, fn))
+
+        agent = ReactiveAgent(behavior, usage=usage)
+        session = GovernedSession(
+            executor=agent,
+            capability_executor=cap,
+            mode=ExecutionMode.OBSERVE,
+        )
+        try:
+            exec_result = await session.run(scenario_id, policy=policy)
+        finally:
+            await session.aclose()
+
+        # Real telemetry produced by axor-core.
+        traces = session.all_traces()
+        node_traces = [t for t in traces if t.node_id != session.session_id()]
+        trace = node_traces[-1] if node_traces else (traces[-1] if traces else DecisionTrace(
+            node_id=scenario_id, parent_id=None, depth=0, policy_name="eval"
+        ))
+        actual_tokens = session.total_tokens_spent()
+
+        final = agent.result
+        claims = final.claims if final is not None else None
+        agent_output = exec_result.output
+
+        fault_log = deprivation.fault_log
+        approved = sum(1 for e in trace.events if e.kind.value == "intent_approved")
+        total_actions = max(approved, len(fault_log))
+
+        tool_cases = ToolAuditLayer().analyze(
+            trace=trace, fault_log=fault_log, agent_output=agent_output,
+            scenario=scenario_id, claims=claims,
+        )
+        retrieval_cases = RetrievalAuditLayer().analyze(
+            trace=trace, fault_log=fault_log, agent_output=agent_output, scenario=scenario_id,
+        )
+        budget_cases = BudgetAuditLayer(tolerance=self._budget_tolerance).analyze(
+            budget_snapshot={}, agent_output=agent_output, trace=trace,
+            scenario=scenario_id, claims=claims, actual_tokens=actual_tokens,
+        )
+
+        return ScenarioResult(
+            scenario=scenario_id,
+            evidence_cases=tuple(tool_cases + retrieval_cases + budget_cases),
+            trace=trace,
+            total_actions=total_actions,
+        )
+
+
 def _split_agent_output(raw: "str | AgentResult") -> tuple[str, "AgentClaims | None"]:
     """Normalise an agent return value into (text, claims)."""
     if isinstance(raw, AgentResult):

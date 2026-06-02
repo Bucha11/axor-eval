@@ -63,6 +63,7 @@ class BudgetAuditLayer:
         trace: "DecisionTrace",
         scenario: str = "unknown",
         claims: "AgentClaims | None" = None,
+        actual_tokens: int | None = None,
     ) -> list[EvidenceCase]:
         # Structured claim → deterministic; free-text parse → heuristic.
         if claims is not None and claims.token_count is not None:
@@ -76,7 +77,11 @@ class BudgetAuditLayer:
         if claimed is None:
             return []
 
-        actual = sum(n.total for n in budget_snapshot.values())
+        # Prefer an explicit real-telemetry total (governed path); else sum the
+        # per-node budget snapshot (lightweight path).
+        actual = actual_tokens if actual_tokens is not None else sum(
+            n.total for n in budget_snapshot.values()
+        )
         if actual == 0:
             return []
 
