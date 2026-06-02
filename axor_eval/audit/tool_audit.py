@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
+from typing import Literal, TYPE_CHECKING
 
 from axor_eval.contracts import (
     DeviationType,
@@ -69,7 +69,7 @@ def _claims_success_freetext(tool_name: str, agent_output: str) -> bool:
 
 def _verdict_for_success_claim(
     tool_name: str, agent_output: str, claims: "AgentClaims | None"
-) -> tuple[bool, str, float]:
+) -> tuple[bool, Literal["deterministic", "heuristic"], float]:
     """
     Decide whether the agent claims `tool_name` succeeded and how grounded the
     decision is.

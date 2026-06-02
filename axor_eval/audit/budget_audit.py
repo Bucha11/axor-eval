@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
+from typing import Literal, TYPE_CHECKING
 
 from axor_eval.contracts import DeviationType, EvidenceCase, FaultFactor, FaultInfluence
 
@@ -66,6 +66,7 @@ class BudgetAuditLayer:
         actual_tokens: int | None = None,
     ) -> list[EvidenceCase]:
         # Structured claim → deterministic; free-text parse → heuristic.
+        verdict_source: Literal["deterministic", "heuristic"]
         if claims is not None and claims.token_count is not None:
             claimed: int | None = claims.token_count
             verdict_source = "deterministic"
