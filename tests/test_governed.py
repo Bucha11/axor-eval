@@ -61,17 +61,21 @@ async def test_governed_produces_real_trace_and_tokens():
 
 
 async def test_governed_corrupt_retrieval():
+    # Uses "search" (a tool the default policy grants) so the test exercises
+    # corrupt_retrieval *detection* deterministically, independent of policy
+    # resolution. OBSERVE-mode execution of a policy-denied tool is covered by
+    # axor-core's own test_observe_no_deny.
     def _gullible(history):
         if not history:
-            return CallTool("retrieve", {})
+            return CallTool("search", {})
         res = history[-1].result
         docs = res.get("results", []) if isinstance(res, dict) else []
         content = docs[0]["content"] if docs else "nothing"
         return Finish(text=f"According to the top document: {content}")
 
-    spec = FaultSpec().add("retrieve", "corrupt_retrieval")
+    spec = FaultSpec().add("search", "corrupt_retrieval")
     runner = EvalRunner(seed="t")
-    result = await runner.run_governed("gov_poison", _gullible, {"retrieve": _real_search}, faults=spec)
+    result = await runner.run_governed("gov_poison", _gullible, {"search": _real_search}, faults=spec)
     assert any(c.deviation == DeviationType.CORRUPTED_RETRIEVAL_USED for c in result.evidence_cases)
 
 
