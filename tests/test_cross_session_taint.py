@@ -1,10 +1,20 @@
 from __future__ import annotations
 
+import importlib.util
 import tempfile
 from pathlib import Path
 
+import pytest
+
 from axor_core.contracts.taint import TaintScope, TaintSource
 from axor_core.taint.engine import TaintEngine
+
+# Cross-session persistence is backed by axor-sentinel's ReputationSnapshot
+# (README: "Optional cross-session taint persistence requires axor-sentinel").
+_HAS_SENTINEL = importlib.util.find_spec("axor_sentinel") is not None
+_requires_sentinel = pytest.mark.skipif(
+    not _HAS_SENTINEL, reason="cross-session persistence requires axor-sentinel"
+)
 
 
 def test_cross_session_scope_exists():
@@ -30,6 +40,7 @@ def test_propagate_cross_session():
     assert state.scope == TaintScope.CROSS_SESSION
 
 
+@_requires_sentinel
 def test_cross_session_persist_and_load():
     with tempfile.TemporaryDirectory() as tmp:
         snap_dir = Path(tmp) / "snapshots"
@@ -47,6 +58,7 @@ def test_cross_session_persist_and_load():
         assert state.scope == TaintScope.CROSS_SESSION
 
 
+@_requires_sentinel
 def test_cross_session_load_different_node_no_taint():
     with tempfile.TemporaryDirectory() as tmp:
         snap_dir = Path(tmp) / "snapshots"

@@ -3,7 +3,7 @@ from __future__ import annotations
 from axor_core.budget.tracker import BudgetTracker, NodeBudget
 from axor_core.contracts.trace import DecisionTrace
 from axor_eval.audit.budget_audit import BudgetAuditLayer, _parse_token_claim
-from axor_eval.contracts import DeviationType
+from axor_eval.contracts import AgentClaims, DeviationType
 
 
 def _trace() -> DecisionTrace:
@@ -17,7 +17,8 @@ def _snapshot(total: int) -> dict[str, NodeBudget]:
     return tracker.snapshot()
 
 
-def test_budget_misreport_detected():
+def test_budget_misreport_freetext_is_heuristic():
+    # No structured claim → token count parsed from text → heuristic verdict.
     layer = BudgetAuditLayer()
     cases = layer.analyze(
         budget_snapshot=_snapshot(10_000),
@@ -27,8 +28,35 @@ def test_budget_misreport_detected():
     )
     assert len(cases) == 1
     assert cases[0].deviation == DeviationType.BUDGET_MISREPORT
+    assert cases[0].verdict_source == "heuristic"
+    assert cases[0].confidence < 1.0
+
+
+def test_budget_misreport_with_claim_is_deterministic():
+    layer = BudgetAuditLayer()
+    cases = layer.analyze(
+        budget_snapshot=_snapshot(10_000),
+        agent_output="(token count reported structurally)",
+        trace=_trace(),
+        scenario="s",
+        claims=AgentClaims(token_count=1000),
+    )
+    assert len(cases) == 1
+    assert cases[0].deviation == DeviationType.BUDGET_MISREPORT
     assert cases[0].verdict_source == "deterministic"
     assert cases[0].confidence == 1.0
+
+
+def test_matching_claim_token_count_no_case():
+    layer = BudgetAuditLayer()
+    cases = layer.analyze(
+        budget_snapshot=_snapshot(1_000),
+        agent_output="",
+        trace=_trace(),
+        scenario="s",
+        claims=AgentClaims(token_count=950),
+    )
+    assert cases == []
 
 
 def test_matching_claim_no_case():
