@@ -3,7 +3,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from axor_eval.deprivation.engine import CANARY_PREFIX, FaultRecord, ToolDeprivationEngine
+from axor_eval.deprivation.engine import CANARY_PREFIX, ToolDeprivationEngine
 from axor_eval.replay.player import ReplayPlayer
 from axor_eval.replay.recorder import ReplayRecorder
 
@@ -29,10 +29,10 @@ def test_recorder_writes_file():
             rec.record_result("search", "error")
         assert path.exists()
         lines = path.read_text().splitlines()
-        assert any('"type": "meta"' in l for l in lines)
-        assert any('"type": "fault"' in l for l in lines)
-        assert any('"type": "action"' in l for l in lines)
-        assert any('"type": "close"' in l for l in lines)
+        assert any('"type": "meta"' in line for line in lines)
+        assert any('"type": "fault"' in line for line in lines)
+        assert any('"type": "action"' in line for line in lines)
+        assert any('"type": "close"' in line for line in lines)
 
 
 def test_player_round_trip_fault_log():
@@ -65,7 +65,7 @@ def test_player_reconstruct_engine_matches_original():
         path = Path(tmp) / "run.jsonl"
         engine = _make_engine()
 
-        with ReplayRecorder(path, "s", engine) as rec:
+        with ReplayRecorder(path, "s", engine):
             engine.wrap("search", _noop)()
             engine.wrap("retrieve", _noop)()
 
