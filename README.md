@@ -251,24 +251,31 @@ The verdict is `verdict_source="judge"` with `confidence < 1.0` (probabilistic,
 uncalibrated probe thresholds discounted), so it is recorded as evidence but
 never enters the headline integrity score.
 
-## Cross-session taint (§7.1)
+## Taint provenance (per-value)
 
-Taint marks survive across sessions via Sentinel's `ReputationSnapshot`:
+axor-core tracks taint as **per-value provenance** — there is no session or
+cross-session taint *state*. A value's causal root carries the external sources
+that influenced it; a value is tainted exactly when it carries any external
+source. Provenance is inherited parent → child via `inherit_value_ledger`:
 
 ```python
 from axor_core.taint.engine import TaintEngine
-from axor_core.contracts.taint import TaintScope, TaintSource
+from axor_core.taint.causal_root import CausalRoot
+from axor_core.contracts.taint import TaintSource
 
-# Session 1
-engine1 = TaintEngine(node_id="node_abc")
-engine1.propagate(TaintSource.WEB, TaintScope.SESSION)
-engine1.cross_session_persist(Path("snapshots/"))
+engine = TaintEngine(node_id="node_abc")
 
-# Session 2 — detects the mark
-engine2 = TaintEngine(node_id="node_abc")
-state = engine2.load_cross_session(Path("snapshots/"))
-assert state.is_tainted  # True
-assert state.scope == TaintScope.CROSS_SESSION
+# An external read taints the value it produced.
+doc = engine.register_value(
+    "ExternalDocumentContents",
+    CausalRoot.external_read(TaintSource.WEB),
+)
+assert engine.derive_value("ExternalDocumentContents").is_tainted  # True
+
+# A sensitive read arms the confidentiality floor (egress-restricted until
+# governance endorses the value or clears taint).
+engine.register_value("api_key=...", CausalRoot.external_read(TaintSource.MEMORY, sensitive=True))
+assert engine.confidentiality_floor_active()  # True
 ```
 
 ## Taint survival through compression (§7.3)
@@ -305,7 +312,7 @@ axor-eval measures **execution integrity** under controlled stress. It does not 
 Coverage by formal property:
 
 - **Data Flow Integrity** — near-complete: corrupt-retrieval canary detection
-  (`CORRUPTED_RETRIEVAL_USED`), taint mark + propagate + cross-session persist.
+  (`CORRUPTED_RETRIEVAL_USED`), per-value taint provenance + ledger inheritance.
 - **Tool Integrity** — `FABRICATED_TOOL_RESULT` (deterministic with structured
   claims; heuristic from free text), `UNDISCLOSED_TOOL_SUBSTITUTION`,
   `BUDGET_MISREPORT` against real budget telemetry.
@@ -332,4 +339,4 @@ deterministic path requires the agent to emit structured `AgentClaims`.
 pip install -e axor-eval/
 ```
 
-Requires `axor-core`. Optional cross-session taint persistence requires `axor-sentinel`.
+Requires `axor-core`. Behavioral-integrity audit can optionally consume `axor-probe` reports.

@@ -5,9 +5,15 @@ from typing import Any, Callable
 
 from axor_core.budget.tracker import BudgetTracker
 from axor_core.contracts.mode import ExecutionMode
-from axor_core.contracts.taint import TaintScope, TaintSource
-from axor_core.contracts.trace import DecisionTrace, TraceEvent, TraceEventKind
+from axor_core.contracts.taint import TaintSource
+from axor_core.contracts.trace import (
+    DecisionTrace,
+    TaintPropagatedEvent,
+    TraceEvent,
+    TraceEventKind,
+)
 from axor_core.degradation.engine import DegradationEngine
+from axor_core.taint.causal_root import CausalRoot
 from axor_core.taint.engine import TaintEngine
 from axor_core.trace.collector import TraceCollector
 
@@ -114,11 +120,12 @@ class EvalRunner:
 
         def _govern(tool_name: str, fn: Callable) -> Callable:
             def _observed(*args: Any, **kwargs: Any) -> Any:
+                seq = action_count["n"]
                 # INTENT_APPROVED trace event (OBSERVE never denies).
                 trace_collector.record(TraceEvent(
                     kind=TraceEventKind.INTENT_APPROVED,
                     node_id=scenario_id,
-                    sequence=action_count["n"],
+                    sequence=seq,
                     payload={"tool": tool_name, "args": _safe_args(args, kwargs)},
                 ))
                 # Real budget telemetry for this governed call.
@@ -128,10 +135,23 @@ class EvalRunner:
                     output_tokens=_OBS_OUTPUT_TOKENS,
                     tool_tokens=_OBS_TOOL_TOKENS,
                 )
-                # External tool surface → taint (drained into the trace below).
-                taint_engine.propagate(TaintSource.MCP, TaintScope.SESSION)
                 action_count["n"] += 1
-                return fn(*args, **kwargs)
+                result = fn(*args, **kwargs)
+                # External tool surface → taint. axor-core's taint model is per-value
+                # provenance (no session/cross-session taint state), so the returned
+                # value carries the external causal root; we mirror that as a
+                # TAINT_PROPAGATED trace event for the audit trace.
+                taint_engine.register_value(
+                    result, CausalRoot.external_read(TaintSource.MCP)
+                )
+                trace_collector.record(TaintPropagatedEvent(
+                    kind=TraceEventKind.TAINT_PROPAGATED,
+                    node_id=scenario_id,
+                    sequence=seq,
+                    taint_source=TaintSource.MCP.value,
+                    taint_scope="value",
+                ))
+                return result
 
             return _observed
 
