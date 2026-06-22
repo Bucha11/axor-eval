@@ -141,6 +141,25 @@ def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, centre - half), min(1.0, centre + half))
 
 
+def two_proportion_z(s_a: int, n_a: int, s_b: int, n_b: int) -> float:
+    """Two-proportion z-statistic for the difference in two rates (A vs B).
+
+    Lets a real delta — governed vs undefended ASR, one model vs another, this run
+    vs a baseline — be told from sampling noise. 0.0 when either side is empty or
+    the pooled variance is degenerate."""
+    if n_a == 0 or n_b == 0:
+        return 0.0
+    p_a, p_b = s_a / n_a, s_b / n_b
+    p_pool = (s_a + s_b) / (n_a + n_b)
+    se = math.sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+    return (p_a - p_b) / se if se else 0.0
+
+
+def difference_is_real(s_a: int, n_a: int, s_b: int, n_b: int, z: float = 1.96) -> bool:
+    """True iff the two rates differ beyond noise at the given level (~95%)."""
+    return abs(two_proportion_z(s_a, n_a, s_b, n_b)) >= z
+
+
 # ── Aggregation ─────────────────────────────────────────────────────────────────
 
 @dataclass

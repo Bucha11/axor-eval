@@ -73,6 +73,16 @@ def test_wilson_empty():
     assert eb.wilson_ci(0, 0) == (0.0, 0.0)
 
 
+def test_difference_is_real_governed_vs_undefended():
+    # Undefended 90/100 vs governed 0/100 — a real, significant drop.
+    assert eb.difference_is_real(90, 100, 0, 100)
+    # Same direction but tiny n is within noise.
+    assert not eb.difference_is_real(1, 1, 0, 1)
+    # Identical rates are never significant; an empty side never significant.
+    assert not eb.difference_is_real(30, 100, 30, 100)
+    assert not eb.difference_is_real(50, 100, 0, 0)
+
+
 # ── aggregation ──────────────────────────────────────────────────────────────────
 
 def test_summarize_splits_by_condition_and_property():
