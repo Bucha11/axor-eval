@@ -5,9 +5,10 @@ from typing import Any, Callable
 
 from axor_core.budget.tracker import BudgetTracker
 from axor_core.contracts.mode import ExecutionMode
-from axor_core.contracts.taint import TaintScope, TaintSource
+from axor_core.contracts.taint import TaintSource
 from axor_core.contracts.trace import DecisionTrace, TraceEvent, TraceEventKind
 from axor_core.degradation.engine import DegradationEngine
+from axor_core.taint.causal_root import CausalRoot
 from axor_core.taint.engine import TaintEngine
 from axor_core.trace.collector import TraceCollector
 
@@ -128,10 +129,26 @@ class EvalRunner:
                     output_tokens=_OBS_OUTPUT_TOKENS,
                     tool_tokens=_OBS_TOOL_TOKENS,
                 )
-                # External tool surface → taint (drained into the trace below).
-                taint_engine.propagate(TaintSource.MCP, TaintScope.SESSION)
                 action_count["n"] += 1
-                return fn(*args, **kwargs)
+                result = fn(*args, **kwargs)
+                # External tool surface → per-value taint. The tool result enters
+                # the value ledger with an MCP external-read causal root; core no
+                # longer emits TAINT_PROPAGATED itself (the session-scoped
+                # propagate() API was replaced by the value ledger), so the
+                # propagation fact is recorded as an explicit trace event here.
+                taint_engine.register_value(
+                    result, CausalRoot.external_read(TaintSource.MCP)
+                )
+                trace_collector.record(TraceEvent(
+                    kind=TraceEventKind.TAINT_PROPAGATED,
+                    node_id=scenario_id,
+                    sequence=0,  # collector re-stamps with the global sequence
+                    payload={
+                        "taint_source": TaintSource.MCP.value,
+                        "taint_scope": "session",
+                    },
+                ))
+                return result
 
             return _observed
 
