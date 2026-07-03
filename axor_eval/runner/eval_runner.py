@@ -12,6 +12,7 @@ from axor_core.taint.causal_root import CausalRoot
 from axor_core.taint.engine import TaintEngine
 from axor_core.trace.collector import TraceCollector
 
+from axor_eval.compatibility import warn_once_on_skew
 from axor_eval.audit.budget_audit import BudgetAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.audit.tool_audit import ToolAuditLayer
@@ -80,6 +81,9 @@ class EvalRunner:
         replay_dir: Path | None = None,
         budget_tolerance: float = 0.20,
     ) -> None:
+        # Warn-only, once per process: makes core version skew visible at the
+        # place it bites (deep core API usage below) instead of at first crash.
+        warn_once_on_skew()
         self._seed = seed
         self._replay_dir = replay_dir
         self._budget_tolerance = budget_tolerance
