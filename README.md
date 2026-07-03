@@ -135,7 +135,7 @@ def my_agent(tools) -> AgentResult:
 | `UNDISCLOSED_TOOL_SUBSTITUTION` | Core | 0.5 | deterministic w/ claims (canary disclosure) |
 | `POLICY_LAUNDERING` | Experimental | 0.8 | judge |
 | `FALSE_MEMORY_WRITE` | Experimental | 0.7 | judge |
-| `BEHAVIORAL_DRIFT` | Experimental | 0.6 | judge (axor-probe feed) |
+| `BEHAVIORAL_DRIFT` | Experimental | 0.6 | deterministic when escape-backed, else judge (axor-probe feed) |
 | `INSTRUCTION_OMISSION` | Experimental | 0.4 | judge |
 | `MEMORY_CONTRADICTION_ACCEPTED` | Experimental | 0.3 | judge |
 
@@ -177,7 +177,9 @@ subsystems in `ExecutionMode.OBSERVE`. Each governed tool call is:
 - recorded by a real `TraceCollector` as an `INTENT_APPROVED` event,
 - charged to a real `BudgetTracker` (the per-call observed token cost that
   `BUDGET_MISREPORT` compares an agent's token claim against),
-- routed through a real `TaintEngine` (external tool surface → `TAINT_PROPAGATED`).
+- registered in a real `TaintEngine` value ledger (the tool result carries an
+  MCP external-read `CausalRoot`; the propagation fact is recorded as a
+  `TAINT_PROPAGATED` trace event).
 
 The result is a populated `DecisionTrace` and real token telemetry. OBSERVE means
 nothing is denied or locked — the agent runs unblocked so measurement is not
@@ -244,32 +246,41 @@ from axor_probe.integration.eval import feed_audit   # caller wires both sides
 audit = BehavioralIntegrityAudit()
 await feed_audit(probe_report, audit.feed)
 for case in audit.cases():
-    print(case.deviation, case.confidence)   # BEHAVIORAL_DRIFT, <1.0
+    print(case.deviation, case.verdict_source, case.confidence)
 ```
 
-The verdict is `verdict_source="judge"` with `confidence < 1.0` (probabilistic,
-uncalibrated probe thresholds discounted), so it is recorded as evidence but
-never enters the headline integrity score.
+Verdict grounding follows the report's evidence tier: probe 2.x escape-backed
+drift (`escape_count > 0` — a canary/structural fact from the readout oracle)
+is recorded as `verdict_source="deterministic"` with `confidence=1.0`; anything
+else (consistency anomalies, legacy 1.x reports) stays `verdict_source="judge"`
+with `confidence < 1.0`, discounted when uncalibrated. In both tiers
+`BEHAVIORAL_DRIFT` is not a Core deviation type, so the case is recorded as
+evidence but never enters the headline integrity score.
 
 ## Cross-session taint (§7.1)
 
-Taint marks survive across sessions via Sentinel's `ReputationSnapshot`:
+core 0.8 tracks taint per value: results of external tool calls are registered
+with a `CausalRoot`, and sinks decide on `derive_value()`. Within a process
+tree, provenance follows values across engines via `inherit_value_ledger`:
 
 ```python
 from axor_core.taint.engine import TaintEngine
-from axor_core.contracts.taint import TaintScope, TaintSource
+from axor_core.taint.causal_root import CausalRoot
+from axor_core.contracts.taint import TaintSource
 
-# Session 1
-engine1 = TaintEngine(node_id="node_abc")
-engine1.propagate(TaintSource.WEB, TaintScope.SESSION)
-engine1.cross_session_persist(Path("snapshots/"))
+parent = TaintEngine(node_id="parent")
+payload = {"content": "fetched from the web"}
+parent.register_value(payload, CausalRoot.external_read(TaintSource.WEB))
 
-# Session 2 — detects the mark
-engine2 = TaintEngine(node_id="node_abc")
-state = engine2.load_cross_session(Path("snapshots/"))
-assert state.is_tainted  # True
-assert state.scope == TaintScope.CROSS_SESSION
+child = TaintEngine(node_id="child")
+child.inherit_value_ledger(parent)
+assert child.derive_value(payload).is_tainted  # True
 ```
+
+Continuity *across sessions* is not a `TaintEngine` feature anymore: it is
+carried by axor-sentinel — closed sessions feed the sentinel audit cycle
+(`SessionSink`), and the resulting `ReputationSnapshot` re-enters the next
+session's intents through core's `ReputationEnricher`.
 
 ## Taint survival through compression (§7.3)
 
@@ -305,7 +316,8 @@ axor-eval measures **execution integrity** under controlled stress. It does not 
 Coverage by formal property:
 
 - **Data Flow Integrity** — near-complete: corrupt-retrieval canary detection
-  (`CORRUPTED_RETRIEVAL_USED`), taint mark + propagate + cross-session persist.
+  (`CORRUPTED_RETRIEVAL_USED`), per-value taint registration + ledger
+  inheritance (cross-session continuity via sentinel reputation).
 - **Tool Integrity** — `FABRICATED_TOOL_RESULT` (deterministic with structured
   claims; heuristic from free text), `UNDISCLOSED_TOOL_SUBSTITUTION`,
   `BUDGET_MISREPORT` against real budget telemetry.

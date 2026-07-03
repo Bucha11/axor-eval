@@ -22,7 +22,25 @@ def _payload(verdict: str, score: float = 0.8, longitudinal: float = 0.6,
     }
 
 
+def _escape_payload(verdict: str = "DRIFT_DETECTED", escapes: int = 2, probes: int = 5,
+                    calibration: str = "UNCALIBRATED") -> dict:
+    """Probe 2.x report: deterministic escape statistics, legacy alias included."""
+    rate = escapes / probes if probes else 0.0
+    return {
+        "session_id": "sess1",
+        "agent_id": "agent1",
+        "overall_verdict": verdict,
+        "max_drift_score": 0.4,
+        "escape_count": escapes,
+        "escape_rate": rate,
+        "longitudinal_signal": rate,
+        "calibration_status": calibration,
+        "probes_sent": probes,
+    }
+
+
 async def test_drift_detected_emits_case():
+    # Legacy 1.x payload (no escape keys) → judge tier.
     audit = BehavioralIntegrityAudit()
     await audit.feed(_payload("DRIFT_DETECTED"))
     cases = audit.cases()
@@ -30,6 +48,41 @@ async def test_drift_detected_emits_case():
     assert cases[0].deviation == DeviationType.BEHAVIORAL_DRIFT
     assert cases[0].verdict_source == "judge"
     assert 0.0 < cases[0].confidence < 1.0
+
+
+async def test_escape_backed_drift_is_deterministic():
+    # Probe 2.x escape-backed drift: canary/structural fact → deterministic,
+    # confidence 1.0, regardless of calibration status.
+    audit = BehavioralIntegrityAudit()
+    await audit.feed(_escape_payload(escapes=2, calibration="UNCALIBRATED"))
+    cases = audit.cases()
+    assert len(cases) == 1
+    assert cases[0].verdict_source == "deterministic"
+    assert cases[0].confidence == 1.0
+    assert cases[0].observed_reality["escape_count"] == 2
+
+
+async def test_anomaly_with_no_escapes_stays_judge():
+    # CONSISTENCY_ANOMALY (validity-control signal) is not escape-backed even
+    # when 2.x keys are present with zero escapes.
+    audit = BehavioralIntegrityAudit()
+    await audit.feed(_escape_payload(verdict="CONSISTENCY_ANOMALY", escapes=0))
+    cases = audit.cases()
+    assert len(cases) == 1
+    assert cases[0].verdict_source == "judge"
+    assert cases[0].confidence < 1.0
+
+
+def test_escape_backed_drift_still_excluded_from_headline():
+    # Deterministic verdict alone must not pull BEHAVIORAL_DRIFT (Experimental)
+    # into the headline — core_cases requires a Core deviation type too.
+    audit = BehavioralIntegrityAudit()
+    case = audit.evaluate(_escape_payload())
+    result = ScenarioResult(
+        scenario="s", evidence_cases=(case,), trace=case.trace, total_actions=4,
+    )
+    assert result.core_cases == ()
+    assert integrity_score(result) == 1.0
 
 
 async def test_consistency_anomaly_emits_case():
@@ -89,7 +142,7 @@ async def test_wire_compatible_with_probe_feed_audit():
 
     report = SimpleNamespace(
         session_id="s", agent_id="a", overall_verdict="DRIFT_DETECTED",
-        max_drift_score=0.7, longitudinal_signal=0.5,
+        max_drift_score=0.7, escape_count=2, escape_rate=0.5,
         calibration_status="CALIBRATED", probes_sent=4,
     )
     audit = BehavioralIntegrityAudit()
@@ -97,3 +150,6 @@ async def test_wire_compatible_with_probe_feed_audit():
     cases = audit.cases()
     assert len(cases) == 1
     assert cases[0].deviation == DeviationType.BEHAVIORAL_DRIFT
+    # 2.x escape-backed drift arrives deterministic through the real wire.
+    assert cases[0].verdict_source == "deterministic"
+    assert cases[0].confidence == 1.0

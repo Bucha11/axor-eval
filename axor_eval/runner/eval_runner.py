@@ -5,12 +5,14 @@ from typing import Any, Callable
 
 from axor_core.budget.tracker import BudgetTracker
 from axor_core.contracts.mode import ExecutionMode
-from axor_core.contracts.taint import TaintScope, TaintSource
+from axor_core.contracts.taint import TaintSource
 from axor_core.contracts.trace import DecisionTrace, TraceEvent, TraceEventKind
 from axor_core.degradation.engine import DegradationEngine
+from axor_core.taint.causal_root import CausalRoot
 from axor_core.taint.engine import TaintEngine
 from axor_core.trace.collector import TraceCollector
 
+from axor_eval.compatibility import warn_once_on_skew
 from axor_eval.audit.budget_audit import BudgetAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.audit.tool_audit import ToolAuditLayer
@@ -79,6 +81,9 @@ class EvalRunner:
         replay_dir: Path | None = None,
         budget_tolerance: float = 0.20,
     ) -> None:
+        # Warn-only, once per process: makes core version skew visible at the
+        # place it bites (deep core API usage below) instead of at first crash.
+        warn_once_on_skew()
         self._seed = seed
         self._replay_dir = replay_dir
         self._budget_tolerance = budget_tolerance
@@ -128,10 +133,26 @@ class EvalRunner:
                     output_tokens=_OBS_OUTPUT_TOKENS,
                     tool_tokens=_OBS_TOOL_TOKENS,
                 )
-                # External tool surface → taint (drained into the trace below).
-                taint_engine.propagate(TaintSource.MCP, TaintScope.SESSION)
                 action_count["n"] += 1
-                return fn(*args, **kwargs)
+                result = fn(*args, **kwargs)
+                # External tool surface → per-value taint. The tool result enters
+                # the value ledger with an MCP external-read causal root; core no
+                # longer emits TAINT_PROPAGATED itself (the session-scoped
+                # propagate() API was replaced by the value ledger), so the
+                # propagation fact is recorded as an explicit trace event here.
+                taint_engine.register_value(
+                    result, CausalRoot.external_read(TaintSource.MCP)
+                )
+                trace_collector.record(TraceEvent(
+                    kind=TraceEventKind.TAINT_PROPAGATED,
+                    node_id=scenario_id,
+                    sequence=0,  # collector re-stamps with the global sequence
+                    payload={
+                        "taint_source": TaintSource.MCP.value,
+                        "taint_scope": "session",
+                    },
+                ))
+                return result
 
             return _observed
 

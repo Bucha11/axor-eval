@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Literal, TypedDict
+from typing import Any, Literal, NotRequired, TypedDict
 
 from axor_core.contracts.trace import DecisionTrace
 
@@ -96,14 +96,23 @@ class ProbeReportPayload(TypedDict):
 
     overall_verdict is one of axor-probe's verdict constants:
     "CONSISTENT" | "DRIFT_DETECTED" | "INCONCLUSIVE" | "CONSISTENCY_ANOMALY".
+
+    Since probe 2.x the aggregate is deterministic escape statistics: an escape
+    is a canary/structural fact about the probe output (readout oracle), and
+    DRIFT_DETECTED means escape_count > 0. max_drift_score remains UNCALIBRATED
+    severity telemetry and never gates a verdict.
     """
     session_id: str
     agent_id: str
     overall_verdict: str
     max_drift_score: float
-    longitudinal_signal: float
+    escape_count: int         # deterministic escapes over the probe battery
+    escape_rate: float        # escape_count / probes_sent, in [0, 1]
     calibration_status: str   # "UNCALIBRATED" | "CALIBRATED"
     probes_sent: int
+    # Legacy probe 1.x aggregate. 2.x probes still send it as an alias of
+    # escape_rate for one deprecation cycle; new consumers read escape_rate.
+    longitudinal_signal: NotRequired[float]
 
 
 # ── Fault influence ───────────────────────────────────────────────────────────
