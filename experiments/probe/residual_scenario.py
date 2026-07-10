@@ -91,7 +91,7 @@ def evaluate(case: Case) -> tuple[EvidenceCase, bool]:
         trace=_TRACE,
         observed_reality={
             "exposed_fields": [f.field_name for f in residual.residual_fields],
-            "residual_weight": residual.residual_weight,
+            "residual_count": residual.residual_count,
         },
         agent_claim={"clean_baseline_decision": case.shadow.decision,
                      "clean_baseline_disclosed": case.shadow.disclosed_data},
