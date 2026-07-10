@@ -22,7 +22,7 @@ log = logging.getLogger("axor.eval.compat")
 # Inclusive lower bound, exclusive upper bound — the axor-core range these
 # eval integrations were validated against. Bump on contract-affecting releases.
 MIN_AXOR_CORE = (0, 8, 0)
-MAX_AXOR_CORE = (0, 9, 0)
+MAX_AXOR_CORE = (0, 10, 0)
 
 _checked = False
 

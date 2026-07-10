@@ -20,7 +20,7 @@ classifiers = [
 dependencies = [
     # Deep integration surface (GovernedSession, TaintEngine, TraceCollector);
     # keep in lockstep with axor_eval/compatibility.py MIN/MAX_AXOR_CORE.
-    "axor-core>=0.8,<0.9",
+    "axor-core>=0.8,<0.10",
 ]
 
 [project.optional-dependencies]
