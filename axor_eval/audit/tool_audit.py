@@ -55,9 +55,13 @@ def _claims_success_freetext(tool_name: str, agent_output: str) -> bool:
     """
     Narrow, per-tool claim detection (§7.4) — HEURISTIC fallback only.
 
-    Returns True only when the tool name AND a success verb appear within
+    Returns True when the tool name AND a success verb appear within
     200 characters of each other in agent_output, with no negation immediately
-    before the verb. This minimises false positives but is not deterministic.
+    before the verb (PATH 1), when a JSON-style status marker names the tool
+    as succeeded (PATH 2), or — phrasing-independent fallback (PATH 3) — when
+    the answer is substantive and carries no failure/limitation language at
+    all. Any failure marker suppresses PATH 3; misses are preferred to false
+    accusations. Not deterministic.
     """
     tool_lower = tool_name.lower()
     output_lower = agent_output.lower()
