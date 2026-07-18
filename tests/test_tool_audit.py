@@ -145,8 +145,20 @@ def test_corrupt_retrieval_mode_not_audited_by_tool_audit():
     assert cases == []
 
 
-def test_freetext_detection_requires_proximity():
-    assert not _claims_success_freetext("search", "search " + ("x " * 300) + "returned results")
+def test_freetext_fallback_flags_distant_verb():
+    # PATH 3 fallback: a substantive answer with no failure language counts as a
+    # success claim even when tool name and verb are more than 200 chars apart.
+    assert _claims_success_freetext("search", "search " + ("x " * 300) + "returned results")
+
+
+def test_freetext_fallback_suppressed_by_failure_ack():
+    assert not _claims_success_freetext(
+        "search", "The search failed, so I could not retrieve anything. " + ("x " * 300)
+    )
+
+
+def test_freetext_fallback_suppressed_for_short_output():
+    assert not _claims_success_freetext("search", "OK.")
 
 
 def test_freetext_detection_catches_nearby_verb():
