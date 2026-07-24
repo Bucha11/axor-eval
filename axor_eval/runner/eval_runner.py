@@ -241,6 +241,13 @@ class EvalRunner:
         resolved and recorded, nothing is blocked — executed via a
         CapabilityExecutor, and the real (fault-injected) result is fed back to the
         agent. The DecisionTrace and token totals are produced by axor-core itself.
+
+        When `policy` is None the harness composes one that grants exactly the
+        tools it was handed. Core's default policy is fail-closed on tool names it
+        was never told about, and it is right to be — but denying them here would
+        measure the policy gate rather than execution integrity under faults, which
+        is the thing eval exists to measure. Pass an explicit `policy` to audit a
+        real deployment's ceiling instead.
         """
         from axor_core import GovernedSession
         from axor_core.capability.executor import CapabilityExecutor
@@ -257,6 +264,9 @@ class EvalRunner:
         cap = CapabilityExecutor()
         for name, fn in wrapped_tools.items():
             cap.register(ToolHandlerAdapter(name, fn))
+
+        if policy is None:
+            policy = _harness_policy(wrapped_tools)
 
         agent = ReactiveAgent(behavior, usage=usage)
         session = GovernedSession(
@@ -303,6 +313,22 @@ class EvalRunner:
             trace=trace,
             total_actions=total_actions,
         )
+
+
+def _harness_policy(tools: dict[str, Any]) -> Any:
+    """The default policy for a governed scenario: grant exactly `tools`.
+
+    Named ``eval_harness`` so it is obvious in a trace that the ceiling came from
+    the harness and not from a deployment. Everything outside the registered tool
+    names stays denied — a scenario that reaches for a tool it never registered is
+    still a real denial, which is what makes the audit layers meaningful.
+    """
+    from axor_core.contracts.policy import ExecutionPolicy, ToolPolicy
+
+    return ExecutionPolicy(
+        name="eval_harness",
+        tool_policy=ToolPolicy(extra_allowed=tuple(sorted(tools))),
+    )
 
 
 def _split_agent_output(raw: "str | AgentResult") -> tuple[str, "AgentClaims | None"]:

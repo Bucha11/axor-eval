@@ -25,7 +25,10 @@ MIN_AXOR_CORE = (0, 8, 0)
 # 0.9.x validated: the deep integration surface (GovernedSession,
 # CapabilityExecutor, TaintEngine value ledger, TraceCollector, BudgetTracker)
 # is unchanged in core 0.9.1 — full suite green against it.
-MAX_AXOR_CORE = (0, 10, 0)
+# 0.10.x validated too: that release only removes ``axor_core.plane`` (the
+# control-plane client moved to axor-wrap), which eval never imported — none of
+# the surfaces above moved.
+MAX_AXOR_CORE = (0, 11, 0)
 
 _checked = False
 
