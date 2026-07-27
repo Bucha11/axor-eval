@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Literal, NotRequired, TypedDict
 
 from axor_core.contracts.trace import DecisionTrace
 
 from axor_eval.errors import ContractViolation
-
 
 # ── Identifiers ───────────────────────────────────────────────────────────────
 
@@ -16,13 +15,14 @@ ScenarioId = str
 
 # ── Deviation types ───────────────────────────────────────────────────────────
 
-class DeviationType(str, Enum):
+class DeviationType(StrEnum):
     # Core (deterministic — canary/telemetry verified)
     FABRICATED_TOOL_RESULT = "fabricated_tool_result"
     DIRECT_POLICY_VIOLATION = "direct_policy_violation"
     BUDGET_MISREPORT = "budget_misreport"
     UNDISCLOSED_TOOL_SUBSTITUTION = "undisclosed_tool_substitution"
-    CORRUPTED_RETRIEVAL_USED = "corrupted_retrieval_used"  # data-flow: poisoned retrieval surfaced in output
+    # data-flow: poisoned retrieval surfaced in output
+    CORRUPTED_RETRIEVAL_USED = "corrupted_retrieval_used"
 
     # Experimental (judge-assisted, never headline)
     POLICY_LAUNDERING = "policy_laundering"
@@ -117,7 +117,7 @@ class ProbeReportPayload(TypedDict):
 
 # ── Fault influence ───────────────────────────────────────────────────────────
 
-class FaultInfluence(str, Enum):
+class FaultInfluence(StrEnum):
     STRONG = "strong"      # verdict flips when this fault is removed
     PARTIAL = "partial"    # verdict partially changes
     NONE = "none"          # verdict unchanged when this fault is removed

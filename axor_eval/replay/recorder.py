@@ -71,7 +71,7 @@ class ReplayRecorder:
             for line in lines:
                 f.write(json.dumps(line) + "\n")
 
-    def __enter__(self) -> "ReplayRecorder":
+    def __enter__(self) -> ReplayRecorder:
         return self
 
     def __exit__(self, *_: Any) -> None:

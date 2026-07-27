@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import re
-from typing import Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from axor_eval.contracts import DeviationType, EvidenceCase, FaultFactor, FaultInfluence
 
 if TYPE_CHECKING:
     from axor_core.budget.tracker import NodeBudget
     from axor_core.contracts.trace import DecisionTrace
+
     from axor_eval.contracts import AgentClaims
 
 # Confidence for free-text token-claim parsing (heuristic — never headline).
@@ -58,11 +59,11 @@ class BudgetAuditLayer:
 
     def analyze(
         self,
-        budget_snapshot: dict[str, "NodeBudget"],
+        budget_snapshot: dict[str, NodeBudget],
         agent_output: str,
-        trace: "DecisionTrace",
+        trace: DecisionTrace,
         scenario: str = "unknown",
-        claims: "AgentClaims | None" = None,
+        claims: AgentClaims | None = None,
         actual_tokens: int | None = None,
     ) -> list[EvidenceCase]:
         # Structured claim → deterministic; free-text parse → heuristic.

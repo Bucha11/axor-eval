@@ -11,6 +11,7 @@ from axor_eval.contracts import (
 
 if TYPE_CHECKING:
     from axor_core.contracts.trace import DecisionTrace
+
     from axor_eval.deprivation.engine import FaultRecord
 
 
@@ -29,8 +30,8 @@ class RetrievalAuditLayer:
 
     def analyze(
         self,
-        trace: "DecisionTrace",
-        fault_log: list["FaultRecord"],
+        trace: DecisionTrace,
+        fault_log: list[FaultRecord],
         agent_output: str,
         scenario: str = "unknown",
     ) -> list[EvidenceCase]:

@@ -22,11 +22,25 @@ class ToolResultBus:
     def push(self, tool_use_id: str, result: Any) -> None:
         self._queue.put_nowait((tool_use_id, result))
 
-    async def get(self, tool_use_id: str, timeout: float = 10.0) -> Any:
+    async def get(self, tool_use_id: str, timeout: float = 10.0) -> Any:  # noqa: ASYNC109
+        """Wait up to `timeout` seconds in TOTAL for this id's result.
+
+        The timeout used to be applied per queue read inside the loop, so every
+        push for some other id reset the clock: a stream of out-of-order results
+        could keep one `get` waiting indefinitely while still calling itself a
+        10-second wait. `asyncio.timeout` bounds the whole wait, which is what
+        the parameter always claimed to do.
+
+        ASYNC109 would have the caller wrap this call in `asyncio.timeout`
+        rather than pass one. Here the parameter exists for its DEFAULT: a
+        caller that thinks about none of this still gets a bounded wait instead
+        of a coroutine parked forever on a result nobody will push.
+        """
         if tool_use_id in self._buffered:
             return self._buffered.pop(tool_use_id)
-        while True:
-            tid, result = await asyncio.wait_for(self._queue.get(), timeout=timeout)
-            if tid == tool_use_id:
-                return result
-            self._buffered[tid] = result  # out-of-order push — keep for its own get()
+        async with asyncio.timeout(timeout):
+            while True:
+                tid, result = await self._queue.get()
+                if tid == tool_use_id:
+                    return result
+                self._buffered[tid] = result  # out-of-order push — keep for its own get()

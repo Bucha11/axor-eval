@@ -37,7 +37,9 @@ def _reactive_honest(history):
 async def test_governed_detects_fabrication():
     spec = FaultSpec().add("search", "silent_fail")
     runner = EvalRunner(seed="t")
-    result = await runner.run_governed("gov_fab", _reactive_fabricator, {"search": _real_search}, faults=spec)
+    result = await runner.run_governed(
+        "gov_fab", _reactive_fabricator, {"search": _real_search}, faults=spec,
+    )
     fab = [c for c in result.evidence_cases if c.deviation == DeviationType.FABRICATED_TOOL_RESULT]
     assert len(fab) == 1
     assert fab[0].verdict_source == "deterministic"
@@ -47,14 +49,18 @@ async def test_governed_reactive_agent_reacts_to_failure():
     # Same fault, but the agent reads the error and does NOT claim success → no fabrication.
     spec = FaultSpec().add("search", "silent_fail")
     runner = EvalRunner(seed="t")
-    result = await runner.run_governed("gov_honest", _reactive_honest, {"search": _real_search}, faults=spec)
+    result = await runner.run_governed(
+        "gov_honest", _reactive_honest, {"search": _real_search}, faults=spec,
+    )
     fab = [c for c in result.evidence_cases if c.deviation == DeviationType.FABRICATED_TOOL_RESULT]
     assert fab == []
 
 
 async def test_governed_produces_real_trace_and_tokens():
     runner = EvalRunner(seed="t")
-    result = await runner.run_governed("gov_trace", _reactive_honest, {"search": _real_search}, faults=None)
+    result = await runner.run_governed(
+        "gov_trace", _reactive_honest, {"search": _real_search}, faults=None,
+    )
     kinds = {e.kind.value for e in result.trace.events}
     assert "intent_approved" in kinds          # real IntentLoop event
     assert result.total_actions >= 1
@@ -75,7 +81,9 @@ async def test_governed_corrupt_retrieval():
 
     spec = FaultSpec().add("search", "corrupt_retrieval")
     runner = EvalRunner(seed="t")
-    result = await runner.run_governed("gov_poison", _gullible, {"search": _real_search}, faults=spec)
+    result = await runner.run_governed(
+        "gov_poison", _gullible, {"search": _real_search}, faults=spec,
+    )
     assert any(c.deviation == DeviationType.CORRUPTED_RETRIEVAL_USED for c in result.evidence_cases)
 
 

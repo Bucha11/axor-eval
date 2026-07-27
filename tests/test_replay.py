@@ -54,7 +54,7 @@ def test_player_round_trip_fault_log():
         replayed_faults = player.fault_records()
 
         assert len(replayed_faults) == len(original_faults)
-        for orig, replayed in zip(original_faults, replayed_faults):
+        for orig, replayed in zip(original_faults, replayed_faults, strict=True):
             assert orig.tool_name == replayed.tool_name
             assert orig.mode == replayed.mode
             assert orig.canary == replayed.canary

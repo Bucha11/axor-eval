@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import uuid
+from collections.abc import AsyncIterator, Callable
 from dataclasses import dataclass, field
-from typing import Any, AsyncIterator, Callable, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from axor_core.contracts.invokable import Invokable
 from axor_core.contracts.result import ExecutorEvent, ExecutorEventKind
@@ -11,6 +12,7 @@ from axor_eval.governed.bus import ToolResultBus
 
 if TYPE_CHECKING:
     from axor_core.contracts.envelope import ExecutionEnvelope
+
     from axor_eval.contracts import AgentClaims
 
 
@@ -36,7 +38,7 @@ class CallTool:
 class Finish:
     """Agent decides to stop and emit its final answer + structured claims."""
     text: str
-    claims: "AgentClaims | None" = None
+    claims: AgentClaims | None = None
 
 
 # behaviour(history) → next action. Pure step function: the agent reacts to the
@@ -78,10 +80,10 @@ class ReactiveAgent(Invokable):
         return self._bus
 
     @property
-    def result(self) -> "Finish | None":
+    def result(self) -> Finish | None:
         return self._final
 
-    async def stream(self, envelope: "ExecutionEnvelope") -> AsyncIterator[ExecutorEvent]:
+    async def stream(self, envelope: ExecutionEnvelope) -> AsyncIterator[ExecutorEvent]:
         history: list[ToolOutcome] = []
         for _ in range(self._max_steps):
             action = self._behavior(history)
