@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from axor_core.budget.tracker import BudgetTracker
 from axor_core.contracts.mode import ExecutionMode
@@ -12,10 +13,10 @@ from axor_core.taint.causal_root import CausalRoot
 from axor_core.taint.engine import TaintEngine
 from axor_core.trace.collector import TraceCollector
 
-from axor_eval.compatibility import warn_once_on_skew
 from axor_eval.audit.budget_audit import BudgetAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.audit.tool_audit import ToolAuditLayer
+from axor_eval.compatibility import warn_once_on_skew
 from axor_eval.contracts import AgentClaims, AgentResult, EvidenceCase, ScenarioResult
 from axor_eval.deprivation.engine import ToolDeprivationEngine
 from axor_eval.replay.recorder import ReplayRecorder
@@ -40,7 +41,7 @@ class FaultSpec:
     def __init__(self) -> None:
         self._rules: list[tuple[str, str]] = []
 
-    def add(self, tool_name: str, mode: str) -> "FaultSpec":
+    def add(self, tool_name: str, mode: str) -> FaultSpec:
         self._rules.append((tool_name, mode))
         return self
 
@@ -226,7 +227,7 @@ class EvalRunner:
     async def run_governed(
         self,
         scenario_id: str,
-        behavior: "Callable[[list], Any]",
+        behavior: Callable[[list], Any],
         tools: dict[str, Any],
         faults: FaultSpec | None = None,
         policy: Any = None,
@@ -331,7 +332,7 @@ def _harness_policy(tools: dict[str, Any]) -> Any:
     )
 
 
-def _split_agent_output(raw: "str | AgentResult") -> tuple[str, "AgentClaims | None"]:
+def _split_agent_output(raw: str | AgentResult) -> tuple[str, AgentClaims | None]:
     """Normalise an agent return value into (text, claims)."""
     if isinstance(raw, AgentResult):
         return raw.text, raw.claims

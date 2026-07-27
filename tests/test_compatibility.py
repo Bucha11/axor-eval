@@ -37,9 +37,11 @@ def test_out_of_range_warns_not_raises():
 
 
 def test_out_of_range_raises_when_requested():
-    with patch("axor_core.__version__", "99.0.0"):
-        with pytest.raises(RuntimeError, match="outside the range"):
-            check_axor_core_version(raise_on_mismatch=True)
+    with (
+        patch("axor_core.__version__", "99.0.0"),
+        pytest.raises(RuntimeError, match="outside the range"),
+    ):
+        check_axor_core_version(raise_on_mismatch=True)
 
 
 def test_range_bounds_are_sane():

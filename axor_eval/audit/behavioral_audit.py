@@ -52,7 +52,7 @@ class BehavioralIntegrityAudit:
     verifiability over interpretation).
     """
 
-    def __init__(self, trace: "DecisionTrace | None" = None) -> None:
+    def __init__(self, trace: DecisionTrace | None = None) -> None:
         self._trace = trace
         self._cases: list[EvidenceCase] = []
 
@@ -123,6 +123,6 @@ class BehavioralIntegrityAudit:
         return out
 
 
-def _empty_trace(node_id: str) -> "DecisionTrace":
+def _empty_trace(node_id: str) -> DecisionTrace:
     from axor_core.contracts.trace import DecisionTrace
     return DecisionTrace(node_id=node_id, parent_id=None, depth=0, policy_name="probe")

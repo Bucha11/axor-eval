@@ -80,7 +80,11 @@ def test_observe_mode_transition_emitted_exactly_once():
     events = engine.drain_events()
     transition_events = [e for e in events if e.kind == TraceEventKind.DEGRADATION_TRANSITION]
     # Shadow monotonicity: each distinct transition fires exactly once
-    assert len(transition_events) == len({e.payload.get("new_level") or getattr(e, "new_level", None) for e in transition_events})
+    levels = {
+        e.payload.get("new_level") or getattr(e, "new_level", None)
+        for e in transition_events
+    }
+    assert len(transition_events) == len(levels)
 
 
 def test_from_mode_observe():

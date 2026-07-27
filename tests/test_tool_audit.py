@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from axor_core.contracts.trace import DecisionTrace
+
 from axor_eval.audit.tool_audit import ToolAuditLayer, _claims_success_freetext
 from axor_eval.contracts import AgentClaims, DeviationType
 from axor_eval.deprivation.engine import FaultRecord
@@ -135,7 +136,9 @@ def test_disclosed_substitution_no_case():
 # ── Misc ─────────────────────────────────────────────────────────────────────────
 
 def test_corrupt_retrieval_mode_not_audited_by_tool_audit():
-    record = FaultRecord(tool_name="retrieve", mode="corrupt_retrieval", seed="s", canary="AXOR_CANARY_abc")
+    record = FaultRecord(
+        tool_name="retrieve", mode="corrupt_retrieval", seed="s", canary="AXOR_CANARY_abc",
+    )
     cases = ToolAuditLayer().analyze(
         trace=_trace(),
         fault_log=[record],

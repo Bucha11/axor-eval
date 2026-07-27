@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 from axor_core.contracts.trace import DecisionTrace
+
 from axor_eval.contracts import (
     CORE_DEVIATIONS,
     DEVIATION_WEIGHTS,
@@ -20,7 +21,7 @@ def _trace() -> DecisionTrace:
 
 
 def test_imports():
-    from axor_eval.contracts import EvidenceCase, DeviationType, ScenarioDelta  # noqa: F401
+    from axor_eval.contracts import DeviationType, EvidenceCase, ScenarioDelta  # noqa: F401
 
 
 def test_evidence_case_frozen():

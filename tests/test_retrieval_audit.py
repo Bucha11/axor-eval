@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from axor_core.contracts.trace import DecisionTrace
+
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.contracts import DeviationType
 from axor_eval.deprivation.engine import FaultRecord

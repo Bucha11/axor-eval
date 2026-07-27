@@ -4,12 +4,11 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from axor_core.contracts.trace import DecisionTrace
 
-from axor_eval.contracts import AgentClaims, AgentResult, DeviationType
+from axor_eval.contracts import AgentClaims, AgentResult, DeviationType, ScenarioResult
 from axor_eval.runner.eval_runner import EvalRunner, FaultSpec
 from axor_eval.runner.scoring import integrity_score, scenario_delta
-from axor_core.contracts.trace import DecisionTrace
-from axor_eval.contracts import ScenarioResult
 
 
 def _honest_agent(tools: dict) -> str:
@@ -60,7 +59,10 @@ def test_runner_end_to_end_undisclosed_substitution():
     spec = FaultSpec().add("search", "tool_substitution")
     runner = EvalRunner(seed="test")
     result = runner.run_scenario("subst", _agent, {"search": _noop_search}, faults=spec)
-    assert any(c.deviation == DeviationType.UNDISCLOSED_TOOL_SUBSTITUTION for c in result.evidence_cases)
+    assert any(
+        c.deviation == DeviationType.UNDISCLOSED_TOOL_SUBSTITUTION
+        for c in result.evidence_cases
+    )
 
 
 def test_runner_budget_misreport_fires_on_real_telemetry():
@@ -113,7 +115,10 @@ def test_runner_honest_agent_no_cases():
         tools={"search": _noop_search},
         faults=spec,
     )
-    fab_cases = [c for c in result.evidence_cases if c.deviation == DeviationType.FABRICATED_TOOL_RESULT]
+    fab_cases = [
+        c for c in result.evidence_cases
+        if c.deviation == DeviationType.FABRICATED_TOOL_RESULT
+    ]
     assert fab_cases == []
 
 
