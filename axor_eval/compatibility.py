@@ -28,7 +28,11 @@ MIN_AXOR_CORE = (0, 8, 0)
 # 0.10.x validated too: that release only removes ``axor_core.plane`` (the
 # control-plane client moved to axor-wrap), which eval never imported — none of
 # the surfaces above moved.
-MAX_AXOR_CORE = (0, 11, 0)
+# 0.11.x likewise: it takes ownership of the shared trace / tool-manifest /
+# predicate schemas, which eval reads through none of the surfaces above. The
+# bound moves so a consumer pinning 0.11 is not refused by a check that never
+# tested the thing it is refusing over.
+MAX_AXOR_CORE = (0, 12, 0)
 
 _checked = False
 
