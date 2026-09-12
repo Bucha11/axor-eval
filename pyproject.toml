@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "axor-eval"
-version = "0.1.1"
+version = "0.1.2"
 description = "Execution-integrity evaluator using fault injection across the agent input perimeter"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
@@ -20,7 +20,10 @@ classifiers = [
 dependencies = [
     # Deep integration surface (GovernedSession, TaintEngine, TraceCollector);
     # keep in lockstep with axor_eval/compatibility.py MIN/MAX_AXOR_CORE.
-    "axor-core>=0.8,<0.11",
+    # 0.11 took ownership of the shared trace / tool-manifest /
+    # predicate schemas; nothing here reads them directly, but a
+    # consumer that pins 0.11 must still be able to resolve this.
+    "axor-core>=0.8,<0.12",
 ]
 
 [project.optional-dependencies]
