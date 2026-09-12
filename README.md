@@ -171,20 +171,64 @@ engine = player.reconstruct_engine()
 
 ## Observe mode and governance telemetry
 
-The runner executes the agent under axor-core's governance **observation**
-subsystems in `ExecutionMode.OBSERVE`. Each governed tool call is:
+There is no eval-specific gate. The agent runs through the **same wrap** the
+Control Plane and axor-lab run, with governance observed but not enforced:
 
-- recorded by a real `TraceCollector` as an `INTENT_APPROVED` event,
-- charged to a real `BudgetTracker` (the per-call observed token cost that
-  `BUDGET_MISREPORT` compares an agent's token claim against),
-- registered in a real `TaintEngine` value ledger (the tool result carries an
-  MCP external-read `CausalRoot`; the propagation fact is recorded as a
-  `TAINT_PROPAGATED` trace event).
+| agent shape | path | how it observes |
+|---|---|---|
+| handed a `{name: fn}` dict | `run_scenario` → `axor_wrap.WrappedToolset` | `enforcement="off"` |
+| driven by the kernel | `run_governed` → `axor_core.GovernedSession` | `ExecutionMode.OBSERVE` |
 
-The result is a populated `DecisionTrace` and real token telemetry. OBSERVE means
-nothing is denied or locked — the agent runs unblocked so measurement is not
-contaminated by enforcement (`DegradationEngine` stays at `NORMAL` while still
-emitting transition events).
+Both mean the same thing: the governor evaluates every call, records every
+verdict (`INTENT_APPROVED` / `INTENT_DENIED`), and registers every output in the
+per-value taint ledger (`TAINT_PROPAGATED`) — only the **block** is skipped, so
+measurement is not contaminated by enforcement. A `DecisionTrace` built this way
+is comparable with a Lab or Control-Plane trace of the same run.
+
+Eval adds one thing on top: a `BudgetTracker` charged a fixed observed cost per
+call. The eval agent is not an LLM, so there is no model-reported usage, and
+`BUDGET_MISREPORT` needs something to check a token claim against.
+
+Three layers, in order:
+
+1. **Below the wrap** — `ToolDeprivationEngine` substitutes tool callables.
+   A fault-injected tool is still just a callable, so the governed view is of
+   the world the agent actually got.
+2. **The wrap** — verdicts, taint and trace events, all from axor-core.
+3. **Above the wrap** — the audit layers compare the injected ground truth
+   (`fault_log`) against what the agent claimed. The fault log stays separate
+   from the trace on purpose: it is the oracle.
+
+Tool calls are **keyword-only** — the kernel gates on argument names
+(`driving_args`, `value_policies`, per-argument provenance), and a positional
+value has no name to gate on.
+
+### Declaring the tool contract
+
+By default every tool is declared an untrusted `READ`: that is eval's premise —
+a tool's return is exactly the surface fault injection makes adversarial. No
+egress sinks, because a harness that declared one would be measuring the policy
+gate rather than execution integrity under faults.
+
+Pass explicit manifests to audit a real deployment's contract instead. The run
+then records **real denials** — still unblocked, since enforcement is off:
+
+```python
+from axor_wrap import harness_manifest
+
+result = EvalRunner().run_scenario(
+    "exfiltration", my_agent, tools,
+    faults=FaultSpec().add("search", "instruction_injection"),
+    manifests=[
+        harness_manifest("search", untrusted=True),
+        harness_manifest("slack_post", effect_class="EXPORT", driving_args=["text"]),
+    ],
+)
+# trace now carries an INTENT_DENIED with the kernel's own taint-enforcement
+# reason, and the agent still ran both calls
+```
+
+`DegradationEngine` stays at `NORMAL` while still emitting transition events.
 
 ```python
 from axor_core.contracts.mode import ExecutionMode
@@ -344,4 +388,4 @@ deterministic path requires the agent to emit structured `AgentClaims`.
 pip install -e axor-eval/
 ```
 
-Requires `axor-core`. Optional cross-session taint persistence requires `axor-sentinel`.
+Requires `axor-core` and `axor-wrap`. Optional cross-session taint persistence requires `axor-sentinel`.

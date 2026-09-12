@@ -24,6 +24,14 @@ dependencies = [
     # predicate schemas; nothing here reads them directly, but a
     # consumer that pins 0.11 must still be able to resolve this.
     "axor-core>=0.8,<0.12",
+    # the wrap engine. Not an integration convenience: it is where the one
+    # gating path lives (`WrappedToolset` + the `enforcement` flag), and eval
+    # runs it with enforcement off. Before this, eval reimplemented that path
+    # by hand and drifted from it — it tainted every tool output as an MCP
+    # external read, where the kernel's own arming map leaves a clean read
+    # clean, so an eval trace could not be compared with a Lab or Control-Plane
+    # trace of the same run.
+    "axor-wrap>=0.1,<0.2",
 ]
 
 [project.optional-dependencies]
