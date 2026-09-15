@@ -1,17 +1,15 @@
 from __future__ import annotations
 
+import functools
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
 from axor_core.budget.tracker import BudgetTracker
 from axor_core.contracts.mode import ExecutionMode
-from axor_core.contracts.taint import TaintSource
-from axor_core.contracts.trace import DecisionTrace, TraceEvent, TraceEventKind
+from axor_core.contracts.trace import DecisionTrace
 from axor_core.degradation.engine import DegradationEngine
-from axor_core.taint.causal_root import CausalRoot
-from axor_core.taint.engine import TaintEngine
-from axor_core.trace.collector import TraceCollector
+from axor_wrap import ENFORCEMENT_OFF, WrappedToolset, harness_manifest
 
 from axor_eval.audit.budget_audit import BudgetAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
@@ -54,26 +52,43 @@ class EvalRunner:
     """
     Orchestrates a single scenario evaluation run (§15 MVP).
 
-    The agent runs under axor-core's governance observation subsystems in
-    ExecutionMode.OBSERVE: every governed tool call is recorded by a real
-    TraceCollector (INTENT_APPROVED), charged to a real BudgetTracker, and routed
-    through a real TaintEngine (external tool surface → taint). Nothing is
-    denied/locked — OBSERVE keeps the agent unblocked so measurement is not
-    contaminated by enforcement. The result is a populated DecisionTrace and real
-    token telemetry that the audit layers verify against.
+    The agent runs through the ONE wrap with governance observed but not
+    enforced. There is no eval-specific gate: ``run_scenario`` builds an
+    ``axor_wrap.WrappedToolset`` with ``enforcement="off"`` and
+    ``run_governed`` drives an ``axor_core.GovernedSession`` in
+    ``ExecutionMode.OBSERVE`` — the same idea at two layers, for the two kinds
+    of agent (one that is handed a tool dict, one the kernel drives). Either
+    way the governor evaluates every call, records every verdict, and registers
+    every output in the per-value taint ledger; only the block is skipped, so
+    measurement is not contaminated by enforcement.
 
-    Wires:
-      - DegradationEngine.from_mode(OBSERVE)
-      - ToolDeprivationEngine (fault injection)
-      - TaintEngine + BudgetTracker + TraceCollector (real telemetry)
-      - ReplayRecorder (optional)
-      - ToolAuditLayer + RetrievalAuditLayer + BudgetAuditLayer
+    That is deliberately the same code the Control Plane and axor-lab run: an
+    eval trace and a production trace of the same run are then comparable,
+    which they were not while this class kept its own instrumentation.
+
+    Three layers, in order:
+      - BELOW the wrap — ToolDeprivationEngine substitutes tool callables
+        (fault injection). A substituted callable is still just a callable.
+      - THE WRAP — WrappedToolset(enforcement="off") / GovernedSession(OBSERVE).
+        Verdicts, taint and trace events come from axor-core.
+      - ABOVE the wrap — ToolAuditLayer + RetrievalAuditLayer + BudgetAuditLayer
+        compare the injected ground truth (``fault_log``) against what the agent
+        claimed. The fault log stays separate from the trace on purpose: it is
+        the oracle, and deriving it from the observation would be deriving the
+        oracle from the thing under test.
+
+    Also wired: DegradationEngine.from_mode(OBSERVE), a BudgetTracker charged
+    per call (the eval agent is not an LLM, so there is no model-reported usage
+    for BUDGET_MISREPORT to check a claim against), and an optional
+    ReplayRecorder.
 
     Usage::
 
         spec = FaultSpec().add("search", "silent_fail")
         runner = EvalRunner()
         result = runner.run_scenario("search_timeout", my_agent, {"search": fn}, faults=spec)
+
+    Tool calls are keyword-only: the kernel gates on argument names.
     """
 
     def __init__(
@@ -96,38 +111,59 @@ class EvalRunner:
         tools: dict[str, Any],
         faults: FaultSpec | None = None,
         env_config: dict[str, Any] | None = None,
+        manifests: list[dict[str, Any]] | None = None,
     ) -> ScenarioResult:
         # Observe mode — governance subsystems record but never block the agent.
         degradation_engine = DegradationEngine.from_mode(
             ExecutionMode.OBSERVE, node_id=scenario_id
         )
 
-        # Fault injection setup.
+        # Fault injection sits BELOW the wrap: it substitutes tool callables, and
+        # a substituted callable is still just a callable. So the governed view
+        # is of the world the agent actually got, faults included.
         deprivation = ToolDeprivationEngine(seed=self._seed)
         if faults:
             for tool_name, mode in faults.rules:
                 deprivation.register(tool_name, mode)
         wrapped_tools = deprivation.wrap_all(tools)
 
-        # Real governance telemetry: trace + budget + taint.
+        # One wrap, observing. `enforcement="off"` is axor-wrap's bypass flag and
+        # the exact analogue of ExecutionMode.OBSERVE on the streaming path: the
+        # governor still evaluates every call, still records every verdict, and
+        # still registers every output in the per-value taint ledger — only the
+        # block is skipped, so measurement is not contaminated by enforcement.
+        toolset = WrappedToolset(
+            wrapped_tools,
+            manifests if manifests is not None else harness_manifests(wrapped_tools),
+            enforcement=ENFORCEMENT_OFF,
+            # no raw-value retention: no audit layer reads a trace's value
+            # ledger, and replay is recorded from the deprivation engine below.
+            # Turning it on would keep every tool result in memory for nothing.
+            record=False,
+            node_id=scenario_id,
+        )
+
         budget_tracker = BudgetTracker()
         budget_tracker.register_node(scenario_id, None, 0)
-        trace_collector = TraceCollector(session_id=scenario_id)
-        trace_collector.register_node(scenario_id, None, 0, policy_name="eval")
-        taint_engine = TaintEngine(node_id=scenario_id)
-
         action_count = {"n": 0}
 
-        def _govern(tool_name: str, fn: Callable) -> Callable:
-            def _observed(*args: Any, **kwargs: Any) -> Any:
-                # INTENT_APPROVED trace event (OBSERVE never denies).
-                trace_collector.record(TraceEvent(
-                    kind=TraceEventKind.INTENT_APPROVED,
-                    node_id=scenario_id,
-                    sequence=action_count["n"],
-                    payload={"tool": tool_name, "args": _safe_args(args, kwargs)},
-                ))
-                # Real budget telemetry for this governed call.
+        # Token accounting only. Everything governance-shaped — the verdict, the
+        # trace event, the taint root — now comes from the kernel through the
+        # wrap; this shim exists because the eval agent is not an LLM and there
+        # is no model-reported usage to read, so BUDGET_MISREPORT needs an
+        # attributed cost per call from somewhere.
+        def _metered(name: str, fn: Callable) -> Callable:
+            @functools.wraps(fn)
+            def _charged(*args: Any, **kwargs: Any) -> Any:
+                if args:
+                    # the kernel gates on argument NAMES (driving_args,
+                    # value_policies, per-arg provenance); a positional value
+                    # has no name to gate on, so the wrap is keyword-only and
+                    # says so here rather than through the wrapper's arity.
+                    raise TypeError(
+                        f"governed tool {name!r} was called with positional "
+                        "arguments; a governed tool call must be keyword-only"
+                    )
                 budget_tracker.record(
                     scenario_id,
                     input_tokens=_OBS_INPUT_TOKENS,
@@ -135,29 +171,13 @@ class EvalRunner:
                     tool_tokens=_OBS_TOOL_TOKENS,
                 )
                 action_count["n"] += 1
-                result = fn(*args, **kwargs)
-                # External tool surface → per-value taint. The tool result enters
-                # the value ledger with an MCP external-read causal root; core no
-                # longer emits TAINT_PROPAGATED itself (the session-scoped
-                # propagate() API was replaced by the value ledger), so the
-                # propagation fact is recorded as an explicit trace event here.
-                taint_engine.register_value(
-                    result, CausalRoot.external_read(TaintSource.MCP)
-                )
-                trace_collector.record(TraceEvent(
-                    kind=TraceEventKind.TAINT_PROPAGATED,
-                    node_id=scenario_id,
-                    sequence=0,  # collector re-stamps with the global sequence
-                    payload={
-                        "taint_source": TaintSource.MCP.value,
-                        "taint_scope": "session",
-                    },
-                ))
-                return result
+                return fn(*args, **kwargs)
 
-            return _observed
+            return _charged
 
-        governed_tools = {name: _govern(name, fn) for name, fn in wrapped_tools.items()}
+        governed_tools = {
+            name: _metered(name, fn) for name, fn in toolset.callables().items()
+        }
 
         # Optional replay recording.
         recorder: ReplayRecorder | None = None
@@ -178,15 +198,16 @@ class EvalRunner:
 
         agent_output, claims = _split_agent_output(raw)
 
-        # Drain taint + degradation events into the trace.
-        for event in taint_engine.drain_events():
-            trace_collector.record(event)
-        for event in degradation_engine.drain_events():
-            trace_collector.record(event)
-
-        trace = trace_collector.get_trace(scenario_id) or DecisionTrace(
-            node_id=scenario_id, parent_id=None, depth=0, policy_name="eval"
+        # The kernel's own events for this session, plus the degradation engine's.
+        # There is no second instrumentation path here any more: the verdicts and
+        # the taint roots are the governor's, produced by the same code the
+        # Control Plane and axor-lab run.
+        trace = DecisionTrace(
+            node_id=scenario_id, parent_id=None, depth=0, policy_name="eval",
+            events=list(toolset.trace_events),  # type: ignore[arg-type]
         )
+        for event in degradation_engine.drain_events():
+            trace.events.append(event)
 
         fault_log = deprivation.fault_log
         # Total actions = governed tool calls actually observed (real action count).
@@ -339,11 +360,18 @@ def _split_agent_output(raw: str | AgentResult) -> tuple[str, AgentClaims | None
     return str(raw), None
 
 
-def _safe_args(args: tuple, kwargs: dict) -> dict[str, Any]:
-    """Best-effort, serialisable rendering of tool call args for the trace."""
-    out: dict[str, Any] = {}
-    if args:
-        out["positional"] = [repr(a) for a in args]
-    if kwargs:
-        out["kwargs"] = {k: repr(v) for k, v in kwargs.items()}
-    return out
+def harness_manifests(tools: dict[str, Any]) -> list[dict[str, Any]]:
+    """The default tool contract for a scenario: every tool an untrusted READ.
+
+    Untrusted because that is eval's premise — a tool's return is exactly the
+    surface fault injection makes adversarial, so the kernel should taint it.
+    No egress sinks and no value policies: a harness that declared one would be
+    measuring the policy gate rather than execution integrity under faults,
+    which is the thing eval exists to measure. Same reasoning as
+    ``_harness_policy`` on the streaming path.
+
+    Pass explicit ``manifests`` to ``run_scenario`` to audit a real deployment's
+    contract instead — then the run records real denials (still unblocked, since
+    the wrap runs with enforcement off).
+    """
+    return [harness_manifest(name, untrusted=True) for name in sorted(tools)]
