@@ -28,7 +28,11 @@ MIN_AXOR_CORE = (0, 8, 0)
 # 0.10.x validated too: that release only removes ``axor_core.plane`` (the
 # control-plane client moved to axor-wrap), which eval never imported — none of
 # the surfaces above moved.
-MAX_AXOR_CORE = (0, 11, 0)
+# 0.11.x validated: it moves the cross-boundary schemas into the kernel and adds
+# `policy.from_record`; the deep surfaces above are untouched. Measured against
+# an installed 0.11.0 — 134 tests pass and the only failure was this bound
+# itself declaring the version it was running on unsupported.
+MAX_AXOR_CORE = (0, 12, 0)
 
 _checked = False
 
