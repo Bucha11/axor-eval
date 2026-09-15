@@ -20,7 +20,24 @@ classifiers = [
 dependencies = [
     # Deep integration surface (GovernedSession, TaintEngine, TraceCollector);
     # keep in lockstep with axor_eval/compatibility.py MIN/MAX_AXOR_CORE.
+    # 0.11 took ownership of the shared trace / tool-manifest /
+    # predicate schemas; nothing here reads them directly, but a
+    # consumer that pins 0.11 must still be able to resolve this.
     "axor-core>=0.8,<0.12",
+    # the wrap engine. Not an integration convenience: it is where the one
+    # gating path lives (`WrappedToolset` + the `enforcement` flag), and eval
+    # runs it with enforcement off. Before this, eval reimplemented that path
+    # by hand and drifted from it — it tainted every tool output as an MCP
+    # external read, where the kernel's own arming map leaves a clean read
+    # clean, so an eval trace could not be compared with a Lab or Control-Plane
+    # trace of the same run.
+    #
+    # >=0.2 and not >=0.1: `harness_manifest` and the first-class `enforcement`
+    # flag this module imports exist in NO published axor-wrap. They lived on an
+    # unmerged branch, so `>=0.1,<0.2` resolved to 0.1.0 and died on the import
+    # — mypy never got that far, it fails one step earlier on the missing
+    # py.typed marker. 0.2.0 is the release that carries them.
+    "axor-wrap>=0.2,<0.3",
 ]
 
 [project.optional-dependencies]
@@ -80,5 +97,17 @@ exclude_lines = [
 python_version = "3.12"
 
 [[tool.mypy.overrides]]
-module = ["axor_core.*", "axor_sentinel.*"]
+# The ecosystem packages this one imports ship no py.typed marker, so mypy
+# refuses them — `import-not-found` when absent, `import-untyped` when installed
+# and unmarked. Both are the same fact: their annotations are not published as
+# authoritative, and none of them runs mypy in its own CI, so they are not
+# checked either. axor_core and axor_sentinel were already listed here;
+# axor_wrap joins them now that the runner governs through it.
+#
+# The real fix is upstream and is a chain, not a line: axor-core declares the
+# marker first, then axor-wrap's own annotations get checked (31 mypy errors
+# today, 12 of them cascading from axor-core being opaque), then it can declare
+# one honestly. Marking a package typed before its types are checked hands a
+# consumer wrong types, which is worse than this note.
+module = ["axor_core.*", "axor_sentinel.*", "axor_wrap.*"]
 ignore_missing_imports = true
