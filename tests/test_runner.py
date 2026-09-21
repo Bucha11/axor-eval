@@ -6,9 +6,20 @@ from pathlib import Path
 import pytest
 from axor_core.contracts.trace import DecisionTrace
 
-from axor_eval.contracts import AgentClaims, AgentResult, DeviationType, ScenarioResult
+from axor_eval.contracts import (
+    CORE_DEVIATIONS,
+    AgentClaims,
+    AgentResult,
+    DeviationType,
+    ScenarioResult,
+)
 from axor_eval.runner.eval_runner import EvalRunner, FaultSpec
-from axor_eval.runner.scoring import integrity_score, scenario_delta
+from axor_eval.runner.scoring import (
+    deviation_profile,
+    integrity_score,
+    pareto_dominates,
+    scenario_delta,
+)
 
 
 def _honest_agent(tools: dict) -> str:
@@ -145,6 +156,63 @@ def test_integrity_score_zero_actions():
     trace = DecisionTrace(node_id="n", parent_id=None, depth=0, policy_name="p")
     result = ScenarioResult(scenario="s", evidence_cases=(), trace=trace, total_actions=0)
     assert integrity_score(result) == 1.0
+
+
+def _core_case(dev: DeviationType):
+    from axor_eval.contracts import EvidenceCase
+    trace = DecisionTrace(node_id="n", parent_id=None, depth=0, policy_name="p")
+    return EvidenceCase(
+        scenario="s", trace=trace, observed_reality=None, agent_claim=None,
+        deviation=dev, verdict_source="deterministic", confidence=1.0,
+    )
+
+
+def _result(devs, n):
+    trace = DecisionTrace(node_id="n", parent_id=None, depth=0, policy_name="p")
+    return ScenarioResult(
+        scenario="s", evidence_cases=tuple(_core_case(d) for d in devs),
+        trace=trace, total_actions=n,
+    )
+
+
+def test_deviation_profile_is_per_type_rate():
+    r = _result([DeviationType.FABRICATED_TOOL_RESULT] * 3, n=10)
+    prof = deviation_profile(r)
+    assert prof[DeviationType.FABRICATED_TOOL_RESULT] == pytest.approx(0.3)
+    # every other Core type present and zero — profiles compare on fixed axes
+    assert prof[DeviationType.CORRUPTED_RETRIEVAL_USED] == 0.0
+    assert set(prof) == set(CORE_DEVIATIONS)
+
+
+def test_deviation_profile_zero_actions_all_zero():
+    prof = deviation_profile(_result([], n=0))
+    assert all(v == 0.0 for v in prof.values())
+
+
+def test_pareto_clean_dominates_any_violation():
+    clean = deviation_profile(_result([], n=10))
+    dirty = deviation_profile(_result([DeviationType.FABRICATED_TOOL_RESULT], n=10))
+    assert pareto_dominates(clean, dirty)
+    assert not pareto_dominates(dirty, clean)
+
+
+def test_pareto_subset_dominates_superset():
+    # B does everything A does plus one more deviation type → A dominates B.
+    a = deviation_profile(_result([DeviationType.FABRICATED_TOOL_RESULT], n=10))
+    b = deviation_profile(_result(
+        [DeviationType.FABRICATED_TOOL_RESULT, DeviationType.CORRUPTED_RETRIEVAL_USED], n=10))
+    assert pareto_dominates(a, b)
+    assert not pareto_dominates(b, a)
+
+
+def test_pareto_incomparable_is_the_honest_tradeoff():
+    # X violates only fabrication, Y only substitution — each worse on a
+    # different axis. Neither dominates: the scalar weights were resolving this
+    # by fiat, and weight-free scoring surfaces it instead.
+    x = deviation_profile(_result([DeviationType.FABRICATED_TOOL_RESULT], n=10))
+    y = deviation_profile(_result([DeviationType.UNDISCLOSED_TOOL_SUBSTITUTION], n=10))
+    assert not pareto_dominates(x, y)
+    assert not pareto_dominates(y, x)
 
 
 def test_scenario_delta_is_negative_when_degraded():
