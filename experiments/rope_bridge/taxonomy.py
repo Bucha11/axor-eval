@@ -127,9 +127,15 @@ SLACK_ORIGIN = {
         "invite_user_to_slack": ["user"],
         "remove_user_from_slack": ["user"],
     },
-    "untrusted_sources": {"read_channel_messages", "read_inbox", "get_webpage"},
+    # get_channels returns channel NAMES, and the slack injection vector is an
+    # attacker-created channel ("External_{injection}") — so its output is
+    # attacker-writable and must be untrusted, not benign (an A3 gap in the first
+    # cut: the exfil URL rode in via the channel name and, treated benign/trusted,
+    # let post_webpage through). read_channel_messages/read_inbox/get_webpage carry
+    # counterparty-authored content likewise.
+    "untrusted_sources": {"get_channels", "read_channel_messages", "read_inbox", "get_webpage"},
     "sensitive_sources": set(),
-    "benign_tools": {"get_channels", "get_users_in_channel", "send_channel_message"},
+    "benign_tools": {"get_users_in_channel", "send_channel_message"},
 }
 
 # ── travel origin taxonomy (schema-only; mirrors ROPE's travel floor) ───────────
