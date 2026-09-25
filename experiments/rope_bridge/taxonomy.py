@@ -108,3 +108,62 @@ BANKING_ORIGIN = {
         "update_password": _C.CONSEQUENTIAL, "update_user_info": _C.CONSEQUENTIAL,
     },
 }
+
+
+# ── slack origin taxonomy (schema-only; mirrors ROPE's slack floor) ─────────────
+# Guarded params from ROPE floor: send_direct_message.recipient, post_webpage.url,
+# get_webpage.url, add_user_to_channel.user, invite_user_to_slack.user (SOURCED),
+# remove_user_from_slack.user (EXPLICIT). Reads that return counterparty-authored
+# content (channel messages, inbox, fetched pages) are untrusted_sources.
+SLACK_ORIGIN = {
+    "egress_sinks": {"send_direct_message", "post_webpage"},
+    "integrity_sinks": {"add_user_to_channel", "invite_user_to_slack",
+                        "remove_user_from_slack", "get_webpage"},
+    "driving_args": {
+        "send_direct_message": ["recipient"],
+        "post_webpage": ["url"],
+        "get_webpage": ["url"],
+        "add_user_to_channel": ["user"],
+        "invite_user_to_slack": ["user"],
+        "remove_user_from_slack": ["user"],
+    },
+    "untrusted_sources": {"read_channel_messages", "read_inbox", "get_webpage"},
+    "sensitive_sources": set(),
+    "benign_tools": {"get_channels", "get_users_in_channel", "send_channel_message"},
+}
+
+# ── travel origin taxonomy (schema-only; mirrors ROPE's travel floor) ───────────
+# Booking entities and the event title are multi-word natural-language values;
+# ROPE pins them EXPLICIT. Here they are integrity_sinks: the value must trace to
+# the request. send_email.recipients is the egress leg; participants likewise
+# origin-checked. Reviews carry the injection -> untrusted_sources. User info holds
+# passport/bank PII -> sensitive_source (arms the confidentiality floor).
+TRAVEL_ORIGIN = {
+    "egress_sinks": {"send_email"},
+    "integrity_sinks": {"reserve_hotel", "reserve_restaurant", "reserve_car_rental",
+                        "create_calendar_event", "cancel_calendar_event"},
+    "driving_args": {
+        "send_email": ["recipients"],
+        "reserve_hotel": ["hotel"],
+        "reserve_restaurant": ["restaurant"],
+        "reserve_car_rental": ["company"],
+        "create_calendar_event": ["title", "participants"],
+        "cancel_calendar_event": ["event_id"],
+    },
+    "untrusted_sources": {"get_rating_reviews_for_hotels",
+                          "get_rating_reviews_for_restaurants",
+                          "get_rating_reviews_for_car_rental"},
+    "sensitive_sources": {"get_user_information"},
+    "benign_tools": {
+        "get_all_hotels_in_city", "get_hotels_prices", "get_hotels_address",
+        "get_all_restaurants_in_city", "get_cuisine_type_for_restaurants",
+        "get_restaurants_address", "get_dietary_restrictions_for_all_restaurants",
+        "get_contact_information_for_restaurants", "get_price_for_restaurants",
+        "check_restaurant_opening_hours", "get_all_car_rental_companies_in_city",
+        "get_car_types_available", "get_car_fuel_options", "get_car_rental_address",
+        "get_car_price_per_day", "search_calendar_events", "get_day_calendar_events",
+        "get_flight_information",
+    },
+}
+
+ORIGIN_TAXONOMIES = {"banking": BANKING_ORIGIN, "slack": SLACK_ORIGIN, "travel": TRAVEL_ORIGIN}

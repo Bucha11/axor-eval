@@ -66,7 +66,21 @@ class AxorOriginBootstrap(BasePipelineElement):
         self.tax = taxonomy
         self.denials: list[str] = []
 
-    def _build_governor(self) -> ToolCallGovernor:
+    def _consequence(self, runtime) -> dict:
+        """Auto-derive a full per-tool consequence class from the runtime tool
+        universe: every tool is BENIGN (observation) unless it is a declared sink,
+        which is CONSEQUENTIAL (at the default unattended ceiling, so the gate
+        passes and the origin axis decides). Upstream STRICT is fail-closed on an
+        unclassified consequence class, so every tool must be covered. An explicit
+        taxonomy override wins. Schema-only, not a value allowlist."""
+        from axor_core.contracts.canonical import ConsequenceClass as C
+        sinks = set(self.tax["egress_sinks"]) | set(self.tax.get("integrity_sinks") or ())
+        co = {t.name: (C.CONSEQUENTIAL if t.name in sinks else C.BENIGN)
+              for t in runtime.functions.values()}
+        co.update(self.tax.get("consequence_overrides") or {})
+        return co
+
+    def _build_governor(self, runtime) -> ToolCallGovernor:
         return ToolCallGovernor(
             require_tool_roles=True,            # keep unclassified-tool fail-closed
             require_egress_allowlist=False,     # no allowlist obligation
@@ -77,12 +91,12 @@ class AxorOriginBootstrap(BasePipelineElement):
             untrusted_sources=self.tax["untrusted_sources"],
             sensitive_sources=self.tax["sensitive_sources"],
             benign_tools=self.tax["benign_tools"],
-            consequence_overrides=self.tax.get("consequence_overrides") or {},
+            consequence_overrides=self._consequence(runtime),
         )
 
     def query(self, query, runtime, env=None, messages=(), extra_args=None):
         extra_args = {} if extra_args is None else extra_args
-        gov = self._build_governor()
+        gov = self._build_governor(runtime)
         gov.register_task(query)                # seed the request as trusted (T1)
         denials = self.denials
 
