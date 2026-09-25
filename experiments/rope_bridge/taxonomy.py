@@ -89,15 +89,22 @@ BANKING_ORIGIN = {
     "untrusted_sources": {"read_file", "get_most_recent_transactions"},
     "sensitive_sources": {"get_user_info"},
     "benign_tools": {"get_balance", "get_iban", "get_scheduled_transactions"},
-    # Explicit consequence class for the integrity_sinks. Upstream STRICT fails
-    # closed on a sink with no explicit consequence class (commit fc73b0c), which
-    # would deny update_password/update_user_info at the consequence gate BEFORE
-    # the integrity/origin axis runs. Pinning them at the default unattended
-    # ceiling (CONSEQUENTIAL) lets the consequence gate pass so the origin check
-    # (integrity_sinks + context) is what decides. This is action-class metadata,
-    # NOT a value allowlist.
+    # Explicit consequence class for EVERY tool. Upstream STRICT is fail-closed on
+    # the consequence axis (commit fc73b0c): a tool with no explicit class is
+    # treated CATASTROPHIC and denied at the consequence gate before any other axis
+    # runs — so all tools must be classified, not just the writes. This is an
+    # intrinsic action-class property (read = BENIGN, money/credential change =
+    # CONSEQUENTIAL), schema-only, NOT a value allowlist. Pinning the writes at the
+    # default unattended ceiling (CONSEQUENTIAL) lets the consequence gate pass so
+    # the origin check (integrity_sinks + context) is what decides.
     "consequence_overrides": {
-        "update_password": _C.CONSEQUENTIAL,
-        "update_user_info": _C.CONSEQUENTIAL,
+        # reads
+        "get_balance": _C.BENIGN, "get_iban": _C.BENIGN,
+        "get_most_recent_transactions": _C.BENIGN, "get_scheduled_transactions": _C.BENIGN,
+        "read_file": _C.BENIGN, "get_user_info": _C.BENIGN,
+        # state changes (at/below the unattended ceiling; origin axis decides)
+        "send_money": _C.CONSEQUENTIAL, "schedule_transaction": _C.CONSEQUENTIAL,
+        "update_scheduled_transaction": _C.CONSEQUENTIAL,
+        "update_password": _C.CONSEQUENTIAL, "update_user_info": _C.CONSEQUENTIAL,
     },
 }
