@@ -62,8 +62,9 @@ class AxorOriginBootstrap(BasePipelineElement):
     attacker-writable content is tainted and denied — ROPE's PROMPT marker via the
     integrity axis, no oracle."""
 
-    def __init__(self, taxonomy: dict):
+    def __init__(self, taxonomy: dict, integrity_origins: str = "any-trusted"):
         self.tax = taxonomy
+        self.integrity_origins = integrity_origins
         self.denials: list[str] = []
 
     def _consequence(self, runtime) -> dict:
@@ -85,6 +86,7 @@ class AxorOriginBootstrap(BasePipelineElement):
             require_tool_roles=True,            # keep unclassified-tool fail-closed
             require_egress_allowlist=False,     # no allowlist obligation
             integrity_default="context",        # value must trace to trusted origin
+            integrity_origins=self.integrity_origins,  # any-trusted | request-only
             egress_sinks=self.tax["egress_sinks"],
             integrity_sinks=self.tax["integrity_sinks"],
             driving_args=self.tax["driving_args"],
@@ -182,8 +184,8 @@ def build_governed_pipeline(llm, suite, taxonomy, *, name="axor-strict"):
     return pipe
 
 
-def build_origin_pipeline(llm, taxonomy, *, name="axor-origin"):
-    bootstrap = AxorOriginBootstrap(taxonomy)
+def build_origin_pipeline(llm, taxonomy, *, name="axor-origin", integrity_origins="any-trusted"):
+    bootstrap = AxorOriginBootstrap(taxonomy, integrity_origins=integrity_origins)
     loop = ToolsExecutionLoop([ToolsExecutor(tool_result_to_str), llm])
     pipe = AgentPipeline([SystemMessage(load_system_message(None)), InitQuery(), bootstrap, llm, loop])
     pipe.name = name

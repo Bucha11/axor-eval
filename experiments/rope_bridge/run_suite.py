@@ -34,6 +34,8 @@ def main() -> int:
     g.add_argument("--governed", action="store_true")
     g.add_argument("--undefended", action="store_true")
     ap.add_argument("--origin", action="store_true")
+    ap.add_argument("--request-only", action="store_true",
+                    help="origin config with integrity_origins=request-only (else any-trusted)")
     ap.add_argument("--limit-ut", type=int, default=None)
     ap.add_argument("--limit-it", type=int, default=None)
     ap.add_argument("--logdir", type=Path, default=Path(__file__).resolve().parents[2] / "runs_axor")
@@ -44,11 +46,15 @@ def main() -> int:
     llm = OpenAILLM(client, MODEL, temperature=0.0)
     suite = get_suite(BENCH, args.suite)
 
+    io_mode = "request-only" if args.request_only else "any-trusted"
     cond = ("governed-origin" if (args.governed and args.origin)
             else "governed" if args.governed else "undefended")
+    if args.governed and args.origin and args.request_only:
+        cond = "governed-origin-reqonly"
     name = f"{TAG}-axor-{args.suite}-{cond}"
     if args.governed and args.origin:
-        pipe = build_origin_pipeline(llm, ORIGIN_TAXONOMIES[args.suite], name=name)
+        pipe = build_origin_pipeline(llm, ORIGIN_TAXONOMIES[args.suite], name=name,
+                                     integrity_origins=io_mode)
     elif args.undefended:
         pipe = build_undefended_pipeline(llm, name=name)
     else:
