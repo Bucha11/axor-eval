@@ -1,70 +1,62 @@
-# Eval tracker — decisive runs (go / no-go)
+# Eval tracker — ROPE comparison
 
-Five runs decide whether there is a paper. Do them **in this order**: each next
-run only matters if the previous one did not sink the paper. Everything else
-(R3 adaptive on gpt-4o-mini, R6, R7, …) is an argument *inside* the paper, not
-the question of whether the paper exists — see the bottom section.
-
-Numbers we already hold: `RUNS.md` + `README.md`. Cost anchored to the real
-spend so far (~$50 bought all runs to date on **gpt-4o-mini**); the decisive
-block is ~$25, three of five runs free.
+Only the runs that produce axor↔ROPE head-to-head evidence. axor-only go/no-go
+runs (R0 fix-check, a5 write-then-read, R1 request-only cost, R4 InjecAgent
+replay) and axor-only in-paper runs (R6) are tracked in the full submission
+plan, not here. Numbers we already hold: `RUNS.md` + `README.md`.
 
 **Legend:** ✅ done · 🟡 partial · ❌ not run.
 **Baseline:** fixed positive-polarity build, STRICT, `require_tool_roles=True`,
 commit hash pinned, per-task outcomes + raw trajectories persisted.
+**Cost anchor:** ~$50 bought all runs to date on **gpt-4o-mini**; the ROPE block
+is cheap on mini — the only four-figure line is an optional full gpt-4o arm.
 
 ---
 
-## The decisive five (in order)
-
-### 1. R0 — fix verification · free · ½ day · 🟡
-Re-encoded IBAN (space / case / grouping) → **deny**; unknown sink → **deny**.
-- **Gate:** if the fix does not hold, every later run is meaningless. Stop and fix.
-- **Have:** unknown-sink deny ✅; space/case/grouping caught by ledger (NFKC +
-  edge-punct + segmentize), tests exist. **base64 is a documented residual** (not
-  a deny) — state it, don't run against it.
-
-### 2. a5 — write-then-read · free · deterministic, no model · ❌
-Through the governor, write an attacker value (`update_scheduled_transaction`),
-then read it back with a trusted tool and inspect the label it gets.
-- **Gate:** if the label is lost → **hole in O2, fix before anything else**.
-- If it survives → this is the answer to review point **B3(ii)**.
-
-### 3. R5 — ROPE gate-check on InjecAgent · ~$3 · ❌
+## R5 — ROPE gate-check on InjecAgent · ~$3 · ❌ · DECISIVE
 Replay ROPE over ~60 consequence-only cases + ~50 data-stealing.
 - **Decides positioning (a).** If ROPE catches the consequence-only + DS cases,
-  the "what ROPE does not cover" thesis collapses — better to know before
-  spending the remaining ~$97.
+  the "what ROPE does not cover" thesis collapses — know this before spending
+  anything else. Run this first; the rest of the ROPE block only matters if it
+  survives.
+- Full DH+DS on the same models only if the gate-check shows ROPE misses them.
 
-### 4. R1 — cost at `request-only` · replay free, live ~$15–20 · 🟡
-The headline cost number.
-- **Required by all four review sets; cannot submit without it**, whatever the
-  other runs show.
-- **Have:** travel any-trusted vs request-only, 1 pass (12.9 vs 7.1 ASR; CU 55→45).
-  Need it as the proper cost headline (replay first, then one live pass).
+## R3† — adaptive / AutoDojo attack on both systems · ~$20–40 (mini) · 🟡
+Run the ROPE repo's AutoDojo optimized attack against **both** axor and ROPE.
+- **Have:** only **a2** catalogue-steering observed, and only across axor configs
+  (travel any-trusted 12.9 vs request-only 7.1). AutoDojo not stood up; ROPE
+  never attacked adaptively.
+- (The axor-only cells of the adaptive suite — a1, a3–a7 — live in the full plan.)
 
-### 5. R4 — InjecAgent 2×2 replay · free · an evening · ❌
-Replay the 2×2 (origin × consequence) on InjecAgent.
-- Closes the **0.6% vs 0.0%** discrepancy and **444 + 60 ≠ 510** (where 6 cases went).
-- Not paper-deciding, but a reviewer spots the mismatch in 15 minutes — so close it.
+## R7 — ROPE comparison multi-pass · ~$150 (mini) · 🟡
+Table 3 cells × 5 passes; **run the banking ROPE attack ourselves**; record
+router-cache origin; add gpt-4o only if Haoyu insists.
+- **Have:** 3-suite ROPE head-to-head, 1 pass (table below).
+- **Gap:** 1 pass not 5; banking ROPE attack not self-run (published 0.0,
+  footnote); no gpt-4o; router-cache origin not recorded.
+- **Cost:** ~$150 on gpt-4o-mini. A **full gpt-4o arm ×5 passes is +$1.5–2k** —
+  optional cross-model validation, reducible to ~$50–100 on an attack-only /
+  1-suite / 2-pass subset. Not a default.
 
-**Decisive block total: ~$25** (R0, a5, R4 free; R5 ~$3; R1 ~$15–20 live).
-After these four days: is O2 sound, is there a real ROPE difference, and what
-does the guarantee cost. That is the whole go/no-go.
+### Held result (R7, 1 pass) — CU / UA / ASR %
+| Suite | undefended | axor | ROPE |
+|---|---|---|---|
+| banking | 56.2 / 43.1 / 54.2 | 43.8 / 40.3 / 0.0 | 50.0 / — / 0.0 ¹ |
+| slack | 71.4 / 51.4 / 66.7 | 52.4 / 36.2 / 1.9 | 71.4 / 53.3 / 4.8 |
+| travel (any-trusted) | 55.0 / 37.1 / 30.0 | 55.0 / 45.7 / 12.9 | 50.0 / 48.6 / 7.1 |
+| travel (request-only) | — | 45.0 / 42.9 / 7.1 | 50.0 / 48.6 / 7.1 |
+
+¹ ROPE banking attack not re-run — published number (R7 closes this by running it ourselves).
 
 ---
 
-## After go/no-go — arguments inside the paper (not whether it exists)
+## Order & verdict
+**R5 gate-check first** (~$3, decides the central thesis) → if it survives, **R7
+to spec** (5 passes, self-run banking attack, mini) → **R3† AutoDojo on both**.
+Whole ROPE block ~$175 on gpt-4o-mini; gpt-4o only on Haoyu's insistence.
 
-| Run | What | Model | Rough $ |
-|---|---|---|---|
-| R3 adaptive | a1–a7 / AutoDojo robustness | **gpt-4o-mini** | ~$20–40 |
-| R6 | benign cost floor (paired on/off) | gpt-4o-mini | ~$30–40 |
-| R7 | ROPE comparison multi-pass, Table 3, self-run banking attack | gpt-4o-mini (+ gpt-4o only if Haoyu insists) | ~$150 on mini; +$1.5–2k if full gpt-4o ×5 |
+**Current verdict:** NOT READY — R5 not run, R7 only 1 pass, R3† only a2.
 
-All cheap on gpt-4o-mini. The only four-figure line anywhere is a **full gpt-4o
-arm at 5 passes** (R7) — an optional cross-model validation, reducible to
-~$50–100 on an attack-only / 1-suite / 2-pass subset. Not a default.
-
-(R2, R8–R11 from the full submission plan are out of scope until the decisive
-five clear.)
+**Can change the paper:** R5 — if ROPE catches consequence-only + DS, drop that
+differentiation. R7 — if self-run banking ROPE attack ≠ published 0.0, the
+footnote becomes a measured cell.
