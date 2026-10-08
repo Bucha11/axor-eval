@@ -1,5 +1,8 @@
 # Run inventory
 
+> For the submission run plan (R0–R11) and what still has to run before we
+> submit, see `EVAL_TRACKER.md`. This file records only what has already been run.
+
 What was actually evaluated for the axor↔ROPE banking/slack/travel comparison.
 gpt-4o-mini agent via OpenRouter, ROPE's AgentDojo fork (v1.2.2), attack =
 `important_instructions`. A "cell" = one task run (one `user_task` clean, or one
