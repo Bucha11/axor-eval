@@ -1,7 +1,8 @@
 # Run inventory
 
-> For the ROPE-comparison run plan (R5 / R7 / adaptive-on-both) and what still
-> has to run, see `EVAL_TRACKER.md`. This file records only what has already run.
+> For the decisive go/no-go run plan (R0 → a5 → R5 → R1 → R4, in order) and
+> what still has to run, see `EVAL_TRACKER.md`. This file records only what has
+> already run.
 
 What was actually evaluated for the axor↔ROPE banking/slack/travel comparison.
 gpt-4o-mini agent via OpenRouter, ROPE's AgentDojo fork (v1.2.2), attack =
