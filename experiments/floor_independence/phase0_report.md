@@ -7,8 +7,22 @@
 По строке на P1–P12: вердикт, опора в коде, что сделано. Код менялся только там,
 где проверка нашла дыру (правило §2 спеки): **две правки, P5 и P6**.
 
-Сводка: **чисто 9, дыра найдена и исправлена 2, дыра найдена и отработана как
-остаток 1.** Блокирующих (P1–P3) дыр, требующих остановки Фаз 2–3, нет.
+Сводка по строкам:
+
+| вердикт | строки |
+|---|---|
+| чисто | **P1, P2, P4, P7, P8, P9, P10, P11, P12** (9) |
+| дыра найдена и исправлена | **P5** (снятие floor'а), **P6** (TRANSFORM) |
+| дыра найдена и отработана как остаток | **P3** (`destination_kind`) |
+
+Блокирующих (P1–P3) дыр, требующих остановки Фаз 2–3, нет. Но полный прогон
+выявил **отдельный блокер Фаз 2–3 на origin-оси**, не входящий в P1–P12 — см.
+«Блокер вне таблицы» ниже.
+
+Две строки, от которых прямо зависит текст §5, разобраны полностью и с
+поправками к формулировкам: **P8** (почему «conjunct still implies covers» верно —
+не по той причине, по которой это звучит) и **P11** (откуда child-агент получает
+`q`).
 
 ---
 
@@ -164,11 +178,49 @@ ALLOW-пути:
 
 ## P8 — supersession и T
 
-**Чисто.** `seed_operator_trusted` (`policy/provenance.py:78`) регистрирует каждый
-член enum-allowlist с origin `OPERATOR` и вызывается на обоих путях
-(`governor.py:243`, `intent_loop.py:281`). Кодомен, через который срабатывает
-supersession, ⊆ T по построению, поэтому фраза статьи «conjunct still implies
-covers» остаётся верной и проверка enum в TCB не уезжает.
+**Чисто, но формулировка в доказательстве требует правки: импликация держится
+не на предикате supersession, а на порядке гейтов.**
+
+Премисса верна: `seed_operator_trusted` (`policy/provenance.py:78`) регистрирует
+каждый член enum-allowlist с origin `OPERATOR` и вызывается на обоих живых путях
+(`governor.py:243`, `intent_loop.py:281`). Проверено: `trusted_origin(одобренный
+IBAN) = OPERATOR`, `trusted_origin(IBAN атакующего) = None`.
+
+**Но `integrity_superseded_by_decidable` — предикат на АРГУМЕНТЕ, а не на
+значении** (`policy/gates.py:186-230`): он возвращает True, когда каждый driving
+arg присутствует и объявлен с enum-предикатом, **каким бы ни было значение**.
+Проверено: для IBAN атакующего он тоже True. То есть сам по себе supersession
+ничего не доказывает, и фраза «supersession fires ⇒ value ∈ T» как локальное
+свойство — ложна.
+
+Импликацию держит **порядок**: проверка value-политик идёт **до** taint-гейта на
+всех трёх путях, и значение вне enum отклоняется раньше, чем дойдёт до
+пропущенной integrity-проверки:
+
+| путь | value policy | taint gate |
+|---|---|---|
+| sync governor | `governor.py:359` | `:387` |
+| IntentLoop | `intent_loop.py:703` (`check_value_policies`) | `:844` |
+| replay | `kernel/replay.py` `evaluate_call` | там же, ниже |
+
+Проверено end-to-end: IBAN атакующего → `allowed=False, category=value_policy`;
+одобренный → `allowed=True` и он в T с origin `OPERATOR`.
+
+Отдельно проверено, что `request-only` действительно не клирует integrity-sink
+значением origin `TOOL`: выход trusted-инструмента получает
+`trusted_origin = TOOL`, и `update_password` с этим значением → deny,
+`category=taint_enforcement`.
+
+**Следствие для §5:** «the conjunct still implies covers» — утверждение о
+композиции, а не о supersession. Писать так: supersession гасит integrity-ось
+только для аргумента, чей кодомен закрыт операторским enum'ом, а значение вне
+этого кодомена уже отклонено value-гейтом выше; поэтому допущенное значение
+принадлежит T. Если порядок когда-нибудь изменится, supersession станет пропускать
+выбранный атакующим адресат без integrity-проверки **и** без enum-проверки.
+
+**Регрессия:** `tests/adversarial/test_supersession_implies_covers.py` — пинит и
+премиссу (enum ⊂ T с origin OPERATOR), и поправку (предикат на аргументе), и
+собственно порядок, по строке на каждый из трёх путей.
 
 ## P9 — `_floor_saturated`
 
@@ -230,6 +282,53 @@ STRICT, но **явный** `clean` под STRICT принимается, лог
 
 ---
 
+## Блокер вне таблицы: четыре origin-таксономии не собирались из YAML
+
+Найден полным прогоном тестов, не входит в P1–P12, но блокирует Фазы 2–3 на
+origin-оси — то есть ровно ту ось, на которой стоит R1.
+
+`banking_origin`, `slack_origin`, `slack_origin_v2`, `travel_origin` — все четыре
+`mode: strict` — падали при построении governor'а из собственного YAML:
+STRICT требует enum-allowlist на каждом egress-sink'е, а эти конфигурации
+allowlist'а не имеют **намеренно**. Их шапки это и говорят:
+«require_egress_allowlist is forced OFF by the runner for origin mode».
+
+То есть это была не отсутствующая политика, а **две точки истины для одной
+позиции**: таксономия в YAML и императивный override в раннере
+(`run_agentdojo.py`, `AXOR_BENCH_ORIGIN=1` → `require_tool_roles=True,
+require_egress_allowlist=False`). YAML не мог выразить позицию, а
+`as_governor_kwargs()` собирал конфигурацию, которую никто не прогоняет.
+
+**Чего делать нельзя** (и не сделано): добавить enum-allowlist в banking. Это
+другой контроль — закрытый кодомен включает decidable supersession, которая
+**гасит** integrity-проверку, то есть ровно ту ось, которую origin-конфигурация
+существует чтобы измерять. Плюс это та самая претензия прошлого ревью к
+`banking_known_payees.yaml`.
+
+**Сделано:** две обязанности STRICT разделены на уровне декларации. В
+`GovernanceConfig` появилось поле `require_egress_allowlist: bool | None`
+(`None` = дефолт режима), и все четыре origin-таксономии объявляют
+`require_egress_allowlist: false` явно, с объяснением почему. Теперь:
+
+- allowlist не добавлен нигде, integrity-ось не тронута, supersession не
+  срабатывает (enum'а нет);
+- позиция — **операторская декларация**, записанная в таксономии до прогона, без
+  ground truth задач, и попадающая в manifest через SHA-256 конфига;
+- одна точка истины: `as_governor_kwargs()` воспроизводит ровно то, что делает
+  раннер, и расхождению между ними больше негде появиться.
+
+Все девять таксономий собираются; `test_agentdojo_suite_configs_load_and_build_governors`
+проходит. Регрессии: `tests/test_config.py` —
+`test_require_egress_allowlist_is_declarable_on_its_own` (STRICT-роли остаются,
+обязанность снимается; production может включить её сам; пропуск = дефолт режима)
+и отказ на небулевом значении.
+
+**Для manifest Фазы 3:** позиция теперь читается из конфига, так что в manifest
+достаточно хеша таксономии — но `require_egress_allowlist` стоит продублировать
+явным полем, чтобы его не приходилось извлекать из хеша при чтении результатов.
+
+---
+
 ## Что изменилось в коде
 
 | Правка | Файл | Почему |
@@ -238,17 +337,22 @@ STRICT, но **явный** `clean` под STRICT принимается, лог
 | TRANSFORM-решение отклоняется | `axor_core/node/intent_loop.py:905-922` | P6: исполнялся бы payload, не прошедший ни одного гейта |
 | регрессии на оба, 11 тестов | `tests/adversarial/test_floor_release_accounting.py` | — |
 | механическая проверка таксономии против suite | `axor-eval/.../analysis/check_taxonomy_against_suite.py` | P6 (дефолты на driving args) + «сверить фактические имена» из §4 |
+| `require_egress_allowlist` как отдельная декларация | `axor_core/config.py`, 4 × `examples/agentdojo/config/*_origin.yaml` | блокер вне таблицы: STRICT-роли без allowlist-обязанности нельзя было выразить в YAML |
+| регрессия на порядок value-policy → taint, 10 тестов | `tests/adversarial/test_supersession_implies_covers.py` | P8: импликация держится на порядке, а не на предикате |
 
-Полный прогон axor-core после правок: **1395 passed, 19 xfailed**, одно падение
-(`tests/test_config.py::test_agentdojo_suite_configs_load_and_build_governors`) —
-предсуществующее, проверено на чистом дереве, к Фазе 0 не относится (STRICT
-требует enum-allowlist на banking-sink'ах).
+Полный прогон axor-core после правок: **1406 passed, 19 xfailed, 0 failed.**
+Предсуществующее падение устранено по существу (см. «Блокер вне таблицы»), без
+добавления allowlist'а.
 
 ## Что это значит для спеки
 
 1. **T8 писать как в §6** — после правки P5 он проходит; до правки падал.
 2. **§5: configuration premise** (P12) и **`floor_active` одним символом** (P9).
 3. **R4: две строки** про канонизацию (P10).
+3a. **§5: «conjunct still implies covers» переписать как утверждение о
+   композиции** (P8) — supersession гасит integrity-ось только для аргумента с
+   закрытым операторским кодоменом, а значение вне кодомена отклонено value-гейтом
+   выше. Как локальное свойство supersession фраза ложна.
 4. **P1/P2 фиксировать тестами T1/T2** — вердикт «чисто» получен чтением, а спека
    правильно требует именно тестов; оба пути последовательны, так что тесты будут
    короткими.
