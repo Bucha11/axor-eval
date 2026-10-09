@@ -347,9 +347,47 @@ class ScopedTupleRule:
         return effect.tuple_ in self.relation
 
 
+@dataclass(frozen=True)
+class GrantIndexRule:
+    """EXPERIMENTAL prototype: the existing origin check AND a shared grant.
+
+    Grants are issued STRUCTURALLY below — the pairing is stated, not parsed —
+    so this row tests the storage and the check, nothing about deriving grants
+    from a request. A shared witness proves the arguments trace to a common
+    grant; that the grant authorises the combination is the issuance premise,
+    and a grant issued too coarsely admits mixing again (pinned in
+    axor-core tests/taint/test_grant_identity.py).
+
+    The scoped check only ever narrows: it is conjoined with Axor's own origin
+    check, never substituted for it.
+    """
+
+    name: str = "Axor + grant index (prototype)"
+    note: str = "origin check AND one shared grant over {recipient, amount}"
+
+    def admits(self, effect: Effect) -> bool:
+        from axor_core.taint.grants import Grant, GrantIndex
+
+        index = GrantIndex()
+        # One grant per instruction of the request, each naming the position of
+        # each value. This is the structured issuance the prototype assumes.
+        index.issue(Grant.of(
+            "rent-instruction", "send_money",
+            {"recipient": RENT_PAYEE, "amount": RENT_AMOUNT},
+        ))
+        index.issue(Grant.of(
+            "refund-instruction", "send_money",
+            {"recipient": REFUND_PAYEE, "amount": REFUND_AMOUNT},
+        ))
+        args = {"recipient": effect.recipient, "amount": effect.amount}
+        return AxorTodayRule().admits(effect) and index.jointly_granted(
+            "send_money", args, frozenset({"recipient", "amount"})
+        )
+
+
 RULES: tuple[Rule, ...] = (
     PactRule(), RopeRule(), FidesRule(), CamelBaseRule(),
-    AxorTodayRule(), ScopedTupleRule(),
+    AxorTodayRule(), GrantIndexRule(), ScopedTupleRule(),
 )
 
 
@@ -383,7 +421,10 @@ def main() -> int:
     for f in failures:
         print(f"  {f}")
 
-    independent = [r for r in RULES if not isinstance(r, ScopedTupleRule)]
+    independent = [
+        r for r in RULES
+        if not isinstance(r, (ScopedTupleRule, GrantIndexRule))
+    ]
     admits_gap = [
         r.name for r in independent
         if all(r.admits(c) for c in CANDIDATES if not c.authorised)
