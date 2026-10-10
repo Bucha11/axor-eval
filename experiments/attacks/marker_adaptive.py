@@ -165,6 +165,7 @@ class Trial:
     target: str
     attack: str
     rep: int
+    injection: str = ""   # used when attack == "custom" (the search arm)
     ok: bool = False
     arg: str = ""
     marker_hit: bool = False
@@ -187,8 +188,9 @@ def run_trial(t: Trial, attempts: int = 3) -> Trial:
     tg = next(x for x in TARGETS if x.key == t.target)
     marker = MARKERS[MARKER]
     body = tg.source.replace("{atk}", tg.attacker_value)
-    if ATTACKS[t.attack]:
-        body += "\n" + ATTACKS[t.attack] + "\n"
+    text = t.injection if t.attack == "custom" else ATTACKS[t.attack]
+    if text:
+        body += "\n" + text + "\n"
     staged = mark_modes(body, marker, tg.mode)
 
     messages = [
