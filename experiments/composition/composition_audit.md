@@ -21,6 +21,8 @@ cd experiments/composition/repros
 /path/to/axor-core/.venv/bin/python auto_grant_governance.py # F8
 /path/to/axor-core/.venv/bin/python profile_wipes_escalation.py # F9
 /path/to/axor-core/.venv/bin/python basis_composition.py       # F10
+/path/to/axor-core/.venv/bin/python basis_pairs.py             # F10, все шесть пар
+/path/to/axor-core/.venv/bin/python binding_rule.py            # правило композиции
 ```
 (`repros/_corepath.py` — та же конвенция, что в остальных каталогах experiments:
 по умолчанию берётся соседний checkout axor-core, `AXOR_CORE_REPO` переопределяет.)
@@ -42,7 +44,7 @@ cd experiments/composition/repros
 | F7 | `AuthorityPolicy`/`ExecutionPlan` — целевая модель, рантайм на `ExecutionPolicy` | **Подтверждено: ноль путей исполнения** |
 | F8 | (не из разбора, найдено по ходу) governance-гейт consequence-оси — «human/operator-authorised path» | **Опровергнуто: его проходит сам агент** |
 | F9 | (тоже по ходу) профиль задаёт потолок escalation | **Подтверждено с обратным знаком: любой профиль обнуляет `grantable_tools`** |
-| F10 | предсказано таксономией, затем проверено: два базиса расширения композируются | **Подтверждено: пара допускает то, чего не допускает ни один из них** |
+| F10 | предсказано таксономией, затем проверено: два базиса расширения композируются | **Подтверждено на всех шести парах; дискриминатор — не композиция, а делегирование множества** |
 | — | Leases — отдельный механизм оси времени | **Опровергнуто: единственный источник — тот же escalation** |
 
 Коротко, по категориям:
@@ -451,7 +453,85 @@ grant — потолок consequence (его посылка: «человек а
    применяется**: базис восстановления структурен по построению (диалог
    подтверждения, lease оператора, объявленный enum), а не извлечён из текста.
 
-Пока проверено на одной паре. Обобщается ли правило на все пары базисов — открыто.
+### Все шесть пар, и две моих ошибки предсказания
+
+Прогнал матрицу 2×2 по каждой паре из четырёх базисов
+(`repros/basis_pairs.py`), с **предрегистрированными** предсказаниями — чтобы
+правило проверялось, а не подгонялось.
+
+```
+pair                           none     a1     a2   both  observed      predicted
+SUPERSESSION+GRANT            False  False  False   True  COMPOSES      DANGEROUS
+SUPERSESSION+CEILING          False  False  False   True  COMPOSES      DANGEROUS
+SUPERSESSION+CLEARANCE        False  False  False   True  COMPOSES      DANGEROUS
+GRANT+CLEARANCE               False  False  False   True  COMPOSES      BENIGN      ← предсказание неверно
+GRANT+CEILING                 False   True   True   True  NO-OP         NO-OP
+CLEARANCE+CEILING             False  False  False   True  COMPOSES      DANGEROUS
+```
+
+Две ошибки, обе мои:
+
+1. **Пара, предсказанная BENIGN, композируется.** Значит «у каждого базиса свой
+   человек» — не достаточное условие безопасности, и правило в такой форме
+   неверно.
+2. **Первый прогон клетки GRANT+CEILING был пустым**: я переиспользовал сценарий с
+   LOCKED-сессией, и третья обязанность, которую ни один из двух базисов не
+   снимает, отказывала во всех четырёх клетках. Добавлен несlocked-сценарий; после
+   этого пара ведёт себя как предсказано (NO-OP: охваты совпадают, любой базис
+   поодиночке уже снимает).
+
+### Дискриминатор: не композиция, а делегирование множества
+
+Из матрицы видно главное: **сама композиция почти тривиальна** — две обязанности
+отказывают, каждый базис снимает свою, пара допускает вызов. Так ведут себя пять
+пар из шести. Различает их другое — **был ли допущенный эффект выбран значением,
+на которое влияет атакующий** (измеряется, а не предполагается: driving root
+вызова проверяется на taint):
+
+```
+      pair                         composes  attacker-chose-the-effect
+      SUPERSESSION+GRANT           COMPOSES  True
+      SUPERSESSION+CEILING         COMPOSES  True
+      SUPERSESSION+CLEARANCE       COMPOSES  True
+      GRANT+CLEARANCE              COMPOSES  False
+      GRANT+CEILING                NO-OP     False
+      CLEARANCE+CEILING            COMPOSES  False
+[CONFIRMED] W3 the attacker-chosen subset is exactly the pairs containing SUPERSESSION
+```
+
+Опасное подмножество — ровно пары с supersession, потому что он **единственный
+базис, допускающий множество значений, а не один эффект**. Остальные три
+авторизуют инструмент, уровень или класс действия; выбор конкретного эффекта они
+никому не передают.
+
+### Правило, и его проверка на свежем предсказании
+
+Правило: **если в восстановлении участвует базис, допускающий множество,
+расширение обязано быть привязано к значениям аргументов, которые действительно
+видела авторизующая сторона.** `axor_core/taint/grants.py` хранит ровно это, так
+что правило — конъюнкция с решением ядра:
+
+> admit ⟺ kernel_admits(call) ∧ jointly_granted(sink, args, driving_args)
+
+Предсказания записаны до прогона (`repros/binding_rule.py`), все три подтвердились:
+
+```
+[CONFIRMED] B1 ... kernel admits=True (unchanged), grant check=False, conjunction=False
+            — approver saw 'analytics-staging-01', run drives 'analytics-prod-01'
+[CONFIRMED] B2 and admits the recovery it is meant to protect: conjunction=True
+[CONFIRMED] B3 the rule does not touch a pair that delegates no set
+```
+
+То есть привязка закрывает подстановку, **не убивая** то восстановление, которое
+защищает, и не задевая пары, которые множества не делегируют.
+
+Чего это не показывает: что правильные привязки **можно получить**. Здесь их
+называет само одобрение — что и даёт диалог подтверждения, lease оператора или
+объявленный enum. Возражение, которым мы закрыли линию поargumentной
+гранулярности («выдачу нельзя вывести из свободного текста, там нет сигнала
+атрибуции», `tests/taint/test_task_trust_is_mention_based.py`), к базису
+восстановления **не применяется**: базис структурен по построению. Оно вернётся в
+ту же секунду, как кто-нибудь начнёт минтить привязки из прозы.
 
 ---
 
