@@ -20,6 +20,7 @@ cd experiments/composition/repros
 /path/to/axor-core/.venv/bin/python authority_model_reach.py # F7
 /path/to/axor-core/.venv/bin/python auto_grant_governance.py # F8
 /path/to/axor-core/.venv/bin/python profile_wipes_escalation.py # F9
+/path/to/axor-core/.venv/bin/python basis_composition.py       # F10
 ```
 (`repros/_corepath.py` — та же конвенция, что в остальных каталогах experiments:
 по умолчанию берётся соседний checkout axor-core, `AXOR_CORE_REPO` переопределяет.)
@@ -41,6 +42,7 @@ cd experiments/composition/repros
 | F7 | `AuthorityPolicy`/`ExecutionPlan` — целевая модель, рантайм на `ExecutionPolicy` | **Подтверждено: ноль путей исполнения** |
 | F8 | (не из разбора, найдено по ходу) governance-гейт consequence-оси — «human/operator-authorised path» | **Опровергнуто: его проходит сам агент** |
 | F9 | (тоже по ходу) профиль задаёт потолок escalation | **Подтверждено с обратным знаком: любой профиль обнуляет `grantable_tools`** |
+| F10 | предсказано таксономией, затем проверено: два базиса расширения композируются | **Подтверждено: пара допускает то, чего не допускает ни один из них** |
 | — | Leases — отдельный механизм оси времени | **Опровергнуто: единственный источник — тот же escalation** |
 
 Коротко, по категориям:
@@ -403,6 +405,53 @@ grantable_tools» (`escalation.py:197-198`).
 
 Практическое следствие для плана: F4 без F9 бесполезен. Починка потолка lease
 вернёт escalation только тем, кто не пользуется профилями.
+
+---
+
+## F10 — два базиса расширения композируются в допуск, которого не даёт ни один
+
+Эта строка — не баг отдельного базиса. Оба ведут себя точно по своей спецификации,
+и у каждого аргумент соундности верен **в изоляции**. Свойство принадлежит
+композиции, и найдено оно потому, что таксономия отказов его предсказала — то есть
+это проверка предсказания, а не ещё одна находка постфактум.
+
+Матрица 2×2 на одном вызове. Сток `drop_database` — CATASTROPHIC по встроенной
+таблице и объявлен integrity-стоком. Его driving-аргумент покрыт
+операторским enum'ом `{analytics-staging-01, analytics-prod-01}`, а значение
+приходит из недоверенного web-чтения: цель выбирает атакующий, но только из
+одобренного оператором набора. Grant выписан при `require_human=True`, то есть
+человек approval дал.
+
+```
+      supersession=off grant=off -> approved=False "consequence gate: sink 'drop_database' is CATASTROPHIC, exceed"
+      supersession=off grant=on  -> approved=False "taint enforcement (per-value): the driving argument of 'drop_d"
+      supersession=on  grant=off -> approved=False "consequence gate: sink 'drop_database' is CATASTROPHIC, exceed"
+      supersession=on  grant=on  -> approved=True  ran=True  'approved'
+[CONFIRMED] Z1 two bases compose into a lift neither one grants
+```
+
+Каждый базис снимает ровно свою обязанность: supersession — integrity (его
+аргумент: «атакующий может выбрать только одобренное оператором значение»),
+grant — потолок consequence (его посылка: «человек авторизовал действие выше
+потолка»). Вместе: недоверенное по происхождению значение управляет необратимым
+действием, и человек, дававший approval, видел **инструмент**, а не аргумент этого
+вызова.
+
+Два следствия, важных для конструкции, а не для баг-листа:
+
+1. **Дизъюнктности охватов недостаточно.** `W(supersession) = {integrity}` и
+   `W(grant) = {consequence}` не пересекаются — и это не спасает. Значит
+   «охваты не пересекаются» как достаточное условие опровергнуто, и нужно
+   правило композиции базисов.
+2. **Правило у нас уже прототипировано.** Если бы grant был привязан к значениям
+   аргументов, которые видел человек (`Grant(witness_id, sink, bindings)` из
+   `axor_core/taint/grants.py`), подстановка другого члена enum'а не прошла бы.
+   Возражение, которым мы закрыли линию поargumentной гранулярности — «выдачу
+   нельзя вывести из свободного текста, там нет сигнала атрибуции» — здесь **не
+   применяется**: базис восстановления структурен по построению (диалог
+   подтверждения, lease оператора, объявленный enum), а не извлечён из текста.
+
+Пока проверено на одной паре. Обобщается ли правило на все пары базисов — открыто.
 
 ---
 
