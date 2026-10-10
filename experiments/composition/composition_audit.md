@@ -24,6 +24,7 @@ cd experiments/composition/repros
 /path/to/axor-core/.venv/bin/python basis_pairs.py             # F10, все шесть пар
 /path/to/axor-core/.venv/bin/python binding_rule.py            # привязка, первая форма
 /path/to/axor-core/.venv/bin/python approval_series.py         # F10, одна серия целиком
+/path/to/axor-core/.venv/bin/python deescalation.py            # F11, возврат полномочия
 ```
 (`repros/_corepath.py` — та же конвенция, что в остальных каталогах experiments:
 по умолчанию берётся соседний checkout axor-core, `AXOR_CORE_REPO` переопределяет.)
@@ -46,6 +47,7 @@ cd experiments/composition/repros
 | F8 | (не из разбора, найдено по ходу) governance-гейт consequence-оси — «human/operator-authorised path» | **Опровергнуто: его проходит сам агент** |
 | F9 | (тоже по ходу) профиль задаёт потолок escalation | **Подтверждено с обратным знаком: любой профиль обнуляет `grantable_tools`** |
 | F10 | предсказано таксономией, затем проверено: два базиса расширения композируются | **Переформулировано: это не нарушение non-composition, а недостаточность правила — разрыв между тем, что одобрено, и тем, что исполнено** |
+| F11 | возвращается ли полномочие после восстановления | **Нет: истраченный grant оставляет инструмент НИЖЕ базовой линии; три базиса из четырёх вообще не имеют конца** |
 | — | Leases — отдельный механизм оси времени | **Опровергнуто: единственный источник — тот же escalation** |
 
 Коротко, по категориям:
@@ -628,6 +630,80 @@ lease'а держат.
   аргументам отказывает ему в достраивании чужого полномочия (строка 6), но
   собственные границы клиренса — это срок, версия политики и набор снимаемых
   ограничений, и они отдельная работа.
+
+---
+
+## F11 — деэскалация: полномочие не возвращается к базовой линии
+
+Обратная операция к восстановлению. Все четыре прочитанных работы останавливаются
+на одной границе: Bounded Agents — «narrowing is irreversible within a session»,
+ScopeGate — политика «must remain immutable for the lifetime», APPA — метки
+«descend monotonically», и у неё в limitations прямо сказано, что revocation и
+expiry не адресованы. Прямая операция изучена, обратная — нет. У Axor четыре
+базиса сразу, поэтому вопрос можно задать всем четырём (`repros/deescalation.py`).
+
+Четыре вопроса на базис: ограничено ли расширение; возвращается ли после
+исчерпания решение **к базовой линии** (ни шире, ни **уже**); есть ли событие о
+конце расширения; сбрасывает ли расширение свидетельства, которые сузили бы
+политику снова.
+
+### Главное: истраченный grant оставляет инструмент ниже базовой линии
+
+`write` — REVERSIBLE, внутри потолка, политика его разрешает: эскалация ему не
+нужна. Эскалируем всё равно, тратим одну операцию:
+
+```
+      baseline=True granted=True under-grant=True after-spent=False
+      after-spent reason: "capability lease for 'write' has expired or been exhausted"
+[CONFIRMED] R1 a spent grant leaves the tool BELOW its baseline
+[CONFIRMED] R2 nothing in the trace marks the end of the widening
+            escalation-related trace events over the whole sequence: ['EscalationGrantedEvent']
+```
+
+Причина — порядок: `EscalationManager.evaluate` на невалидном lease возвращает
+DENY (`escalation.py:116-124`) **раньше**, чем вызов мог бы провалиться к обычной
+проверке `allowed_tools`. То есть восстановление не возвращает к базовой линии, а
+уводит ниже неё, и в трассе этого не видно: за всю последовательность одно
+событие, `EscalationGrantedEvent`.
+
+**Вместе с F4 это даёт точную формулировку того, что escalation делает в
+поставляемом коде.** F4: lease можно выписать только на инструмент, который
+политика уже разрешает. F11: истраченный lease этот инструмент отбирает. Значит
+**escalation в axor не может добавить полномочие и может его отнять навсегда** —
+две независимые проверки (`escalation_scope.py` E1/E2 и `deescalation.py` R1).
+
+### Остальные три базиса конца не имеют
+
+```
+      level RESTRICTED -> NORMAL; quarantined 1 -> 0; pressure counters now [(0, 0)]; deny_count=0
+[CONFIRMED] R3 a clearance is unbounded: no TTL, no use count, no expiry
+[CONFIRMED] R4 and it resets the evidence that would have re-narrowed quickly
+[CONFIRMED] R5 the clearance itself IS recorded
+[CONFIRMED] R6 a raised ceiling has no runtime end at all
+```
+
+| базис | ограничен? | возвращает к базовой линии? | событие о конце? |
+|---|---|---|---|
+| escalation grant | ops + TTL lease'а | **нет — уводит ниже** | нет |
+| degradation clearance | **не ограничен** | н/д (нет границы) | да, transition + `level_history` |
+| operator overlay / потолок | не ограничен | н/д | нет |
+| enum-allowlist (supersession) | не ограничен | н/д | нет |
+
+Две детали, которые стоит назвать точно:
+
+* **Клиренс сбрасывает не только уровень, но и свидетельства:** флаги карантина и
+  оба счётчика давления обнуляются (`engine.py:446-452`). Это защитимо — оператор
+  говорит «я проверил, чисто» — но измеримое следствие в том, что каждый клиренс
+  выдаёт полный бюджет давления заново, а числа клиренсов ничем не ограничены.
+* **Асимметрия часов.** В `DegradationPolicy` есть `LOCKED_TTL` — таймер на
+  **ужесточение** (LOCKED → TERMINAL), и ни одного поля на жизнь клиренса:
+  `DegradationState` несёт level, sources, deny_count, level_history,
+  tools_frozen, escalation_triggered и ничего про срок ослабления. У системы есть
+  часы на то, чтобы стать строже, и нет часов на то, чтобы вернуть полномочие.
+
+Отсюда инвариант, который надо предъявлять как контракт, и axor его сегодня
+нарушает **в сторону сужения**: после окончания восстановления решение по вызову
+обязано совпадать с решением до восстановления.
 
 ---
 
