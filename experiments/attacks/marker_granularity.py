@@ -26,6 +26,7 @@ up at word granularity should appear here. Both are measured, next to the ledger
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import sys
@@ -50,7 +51,9 @@ MODELS = [m for m in os.environ.get(
     "anthropic/claude-sonnet-5.5,openai/gpt-6.1-sol,"
     "google/gemini-3.8-flash,anthropic/claude-haiku-5.5",
 ).split(",") if m]
-MODES = ("word", "struct", "chunk")
+MODES = tuple(m for m in os.environ.get(
+    "AXOR_MARK_MODES", "word,struct,chunk").split(",") if m)
+N_REPS = int(os.environ.get("AXOR_MARK_N", "1"))
 TEST_MARKERS = [m for m in os.environ.get("AXOR_MARK_SET", "zw,bullet").split(",") if m]
 MAX_WORKERS = int(os.environ.get("AXOR_MARK_WORKERS", "24"))
 CHUNK = int(os.environ.get("AXOR_MARK_CHUNK", "4"))
@@ -141,7 +144,16 @@ def _transformed(arg: str, original: str) -> bool:
     return _canon(strip_marks(arg)) != _canon(original)
 
 
-def run_trial(t: Trial) -> Trial:
+def run_trial(t: Trial, attempts: int = 3) -> Trial:
+    for i in range(attempts):
+        t = _run_once(t)
+        if t.ok or "no sink tool call" not in t.error:
+            return t
+        t.error = f"{t.error} (attempt {i + 1}/{attempts})"
+    return t
+
+
+def _run_once(t: Trial) -> Trial:
     tr = next(x for x in SCENARIOS if x.key == t.transform)
     marker = MARKERS[t.marker]
     t.density = marker_density(tr.source, marker, t.mode)
@@ -174,15 +186,46 @@ def build_matrix() -> list[Trial]:
     out = []
     for model in MODELS:
         for tr in SCENARIOS:
-            out.append(Trial(model, tr.key, "none", "word"))
-            for mk in TEST_MARKERS:
-                for mode in MODES:
-                    out.append(Trial(model, tr.key, mk, mode))
+            for rep in range(N_REPS):
+                if rep == 0:
+                    out.append(Trial(model, tr.key, "none", MODES[0], rep))
+                for mk in TEST_MARKERS:
+                    for mode in MODES:
+                        out.append(Trial(model, tr.key, mk, mode, rep))
     return out
 
 
 def _pct(n: int, d: int) -> str:
     return f"{100 * n / d:3.0f}% ({n}/{d})" if d else "   n/a"
+
+
+def _ci(k: int, n: int) -> str:
+    """Wilson 95% interval — behaves at the 0% and 100% ends, where a normal
+    interval claims zero width."""
+    if not n:
+        return "n/a"
+    z, p = 1.96, k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return f"[{100 * max(0.0, c - h):.0f}, {100 * min(1.0, c + h):.0f}]"
+
+
+def _two_prop(k1: int, n1: int, k2: int, n2: int) -> str:
+    """Pooled two-proportion z-test on the mode difference."""
+    if not n1 or not n2:
+        return "n/a"
+    p1, p2 = k1 / n1, k2 / n2
+    pp = (k1 + k2) / (n1 + n2)
+    se = math.sqrt(pp * (1 - pp) * (1 / n1 + 1 / n2))
+    if se == 0:
+        return "identical"
+    z = (p2 - p1) / se
+    pv = math.erfc(abs(z) / math.sqrt(2))
+    d = 100 * (p2 - p1)
+    half = 196 * math.sqrt(p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2)
+    return (f"diff {d:+.0f}pp, 95% CI [{d - half:+.0f}, {d + half:+.0f}], "
+            f"z={z:+.2f}, p={pv:.3f}")
 
 
 def report(rows: list[Trial]) -> None:
@@ -208,9 +251,23 @@ def report(rows: list[Trial]) -> None:
               f" {_pct(sum(r.ledger_hit for r in sub), len(sub)):>16}")
 
     print("\n=== gap closed per mode (ledger missed, transformed) ===")
+    arms = {}
     for mode in MODES:
         miss = [r for r in live if r.mode == mode and not r.ledger_hit]
-        print(f"  {mode:8} {_pct(sum(r.marker_hit for r in miss), len(miss))}")
+        k, n = sum(r.marker_hit for r in miss), len(miss)
+        arms[mode] = (k, n)
+        print(f"  {mode:8} {_pct(k, n)}  95% CI {_ci(k, n)}")
+    if len(MODES) >= 2:
+        a, b = MODES[0], MODES[1]
+        print(f"\n  {a} vs {b} (gap closed): "
+              f"{_two_prop(*arms[a], *arms[b])}")
+        ka = (sum(r.marker_hit for r in live if r.mode == a),
+              len([r for r in live if r.mode == a]))
+        kb = (sum(r.marker_hit for r in live if r.mode == b),
+              len([r for r in live if r.mode == b]))
+        print(f"  {a} vs {b} (marker_hit): {_two_prop(*ka, *kb)}")
+        print(f"    {a:8} {_pct(*ka)}  95% CI {_ci(*ka)}")
+        print(f"    {b:8} {_pct(*kb)}  95% CI {_ci(*kb)}")
 
     print("\n=== marker_hit by transform x mode ===")
     print(f"{'transform':19} " + " ".join(f"{m:>15}" for m in MODES))
