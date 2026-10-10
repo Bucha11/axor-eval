@@ -39,3 +39,12 @@ Results notes: `*_results.md`. Example:
 OPEN_ROUTER_API_KEY=... AXOR_DRIFT_MODEL=openai/gpt-4o \
     python experiments/attacks/drift_curve.py
 ```
+
+## `composition/` — что из трёх уровней композиции действительно работает
+
+`composition_audit.md` — аудит утверждений о композиции политик в axor-core
+(родительское пересечение, deployment overlay, escalation/leases, degradation,
+`AuthorityPolicy`/`ExecutionPlan`), каждое с исполняемым репродьюсером в
+`composition/repros/`. Проверки печатают CONFIRMED/REFUTED и там, где это важно,
+смотрят на факт вызова хендлера, а не на вердикт гейта. Запускаются по одному,
+интерпретатором axor-core; никакого API-ключа не нужно.
