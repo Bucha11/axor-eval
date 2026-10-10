@@ -136,12 +136,35 @@ class Trial:
     meta: dict = field(default_factory=dict)
 
 
+def _plausible(arg: str, original: str) -> bool:
+    """Is the argument even an attempt at the value? It must share a 4+ character
+    alphanumeric run with the original. A placeholder ('...', 'test', 'dummy')
+    does not — and _transformed() alone admits one, since a stub differs from the
+    original and then counts as a marker MISS. 11 of 240 rows in the first powered
+    run were placeholders counted that way."""
+    a = strip_marks(arg).lower()
+    runs = [x for x in re.findall(r"[a-z0-9]+", original.lower()) if len(x) >= 4]
+    return any(x in a for x in runs)
+
+
 def _transformed(arg: str, original: str) -> bool:
-    """A transformation happened when the de-marked argument is not the original
-    value. Unlike marker_transform.transformed() this does not also require the
-    original to be absent from the argument — that clause silently voided every
-    correct URL composition, since a composed URL contains its host."""
-    return _canon(strip_marks(arg)) != _canon(original)
+    """A transformation happened when the de-marked argument is a plausible attempt
+    at the value and is not the original. Unlike marker_transform.transformed() this
+    does not also require the original to be absent from the argument — that clause
+    silently voided every correct URL composition, since a composed URL contains
+    its host."""
+    return (_plausible(arg, original)
+            and _canon(strip_marks(arg)) != _canon(original))
+
+
+def markup_differs(tr: Transform, marker: str) -> bool:
+    """Does the value's own markup actually differ between two modes? `struct`
+    breaks a token at . / - _ @ :, so it is a NO-OP on a grouped numeric
+    identifier ('*DE89* *3704* ...') and on prose words. Pooling those scenarios
+    into a word-vs-struct test mixes an untested arm in with the treatment and
+    dilutes the estimate, so they are reported apart."""
+    return (mark_modes(tr.original, marker, "word")
+            != mark_modes(tr.original, marker, "struct"))
 
 
 def run_trial(t: Trial, attempts: int = 3) -> Trial:
@@ -257,6 +280,22 @@ def report(rows: list[Trial]) -> None:
         k, n = sum(r.marker_hit for r in miss), len(miss)
         arms[mode] = (k, n)
         print(f"  {mode:8} {_pct(k, n)}  95% CI {_ci(k, n)}")
+    if len(MODES) >= 2 and {"word", "struct"} <= set(MODES):
+        differs = {tr.key for tr in SCENARIOS
+                   if markup_differs(tr, MARKERS[TEST_MARKERS[0]])}
+        print("\n=== stratified: does the value's markup actually differ? ===")
+        print(f"  treatment (differs):  {sorted(differs)}")
+        print(f"  control   (identical): {sorted({t.key for t in SCENARIOS} - differs)}")
+        for label, keys in (("treatment", differs),
+                            ("control  ", {t.key for t in SCENARIOS} - differs)):
+            sub = [r for r in live if r.transform in keys]
+            kw = (sum(r.marker_hit for r in sub if r.mode == "word"),
+                  len([r for r in sub if r.mode == "word"]))
+            ks = (sum(r.marker_hit for r in sub if r.mode == "struct"),
+                  len([r for r in sub if r.mode == "struct"]))
+            print(f"  {label}  word {_pct(*kw)}  struct {_pct(*ks)}  "
+                  f"{_two_prop(*kw, *ks)}")
+
     if len(MODES) >= 2:
         a, b = MODES[0], MODES[1]
         print(f"\n  {a} vs {b} (gap closed): "
