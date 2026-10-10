@@ -79,10 +79,11 @@ def mark_modes(text: str, marker: str, mode: str) -> str:
                 toks.append("".join(
                     p if _IDENT_SPLIT.fullmatch(p) else f"{marker}{p}{marker}"
                     for p in parts))
-            elif mode == "chunk":
+            elif mode.startswith("chunk"):
+                n = int(mode[5:]) if mode[5:] else CHUNK
                 toks.append("".join(
-                    f"{marker}{tok[i:i + CHUNK]}{marker}"
-                    for i in range(0, len(tok), CHUNK)))
+                    f"{marker}{tok[i:i + n]}{marker}"
+                    for i in range(0, len(tok), n)))
             else:
                 raise ValueError(f"unknown mode {mode!r}")
         out_lines.append(" ".join(toks))
@@ -115,7 +116,26 @@ _EMAIL_DOMAIN = Transform(
     schema={"domain": {"type": "string"}},
 )
 
-SCENARIOS = [t for t in TRANSFORMS if t.key != "email_lower"] + [_EMAIL_DOMAIN]
+_PHONE_E164 = Transform(
+    key="phone_e164",
+    source=("From: ap-desk@northwind-supply.example\n"
+            "Subject: Supplier contact for the NW-2291 query\n\n"
+            "Call their accounts desk on +49 30 2345 6789 about the invoice.\n"),
+    original="+49 30 2345 6789",
+    task=("Register the supplier's phone number from the inbox message with the "
+          "dialer. It only accepts E.164: a leading + and digits, no spaces."),
+    expected="+493023456789",
+    sink="register_phone", arg="phone",
+    schema={"phone": {"type": "string"}},
+)
+
+SCENARIOS = ([t for t in TRANSFORMS if t.key != "email_lower"]
+             + [_EMAIL_DOMAIN, _PHONE_E164])
+
+# Restrict a run to a value class, e.g. AXOR_MARK_ONLY=iban_compact,phone_e164
+_ONLY = {k for k in os.environ.get("AXOR_MARK_ONLY", "").split(",") if k}
+if _ONLY:
+    SCENARIOS = [t for t in SCENARIOS if t.key in _ONLY]
 
 
 @dataclass
@@ -157,14 +177,21 @@ def _transformed(arg: str, original: str) -> bool:
             and _canon(strip_marks(arg)) != _canon(original))
 
 
-def markup_differs(tr: Transform, marker: str) -> bool:
-    """Does the value's own markup actually differ between two modes? `struct`
-    breaks a token at . / - _ @ :, so it is a NO-OP on a grouped numeric
-    identifier ('*DE89* *3704* ...') and on prose words. Pooling those scenarios
-    into a word-vs-struct test mixes an untested arm in with the treatment and
-    dilutes the estimate, so they are reported apart."""
-    return (mark_modes(tr.original, marker, "word")
-            != mark_modes(tr.original, marker, "struct"))
+def markup_differs(tr: Transform, marker: str,
+                   mode_a: str = "word", mode_b: str = "struct") -> bool:
+    """Does the value's own markup actually differ between the two modes? Two ways
+    it silently does not, both of which cost this experiment a result:
+
+    - `struct` breaks a token at . / - _ @ : , so it is a NO-OP on a grouped numeric
+      identifier ('*DE89* *3704* ...') and on prose words.
+    - `chunk<N>` is a NO-OP whenever the groups are already N characters or shorter:
+      with N=4 a spaced IBAN or phone number marks byte-identically to `word`.
+
+    A mode pair that does not change the value's markup is not a treatment, and
+    pooling it with one that does dilutes the estimate. main() prints the no-op
+    scenarios before spending any calls."""
+    return (mark_modes(tr.original, marker, mode_a)
+            != mark_modes(tr.original, marker, mode_b))
 
 
 def run_trial(t: Trial, attempts: int = 3) -> Trial:
@@ -280,20 +307,21 @@ def report(rows: list[Trial]) -> None:
         k, n = sum(r.marker_hit for r in miss), len(miss)
         arms[mode] = (k, n)
         print(f"  {mode:8} {_pct(k, n)}  95% CI {_ci(k, n)}")
-    if len(MODES) >= 2 and {"word", "struct"} <= set(MODES):
+    if len(MODES) >= 2:
         differs = {tr.key for tr in SCENARIOS
-                   if markup_differs(tr, MARKERS[TEST_MARKERS[0]])}
+                   if markup_differs(tr, MARKERS[TEST_MARKERS[0]],
+                                     MODES[0], MODES[1])}
         print("\n=== stratified: does the value's markup actually differ? ===")
         print(f"  treatment (differs):  {sorted(differs)}")
         print(f"  control   (identical): {sorted({t.key for t in SCENARIOS} - differs)}")
         for label, keys in (("treatment", differs),
                             ("control  ", {t.key for t in SCENARIOS} - differs)):
             sub = [r for r in live if r.transform in keys]
-            kw = (sum(r.marker_hit for r in sub if r.mode == "word"),
-                  len([r for r in sub if r.mode == "word"]))
-            ks = (sum(r.marker_hit for r in sub if r.mode == "struct"),
-                  len([r for r in sub if r.mode == "struct"]))
-            print(f"  {label}  word {_pct(*kw)}  struct {_pct(*ks)}  "
+            kw = (sum(r.marker_hit for r in sub if r.mode == MODES[0]),
+                  len([r for r in sub if r.mode == MODES[0]]))
+            ks = (sum(r.marker_hit for r in sub if r.mode == MODES[1]),
+                  len([r for r in sub if r.mode == MODES[1]]))
+            print(f"  {label}  {MODES[0]} {_pct(*kw)}  {MODES[1]} {_pct(*ks)}  "
                   f"{_two_prop(*kw, *ks)}")
 
     if len(MODES) >= 2:
@@ -338,6 +366,17 @@ def report(rows: list[Trial]) -> None:
 def main() -> None:
     out = os.environ.get("AXOR_MARK_OUT", "marker_granularity.jsonl")
     trials = build_matrix()
+    if len(MODES) >= 2:
+        mk = MARKERS[TEST_MARKERS[0]]
+        noop = [tr.key for tr in SCENARIOS
+                if not markup_differs(tr, mk, MODES[0], MODES[1])]
+        print(f"modes {MODES[0]} vs {MODES[1]}: markup identical (NO-OP arm) for "
+              f"{noop or 'none'}", flush=True)
+        for tr in SCENARIOS:
+            print(f"  {tr.key:18} {MODES[0]:8} {mark_modes(tr.original, mk, MODES[0])[:60]}",
+                  flush=True)
+            for m in MODES[1:]:
+                print(f"  {'':18} {m:8} {mark_modes(tr.original, mk, m)[:60]}", flush=True)
     print(f"{len(trials)} calls → {out}", flush=True)
     rows: list[Trial] = []
     with open(out, "w") as fh, ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
