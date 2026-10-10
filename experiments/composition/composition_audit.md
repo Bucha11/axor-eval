@@ -19,6 +19,7 @@ cd experiments/composition/repros
 /path/to/axor-core/.venv/bin/python degradation_narrowing.py # F6
 /path/to/axor-core/.venv/bin/python authority_model_reach.py # F7
 /path/to/axor-core/.venv/bin/python auto_grant_governance.py # F8
+/path/to/axor-core/.venv/bin/python profile_wipes_escalation.py # F9
 ```
 (`repros/_corepath.py` — та же конвенция, что в остальных каталогах experiments:
 по умолчанию берётся соседний checkout axor-core, `AXOR_CORE_REPO` переопределяет.)
@@ -39,6 +40,7 @@ cd experiments/composition/repros
 | F6 | Degradation LOCKED возвращает не сужение политики | **Подтверждено как нарушение контракта; эксплуатируемости нет** |
 | F7 | `AuthorityPolicy`/`ExecutionPlan` — целевая модель, рантайм на `ExecutionPolicy` | **Подтверждено: ноль путей исполнения** |
 | F8 | (не из разбора, найдено по ходу) governance-гейт consequence-оси — «human/operator-authorised path» | **Опровергнуто: его проходит сам агент** |
+| F9 | (тоже по ходу) профиль задаёт потолок escalation | **Подтверждено с обратным знаком: любой профиль обнуляет `grantable_tools`** |
 | — | Leases — отдельный механизм оси времени | **Опровергнуто: единственный источник — тот же escalation** |
 
 Коротко, по категориям:
@@ -51,7 +53,8 @@ cd experiments/composition/repros
 * **Контракт нарушен, эксплуатации нет:** F6.
 * **Пусто, как проектор:** F4 (документированное восстановление capability
   невозможно), F7 (модель authority/plan ничего не читает), leases как отдельный
-  механизм.
+  механизм. F9 добивает ту же точку со второй стороны: под любым профилем,
+  включая дефолтный, escalation не может выдать ничего.
 
 ---
 
@@ -365,6 +368,41 @@ lease for the tool (a **human/operator-authorised path**)». Фактическ�
 не «баг», а требование сделать противоречие явным: consequence-гейт должен
 принимать только lease с человеческой/операторской authority, либо оператор должен
 объявить обратное отдельным полем.
+
+---
+
+## F9 — любой профиль обнуляет `grantable_tools`
+
+Тоже не из разбора; нашлось при оценке стоимости решения по `dev`-профилю.
+
+`Profile.escalation_policy` применяется как overlay-потолок: `_intersect_escalation`
+(`composer.py:18-32`) оставляет только инструменты, присутствующие **и** в политике
+задачи, **и** в overlay. Оба поставляемых overlay'я — `_HUMAN_ESCALATION` и
+`_AUTO_ESCALATION` (`profiles.py:30-36`) — объявляют `allow_escalation=True` с
+лимитами и оставляют `grantable_tools` в дефолте `()`.
+
+Как потолок `()` означает «выдавать нечего»:
+
+```
+      observe   overlay.grantable=() -> composed allow=True grantable=() max_escalations=1
+      balanced  overlay.grantable=() -> composed allow=True grantable=() max_escalations=1
+      strict    overlay.grantable=() -> composed allow=True grantable=() max_escalations=1
+      dev       overlay.grantable=() -> composed allow=True grantable=() max_escalations=1
+[CONFIRMED] Y1 every profile empties grantable_tools while keeping allow_escalation=True:
+            per-task policy declared grantable_tools=('write',); default profile is 'balanced'
+```
+
+То есть выбор **любого** профиля, включая дефолтный `balanced`, срезает список
+выдаваемого до пустого, оставляя `allow_escalation=True` и лимиты на месте:
+политика рекламирует escalation, который всегда отвечает «tool 'write' is not in
+grantable_tools» (`escalation.py:197-198`).
+
+Само пересечение здесь правильное. Дефект в том, что у overlay'я **нет способа
+сказать «я этот список не ограничиваю»**: «не задано» и «пусто» — одно и то же
+значение. Это тот же класс ошибки, что F2 (семантика overlay'я), и чинится там же.
+
+Практическое следствие для плана: F4 без F9 бесполезен. Починка потолка lease
+вернёт escalation только тем, кто не пользуется профилями.
 
 ---
 
