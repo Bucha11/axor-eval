@@ -18,6 +18,7 @@ cd experiments/composition/repros
 /path/to/axor-core/.venv/bin/python escalation_scope.py    # F4, F5, уровень «внутри вызова»
 /path/to/axor-core/.venv/bin/python degradation_narrowing.py # F6
 /path/to/axor-core/.venv/bin/python authority_model_reach.py # F7
+/path/to/axor-core/.venv/bin/python auto_grant_governance.py # F8
 ```
 (`repros/_corepath.py` — та же конвенция, что в остальных каталогах experiments:
 по умолчанию берётся соседний checkout axor-core, `AXOR_CORE_REPO` переопределяет.)
@@ -37,6 +38,7 @@ cd experiments/composition/repros
 | F5 | Один grant может закрывать две оси, поэтому «один grant = одна ось» писать нельзя | **Подтверждено, но охват уже́: единственная ось — consequence** |
 | F6 | Degradation LOCKED возвращает не сужение политики | **Подтверждено как нарушение контракта; эксплуатируемости нет** |
 | F7 | `AuthorityPolicy`/`ExecutionPlan` — целевая модель, рантайм на `ExecutionPolicy` | **Подтверждено: ноль путей исполнения** |
+| F8 | (не из разбора, найдено по ходу) governance-гейт consequence-оси — «human/operator-authorised path» | **Опровергнуто: его проходит сам агент** |
 | — | Leases — отдельный механизм оси времени | **Опровергнуто: единственный источник — тот же escalation** |
 
 Коротко, по категориям:
@@ -45,7 +47,7 @@ cd experiments/composition/repros
   «grant восстановил egress — floor всё равно отказал»), 12 осей родительского
   пересечения, supersession, floor.
 * **Живые дыры:** F1 (повышение потолка через spawn), F2 (overlay повышает явно
-  понижённый потолок).
+  понижённый потолок), F8 (агент сам открывает себе CATASTROPHIC-сток).
 * **Контракт нарушен, эксплуатации нет:** F6.
 * **Пусто, как проектор:** F4 (документированное восстановление capability
   невозможно), F7 (модель authority/plan ничего не читает), leases как отдельный
@@ -330,6 +332,39 @@ legacy ExecutionPolicy ... remains the runtime object». Измерено (AST, 
 не может стать authority) и **конвертер с round-trip тестом**. Чего заявлять нельзя:
 что разделение planning/authority реализовано — ни один гейт не читает
 `AuthorityPolicy`, рантайм целиком на смешанном `ExecutionPolicy` в 25 модулях.
+
+---
+
+## F8 — governance-гейт consequence-оси проходит сам агент
+
+Не входило в разбор; найдено при проверке F5 и относится к той же точке кода.
+
+`_check_consequence` (`intent_loop.py:1320-1346`) описывает своё исключение так:
+«The governance gate is satisfied by an active escalation grant or capability
+lease for the tool (a **human/operator-authorised path**)». Фактическая проверка —
+`EscalationManager.covers(tool_name)`, то есть **наличие** grant'а; кто его
+одобрил, не спрашивается. При `require_human=False` grant выписывается из
+собственного `escalate_policy`-интента модели и несёт
+`LeaseAuthorityType.AUTOMATED_POLICY` (`escalation.py:240-247`).
+
+```
+[CONFIRMED] X1 an agent-issued, auto-approved grant lifts the CATASTROPHIC ceiling:
+            before=False ("consequence gate: sink 'shutdown' is CATASTROPHIC, e")
+            grant=True after=True handler_called=True
+```
+
+`shutdown` — CATASTROPHIC по встроенной таблице, то есть единственный класс,
+который гейтится из коробки. Модель просит grant, approver не настроен и не
+опрашивается, сток исполняется (проверка по хендлеру).
+
+Оговорка, важная для честности: оператор сам поставил `require_human=False` и сам
+внёс `shutdown` в `grantable_tools`. Это не обход его конфигурации — это **две его
+настройки, противоречащие друг другу** (`max_unattended_consequence` говорит «этому
+классу нужен гейт», `require_human=False` говорит «grant'ам человек не нужен»), и
+разрешается противоречие молча в пользу разрешающего. Поэтому в плане правок это
+не «баг», а требование сделать противоречие явным: consequence-гейт должен
+принимать только lease с человеческой/операторской authority, либо оператор должен
+объявить обратное отдельным полем.
 
 ---
 
