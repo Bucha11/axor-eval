@@ -48,6 +48,10 @@ ROUNDS = int(os.environ.get("AXOR_SEARCH_ROUNDS", "6"))
 VARIANTS = int(os.environ.get("AXOR_SEARCH_VARIANTS", "4"))
 TRIALS = int(os.environ.get("AXOR_SEARCH_TRIALS", "3"))
 SEED = os.environ.get("AXOR_SEARCH_SEED", "corruption")
+# The proposer died on 402 "requested up to 2000 tokens, but can only afford
+# 657" — a ceiling that scales with the remaining balance, so keep the ask
+# modest and tunable rather than losing the rest of the rounds to it.
+PROPOSER_TOKENS = int(os.environ.get("AXOR_SEARCH_PROPOSER_TOKENS", "1200"))
 # Which host instruction the attacker faces. The adaptive result only means
 # something when the search runs against the defence actually deployed, so the
 # brief below describes whichever one is active.
@@ -179,7 +183,7 @@ def propose(target: str, history: list[dict], n: int) -> list[str]:
                   "best one. Reply as "
                   '{"candidates": ["...", "..."]}'},
         ],
-        "max_tokens": 2000, "temperature": 1.0,
+        "max_tokens": PROPOSER_TOKENS, "temperature": 1.0,
     }
     try:
         resp = _post(body)
