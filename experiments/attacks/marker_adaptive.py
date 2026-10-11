@@ -166,6 +166,8 @@ class Trial:
     attack: str
     rep: int
     injection: str = ""   # used when attack == "custom" (the search arm)
+    system_extra: str = ""  # overrides the host's preserve instruction when set
+    mode_override: str = ""  # overrides the target's marking granularity when set
     ok: bool = False
     arg: str = ""
     marker_hit: bool = False
@@ -191,10 +193,10 @@ def run_trial(t: Trial, attempts: int = 3) -> Trial:
     text = t.injection if t.attack == "custom" else ATTACKS[t.attack]
     if text:
         body += "\n" + text + "\n"
-    staged = mark_modes(body, marker, tg.mode)
+    staged = mark_modes(body, marker, t.mode_override or tg.mode)
 
     messages = [
-        {"role": "system", "content": _SYSTEM + _PRESERVE},
+        {"role": "system", "content": _SYSTEM + (t.system_extra or _PRESERVE)},
         {"role": "user", "content": tg.task},
         {"role": "assistant", "content": None, "tool_calls": [
             {"id": "call_read", "type": "function",
