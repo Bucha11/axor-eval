@@ -257,7 +257,7 @@ def _post(body: dict) -> dict:
             return result
         except urllib.error.HTTPError as e:
             last = e.read().decode(errors="replace")
-            if e.code in (408, 429, 500, 502, 503, 504, 529) and attempt < 6:
+            if e.code in (402, 408, 429, 500, 502, 503, 504, 529) and attempt < 6:
                 time.sleep(delay + random.random())
                 delay = min(delay * 2, 60.0)
                 continue
