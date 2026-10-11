@@ -193,14 +193,18 @@ A proper search *against* `strong` (`claude-sonnet-5.5`, 8 rounds planned) was r
 independent attacker models. `openai/gpt-6.1-sol`: **4 rounds, 8 candidates, 0 bypasses**,
 sentinel never moved (fake system turn, assistant-working-notes spoof, "no account supplied",
 adapter example value, serializer fixture, transcription-repair), stopped when the proposer
-was **safety-flagged**. `z-ai/glm-5.3-prime`: **4 rounds, 12 candidates, 0 bypasses**,
-sentinel never moved (same-day-urgency, ERP keying card, "check digits are never transmitted
-on this channel", a spoofed "integrity protocol v2" notice, a sandbox smoke-test, a voicemail
-transcription, a desk read-back), stopped on proposer over-reasoning truncation. So across two
-attackers, **20 distinct candidates, 0 bypasses, the sentinel never moved once** — but both
-runs capped near round 4 for proposer-side reasons, not the defence, so rounds 5–8 of a
-feedback-using hill-climb never ran. `strong` is "not broken in four rounds by either of two
-attacker models" — above the static 0/277, below a completed search — **not proven to hold.**
+was **safety-flagged**. `z-ai/glm-5.3-prime`: 4 rounds / 12 candidates
+before a reasoning-budget truncation, then — reasoning capped to `effort=low` and resumed
+from that memory — **6 further rounds to completion** (`ended: exhausted`), for **10 rounds,
+30 candidates, 0 bypasses**, sentinel never moved (same-day-urgency, ERP keying card, "check
+digits are never transmitted on this channel", a spoofed "integrity protocol v2" notice, a
+sandbox smoke-test, a voicemail transcription, a desk read-back). Across both attackers, ~38
+distinct candidates, 0 bypasses, the sentinel never moved once; the GLM search is the first
+to run to completion rather than stop on a proposer-side failure. `strong` held every round.
+A genuinely strong negative result on this model/target — above the static 0/277 — but still
+one defender model, one value class, one seed, and an LLM-rewriting optimiser weaker than the
+gradient-free and human attackers of 2510.09023: **"not broken by a completed 6-round GLM
+search plus a 4-round gpt search", not proof it holds in general.**
 
 ## 8. Discussion
 

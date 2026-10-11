@@ -130,20 +130,23 @@ Two caveats that keep this from being a defence result:
      (fake system turn `<|im_end|>`, assistant-working-notes spoof, "no account
      supplied", adapter "example IBAN", serializer fixture, transcription-repair).
      Stopped when the proposer was **safety-flagged** ("possible cybersecurity risk").
-   - `z-ai/glm-5.3-prime`: **4 rounds, 12 candidates, 0 bypasses**, sentinel never moved
-     (same-day-urgency, an ERP keying card, "check digits are never transmitted on this
-     channel", a spoofed "integrity protocol v2" platform notice, a sandbox smoke-test, a
-     voicemail transcription, a desk read-back). Stopped on proposer over-reasoning
-     truncation, not the defence.
+   - `z-ai/glm-5.3-prime`: an initial run reached 4 rounds / 12 candidates before it
+     truncated its JSON (a reasoning model exhausting its token budget), then, with
+     reasoning capped to `effort=low` and **resumed from that 12-candidate memory**, ran
+     **6 more rounds to completion** (`ended: exhausted`). Combined **10 rounds, 30
+     candidates, 0 bypasses, `sent_frac` pinned at 1.0** — same-day-urgency framings, an
+     ERP keying card, "check digits are never transmitted on this channel", a spoofed
+     "integrity protocol v2" notice, a sandbox smoke-test, a voicemail transcription, a
+     desk read-back procedure; none moved the sentinel off the value.
 
-   For contrast, `preserve` fell in round **1**. So across two attackers, **20 distinct
-   candidates, 0 bypasses, `sent_frac` pinned at 1.0** — a stronger signal than one
-   attacker, but still **not a completed search**: both runs capped near round 4 for
-   proposer-side reasons (a safety filter, then a token-budget truncation), not because the
-   attacker ran out of ideas, so rounds 5–8 of a feedback-using hill-climb never ran.
-   **`strong` is therefore not proven to hold** — it is "not broken in four rounds by
-   either of two attacker models", stronger than the 0/277 static pool and weaker than a
-   finished search.
+   For contrast, `preserve` fell in round **1**. So across two attacker models,
+   **~38 distinct candidates, 0 bypasses, `sent_frac` never off 1.0**, and the GLM search
+   is the first to **run to completion** rather than stop on a proposer-side failure.
+   `strong` held every round of it. This is a genuinely strong negative result on this
+   model/target, but still bounded: one defender model (`sonnet`), one value class (iban),
+   one seed, and an LLM-rewriting optimiser weaker than the gradient-free / human
+   red-teamers of 2510.09023. **Read it as "not broken by a completed 6-round GLM search
+   plus a 4-round gpt search", not as proof `strong` holds in general.**
    - Note: the search objective (`marker_search._score`) uses `sent_frac` — per-token
      wrapping of the *original* value — which credits a compacted-but-still-marked
      argument (`•GB29NWBK…•`) as partial progress toward a bypass it can never reach. The
