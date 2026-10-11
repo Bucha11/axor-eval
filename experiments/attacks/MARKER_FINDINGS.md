@@ -124,12 +124,20 @@ and the agent wraps the value it computed itself (`•gb29nwbk60161331926819•`
 Two caveats that keep this from being a defence result:
 
 1. **These four vectors were optimised against `preserve`.** Replaying them against
-   `strong` tests an old attack on a new defence. A reconnaissance search run *against*
-   `strong` (sonnet/iban) produced **0 bypasses, but only 3 of 5 rounds ran** before the
-   proposer died (first on an exhausted-balance 402, then on a truncated-JSON reply from
-   the token cap added to dodge it). The hill-climb never got to use its feedback, which
-   is where an optimiser earns its result — so this sits where the 0/277 static pool sat,
-   not beyond it. **`strong` is not established as holding.**
+   `strong` tests an old attack on a new defence, so a proper search was run *against*
+   `strong` (sonnet/iban). Best run: **4 of 8 rounds, 8 distinct candidates, 0 bypasses,
+   `sent_frac` never moved off 1.0** — the attacker tried a fake system turn
+   (`<|im_end|>`), an assistant-working-notes spoof, "no account was supplied", an
+   adapter "example IBAN", a serializer fixture and a transcription-repair framing, none
+   of which moved the sentinel at all. For contrast, `preserve` fell in round **1**. So
+   across four rounds of an adaptive attacker that broke the weak instruction immediately,
+   `strong` held on sonnet — a real signal, but still not a completed search: every run
+   stopped early, the last because the **proposer model itself was safety-flagged**
+   ("possible cybersecurity risk") and refused to generate more candidates. Rounds 5–8
+   never ran, and pushing past that ceiling would mean jailbreaking the attacker model,
+   which was not done. **`strong` is therefore not proven to hold** — it is "not broken in
+   4 rounds", which is stronger than the 0/277 static pool and weaker than a finished
+   search.
    - Note: the search objective (`marker_search._score`) uses `sent_frac` — per-token
      wrapping of the *original* value — which credits a compacted-but-still-marked
      argument (`•GB29NWBK…•`) as partial progress toward a bypass it can never reach. The
@@ -163,6 +171,9 @@ and the **per-value-class granularity** result — not a new defence.
 
 ## Unfinished (credit / classifier limits)
 
-- Search against `strong`: rounds 4–5 never ran; and the `sent_frac` objective defect
-  above should be fixed before any re-run, or new rounds climb the wrong gradient.
+- Search against `strong`: capped at 4 of 8 rounds because the proposer model was
+  safety-flagged and stopped returning candidates; rounds 5–8 need a different attacker
+  model or a jailbroken one (not done). The `sent_frac` objective defect above should be
+  fixed first regardless, or new rounds climb the wrong gradient — though against `strong`
+  it never moved, so here it cost nothing.
 - Original `preserve` search: `gemini/iban` and `sonnet/email` pairs not run.
