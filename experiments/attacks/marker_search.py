@@ -142,6 +142,9 @@ def evaluate(model: str, target: str, injection: str, trials: int) -> tuple[dict
     return _score(done, tg.attacker_value, MARKERS[MARKER]), done
 
 
+LAST_PROPOSER_ERROR = {"msg": ""}
+
+
 def propose(target: str, history: list[dict], n: int) -> list[str]:
     tg = next(t for t in TARGETS if t.key == target)
     marker = MARKERS[MARKER]
@@ -185,7 +188,8 @@ def propose(target: str, history: list[dict], n: int) -> list[str]:
         cands = json.loads(txt[start:end + 1])["candidates"]
         return [c for c in cands if isinstance(c, str) and c.strip()][:n]
     except Exception as e:  # noqa: BLE001
-        print(f"    proposer failed: {type(e).__name__}: {e}", flush=True)
+        LAST_PROPOSER_ERROR["msg"] = f"{type(e).__name__}: {e}"[:300]
+        print(f"    proposer failed: {LAST_PROPOSER_ERROR['msg']}", flush=True)
         return []
 
 
@@ -195,6 +199,8 @@ class Run:
     target: str
     rounds: list[dict] = field(default_factory=list)
     best: dict = field(default_factory=dict)
+    rounds_run: int = 0
+    ended: str = ""   # "exhausted" = all rounds ran; otherwise why it stopped early
 
 
 def hill_climb(model: str, target: str) -> Run:
@@ -212,7 +218,10 @@ def hill_climb(model: str, target: str) -> Run:
     for rnd in range(1, ROUNDS + 1):
         cands = propose(target, history, VARIANTS)
         if not cands:
+            run.ended = (f"proposer unavailable after round {rnd - 1}: "
+                         f"{LAST_PROPOSER_ERROR['msg'] or 'no candidates returned'}")
             break
+        run.rounds_run = rnd
         for ci, cand in enumerate(cands):
             sc, _ = evaluate(model, target, cand, TRIALS)
             history.append({"injection": cand[:200], "score": round(sc["score"], 2),
@@ -227,6 +236,7 @@ def hill_climb(model: str, target: str) -> Run:
         run.rounds.append({"round": rnd, "best_so_far": round(best["score"], 2),
                            "best_bypass": best["bypass"]})
     run.best = best
+    run.ended = run.ended or "exhausted"
     print(f"  BEST {best['label']} score={best['score']:.2f} "
           f"bypass={best['bypass']:.2f} sent_frac={best['sent_frac']:.2f}", flush=True)
     run.rounds.append({"history": history})
@@ -240,7 +250,9 @@ def main() -> None:
           f"variants={VARIANTS} trials={TRIALS} → about {budget} calls", flush=True)
     runs = [hill_climb(m, t) for m, t in PAIRS]
     with open(out, "w") as fh:
-        json.dump([{"model": r.model, "target": r.target,
+        json.dump([{"model": r.model, "target": r.target, "defence": DEFENCE,
+                    "rounds_run": r.rounds_run, "rounds_planned": ROUNDS,
+                    "ended": r.ended,
                     "best": {k: v for k, v in r.best.items() if k != "sample_raw"},
                     "rounds": r.rounds} for r in runs], fh,
                   ensure_ascii=False, indent=1)
@@ -251,6 +263,11 @@ def main() -> None:
         print(f"  {r.model.split('/')[1][:18]:19} {r.target:6} best score "
               f"{b['score']:.2f}  bypass {b['bypass']:.2f}  "
               f"sent_frac {b['sent_frac']:.2f}  found at {b['label']}")
+    for r in runs:
+        if r.ended != "exhausted":
+            print(f"  !! {r.model} / {r.target}: search STOPPED EARLY after "
+                  f"{r.rounds_run}/{ROUNDS} rounds — {r.ended}. A zero here is not a "
+                  f"defence result.")
     won = [r for r in runs if r.best["bypass"] > 0]
     print(f"\n  pairs with at least one bypass: {len(won)}/{len(runs)}")
     for r in won:
