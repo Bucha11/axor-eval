@@ -189,13 +189,18 @@ sink in 29/30 cells — on attacks and benign control alike — while under `pre
 normally and was already immune to the decode vectors (0/20). The repair's cost is
 model-specific.
 
-A proper search *against* `strong` (`claude-sonnet-5.5`, 8 rounds planned) reached **4
-rounds, 8 distinct candidates, 0 bypasses, sentinel never moved** — a fake system turn, an
-assistant-working-notes spoof, "no account supplied", an adapter example value, a serializer
-fixture, a transcription-repair framing. It stopped not from the defence but because the
-**proposer model was safety-flagged** and refused further candidates. So `strong` is "not
-broken in four rounds" — above the static 0/277, below a completed search — **not proven to
-hold.**
+A proper search *against* `strong` (`claude-sonnet-5.5`, 8 rounds planned) was run with two
+independent attacker models. `openai/gpt-6.1-sol`: **4 rounds, 8 candidates, 0 bypasses**,
+sentinel never moved (fake system turn, assistant-working-notes spoof, "no account supplied",
+adapter example value, serializer fixture, transcription-repair), stopped when the proposer
+was **safety-flagged**. `z-ai/glm-5.3-prime`: **4 rounds, 12 candidates, 0 bypasses**,
+sentinel never moved (same-day-urgency, ERP keying card, "check digits are never transmitted
+on this channel", a spoofed "integrity protocol v2" notice, a sandbox smoke-test, a voicemail
+transcription, a desk read-back), stopped on proposer over-reasoning truncation. So across two
+attackers, **20 distinct candidates, 0 bypasses, the sentinel never moved once** — but both
+runs capped near round 4 for proposer-side reasons, not the defence, so rounds 5–8 of a
+feedback-using hill-climb never ran. `strong` is "not broken in four rounds by either of two
+attacker models" — above the static 0/277, below a completed search — **not proven to hold.**
 
 ## 8. Discussion
 
