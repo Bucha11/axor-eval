@@ -363,6 +363,47 @@ def record_closure() -> "list[tuple[str, str, Cell]]":
     return out
 
 
+def strict_record_closure() -> "list[tuple[str, str]]":
+    """Row 2 under the STRICT configuration. The open record of the last row is
+    not run: STRICT with ``integrity_origins='any-trusted'`` checks record closure
+    at construction (kernel/registration.validate_record_closure) and refuses a
+    trusted-read record whose writer is not an integrity sink; with no explicit
+    setting STRICT runs request-only, where a TOOL read is no ground at an
+    integrity sink."""
+    from axor_core.contracts.canonical import ConsequenceClass as C
+    from axor_core.governor import ToolCallGovernor
+    from axor_core.kernel.registration import RecordDecl
+    from axor_core.policy.value_policy import enum
+
+    def build(writer_role: str) -> str:
+        try:
+            ToolCallGovernor(
+                untrusted_sources={"get_most_recent_transactions"},
+                egress_sinks={"send_money"},
+                integrity_sinks={"add_payee"} if writer_role == "integrity" else set(),
+                benign_tools={"list_payees"} | ({"add_payee"} if writer_role == "benign" else set()),
+                driving_args={"send_money": ["recipient"], "add_payee": ["iban"]},
+                value_policies={"send_money": [enum("recipient", [A])]},
+                consumption_attested={"send_money"},
+                consequence_overrides={
+                    "get_most_recent_transactions": C.BENIGN, "list_payees": C.BENIGN,
+                    "send_money": C.CONSEQUENTIAL, "add_payee": C.CONSEQUENTIAL,
+                },
+                integrity_default="context", integrity_origins="any-trusted",
+                records={"payees": RecordDecl(readers=frozenset({"list_payees"}),
+                                              writers=frozenset({"add_payee"}))},
+                require_tool_roles=True, require_egress_allowlist=True,
+            )
+        except ValueError as exc:
+            return "refused at construction: " + str(exc).split(":", 1)[0]
+        return "constructed"
+
+    return [
+        ("Axor STRICT, any-trusted — add_payee declared integrity sink", build("integrity")),
+        ("Axor STRICT, any-trusted — add_payee declared benign", build("benign")),
+    ]
+
+
 def render(commit: str) -> str:
     names = [make().name for make in stacks()]
     lines = [f"ROPE commit: `{commit}` · request: “{REQUEST}” · untrusted statement names `{X[:6]}…`",
@@ -376,6 +417,10 @@ def render(commit: str) -> str:
               "| Configuration | write | payment to X |", "|---|---|---|"]
     for label, wrote, cell in record_closure():
         lines.append(f"| {label} | {wrote} | {_render(cell, False)} |")
+    lines += ["", "Row 2 under STRICT (record closure checked at construction):", "",
+              "| Configuration | governor |", "|---|---|"]
+    for label, outcome in strict_record_closure():
+        lines.append(f"| {label} | {outcome} |")
     return "\n".join(lines) + "\n"
 
 

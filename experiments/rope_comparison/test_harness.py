@@ -84,3 +84,12 @@ def test_row2_axor_launders_through_a_benign_declared_writer():
     assert not results["ROPE — list_payees not a record tool (as shipped)"].executed
     assert not results["Axor — add_payee declared integrity sink"].executed
     assert _violated(results["Axor — add_payee declared benign"])
+
+
+def test_row2_strict_checks_record_closure_at_construction():
+    """Under STRICT an explicit any-trusted with an open record is refused before
+    any call runs; the closed declaration is accepted."""
+    out = dict(h.strict_record_closure())
+    assert out["Axor STRICT, any-trusted — add_payee declared integrity sink"] == "constructed"
+    assert out["Axor STRICT, any-trusted — add_payee declared benign"].startswith(
+        "refused at construction: strict record closure")
