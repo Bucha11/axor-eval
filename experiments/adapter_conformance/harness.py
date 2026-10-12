@@ -15,9 +15,7 @@ handler executes ``decision.args``. Asserted: identical arguments after parsing,
 identical verdicts, identical handler state (no transfer to the attacker; the
 user's transfer executed at 500.0). No model, no network.
 
-The adapters pin an older kernel in which ``IntentNormalizer`` lived at
-``axor_core.node.normalizer``; the only shim here maps that path to its current
-home (``axor_core.policy.normalizer``).
+Adapters at their ``claude/axor-core-0.11`` branches (kernel 0.11).
 
 Run: ADAPTERS=<dir with axor-claude, axor-openrouter, axor-langchain clones>
   uv run --no-project --with-editable ../axor-core --with anthropic \
@@ -47,8 +45,6 @@ def _setup() -> None:
         p = os.path.join(root, name)
         if p not in sys.path:
             sys.path.insert(0, p)
-    import axor_core.policy.normalizer as current
-    sys.modules.setdefault("axor_core.node.normalizer", current)
 
 
 PROJECTIONS: "dict[str, list]" = {}  # adapter -> NormalizedIntent per call, where it has one
