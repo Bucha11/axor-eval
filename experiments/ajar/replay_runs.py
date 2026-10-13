@@ -48,12 +48,22 @@ def variants():
         "grants-L1+L4": ("ctx", "L1+L4"),
         "v2 grants-L1+L2s+L4": ("ctx", "L1+L2s+L4", "v2"),
         "v2 grants-L1+L4": ("ctx", "L1+L4", "v2"),
+        # schema-derived grant args (derive_grants R0); run with AXOR_AJAR_CONFIG_DIR
+        # pointing at config_rule/ for the rule taxonomy
+        "R0 L1+L2s": ("ctx", "L1+L2s", "R0"),
+        "R0 L1+L2s+L4 oracle": ("ctx", "L1+L2s+L4", "R0", "oracle"),
+        "R0 L1+L2s+L4 naive": ("ctx", "L1+L2s+L4", "R0", "naive"),
     }
 
 
 def factory(variant, suite, prompt, plan):
     base, levels = variant[0], variant[1]
-    ga = axor_ajar.GRANT_ARGS_V2 if len(variant) > 2 else None
+    tag = variant[2] if len(variant) > 2 else None
+    confirm = variant[3] if len(variant) > 3 else "oracle"
+    if tag == "R0":
+        ga = _r0_table()
+    else:
+        ga = axor_ajar.GRANT_ARGS_V2 if tag == "v2" else None
     integrity = (None, "any-trusted") if base == "clean" else ("context", "request-only")
     spec = SimpleNamespace(task=SimpleNamespace(suite=suite.name), prompt=prompt, plan=plan)
 
@@ -61,7 +71,7 @@ def factory(variant, suite, prompt, plan):
         cfg = axor_ajar.load_config(suite.name, *integrity)
         kw = cfg.as_governor_kwargs()
         if levels:
-            kwargs, hook = axor_ajar.grants_kwargs(levels, grant_args=ga)
+            kwargs, hook = axor_ajar.grants_kwargs(levels, grant_args=ga, confirm=confirm)
             kw.update(kwargs(spec))
             g = ToolCallGovernor(**kw)
             hook(g, spec)
@@ -70,6 +80,19 @@ def factory(variant, suite, prompt, plan):
         return g
 
     return make
+
+
+_R0 = None
+
+
+def _r0_table():
+    global _R0
+    if _R0 is None:
+        import derive_grants as D
+        from ajar import io, paths
+        specs = io.load_specs(paths.benchmark_data_dir("agentdojo", None) / "tasks.jsonl")
+        _R0 = D.derive(specs, D.rule_all_non_rich)
+    return _R0
 
 
 def replay(variant, suite, run):

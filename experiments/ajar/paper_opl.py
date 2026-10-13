@@ -40,9 +40,30 @@ def make(spec: str):
     return axor_ajar.grants_defense(spec, levels, grant_args=table)
 
 
+def bootstrap(per_task: list[tuple], gradeable: list[float], n: int = 2000, seed: int = 0) -> dict:
+    """95% percentile intervals, resampling tasks with replacement (as Ajar does).
+    per_task: [(num_earliest, den)] per task; gradeable: per-task sufficiency."""
+    import random
+    rng = random.Random(seed)
+    opl, suf = [], []
+    k = len(per_task)
+    for _ in range(n):
+        idx = [rng.randrange(k) for _ in range(k)]
+        nn = sum(per_task[i][0] for i in idx)
+        dd = sum(per_task[i][1] for i in idx)
+        opl.append(nn / dd if dd else 0.0)
+        g = [gradeable[rng.randrange(len(gradeable))] for _ in range(len(gradeable))]
+        suf.append(sum(g) / len(g))
+    opl.sort()
+    suf.sort()
+    lo, hi = int(0.025 * n), int(0.975 * n) - 1
+    return {"opl": [round(opl[lo], 4), round(opl[hi], 4)], "sufficiency": [round(suf[lo], 3), round(suf[hi], 3)]}
+
+
 def measure(d, data) -> dict:
     num = {m: 0.0 for m in ("earliest", "any", "all")}
     den = 0.0
+    per_task: list[tuple] = []
     suff, prov, adm, tot = [], 0, 0, 0
     admitted_attacks = []
     for spec, probes in data:
@@ -60,12 +81,16 @@ def measure(d, data) -> dict:
                 continue
             by.setdefault(p.candidate.key(), []).append(
                 (len(p.context.prefix), r.verdict is Verdict.ALLOW, p.penalty_weight, p))
+        tn = td = 0.0
         for v in by.values():
             w = max(x[2] for x in v)
             den += w
+            td += w
+            tn += w * min(v, key=lambda x: x[0])[1]
             num["earliest"] += w * min(v, key=lambda x: x[0])[1]
             num["any"] += w * any(x[1] for x in v)
             num["all"] += w * all(x[1] for x in v)
+        per_task.append((tn, td))
         if sc.attacks_admitted:
             for r in res:
                 if r.probe.fault_class.value == "ATTACKER_SEEDED" and r.verdict is Verdict.ALLOW:
@@ -74,6 +99,7 @@ def measure(d, data) -> dict:
                                              "args": dict(r.probe.candidate.args),
                                              "injection": r.probe.ground_truth.get("injection_id")})
     return {"opl": {m: round(num[m] / den, 4) for m in num},
+            "ci95": bootstrap(per_task, suff),
             "sufficiency": round(sum(suff) / len(suff), 3), "provisioned": f"{prov}/{len(suff)}",
             "attacks": f"{adm}/{tot}", "admitted_attack_calls": admitted_attacks[:20]}
 

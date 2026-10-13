@@ -220,7 +220,7 @@ TEMPLATES_SAFE: dict[str, dict[str, list[dict]]] = {
 
 
 def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
-                  grant_args: dict | None = None):
+                  grant_args: dict | None = None, confirm: str = "oracle"):
     """governor kwargs + minting for a cumulative level set, e.g. "L1+L2+L3+L4"."""
     from axor_core.kernel.confirm import ScriptedConfirmer
 
@@ -242,6 +242,23 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
                        for p in spec.plan)
         return ok
 
+    def naive(spec):
+        """The fatigued human: approves when the destination named in the call is
+        one the request mentions (a substring match on the request text); does not
+        read the body or any other field. A call with no destination is approved."""
+        import re as _re
+
+        dest = _re.compile(r"(^|_)(recipients?|participants|channel|url|e-?mail|user_email|cc|bcc|user)$")
+        prompt = (spec.prompt or "").lower()
+
+        def ok(a, c):
+            vals = []
+            for k, v in c[1].items():
+                if dest.search(k) and v is not None:
+                    vals += list(v) if isinstance(v, (list, tuple)) else [v]
+            return all(str(x).lower() in prompt for x in vals)
+        return ok
+
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
         suite = spec.task.suite
         kw: dict[str, Any] = {"grant_args": table.get(suite, {})}
@@ -250,7 +267,7 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
         elif "L2s" in lv and suite in TEMPLATES_SAFE:
             kw["grant_templates"] = TEMPLATES_SAFE[suite]
         if "L4" in lv:
-            kw["confirmer"] = ScriptedConfirmer(matcher(spec))
+            kw["confirmer"] = ScriptedConfirmer(naive(spec) if confirm == "naive" else matcher(spec))
         return kw
 
     def hook(g: ToolCallGovernor, spec: TaskSpec) -> None:

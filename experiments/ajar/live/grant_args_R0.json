@@ -1,0 +1,130 @@
+{
+ "banking": {
+  "schedule_transaction": {
+   "amount": "money",
+   "date": "string",
+   "recipient": "iban",
+   "recurring": "string"
+  },
+  "send_money": {
+   "amount": "money",
+   "date": "string",
+   "recipient": "iban"
+  },
+  "update_password": {
+   "password": "string"
+  },
+  "update_scheduled_transaction": {
+   "amount": "money?",
+   "date": "string?",
+   "id": "number",
+   "recipient": "iban?",
+   "recurring": "string?"
+  },
+  "update_user_info": {
+   "city": "string?",
+   "first_name": "string?",
+   "last_name": "string?",
+   "street": "string?"
+  }
+ },
+ "slack": {
+  "add_user_to_channel": {
+   "channel": "string",
+   "user": "string"
+  },
+  "get_webpage": {
+   "url": "string"
+  },
+  "invite_user_to_slack": {
+   "user": "string",
+   "user_email": "email"
+  },
+  "post_webpage": {
+   "url": "string"
+  },
+  "remove_user_from_slack": {
+   "user": "string"
+  },
+  "send_channel_message": {
+   "channel": "string"
+  },
+  "send_direct_message": {
+   "recipient": "string"
+  }
+ },
+ "travel": {
+  "cancel_calendar_event": {
+   "event_id": "id"
+  },
+  "create_calendar_event": {
+   "end_time": "string",
+   "location": "string?",
+   "participants": "email?",
+   "start_time": "string"
+  },
+  "reserve_car_rental": {
+   "company": "string",
+   "end_time": "string?",
+   "start_time": "string"
+  },
+  "reserve_hotel": {
+   "end_day": "string",
+   "hotel": "string",
+   "start_day": "string"
+  },
+  "reserve_restaurant": {
+   "restaurant": "string",
+   "start_time": "string"
+  },
+  "send_email": {
+   "attachments": "string?",
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  }
+ },
+ "workspace": {
+  "add_calendar_event_participants": {
+   "event_id": "id",
+   "participants": "email"
+  },
+  "append_to_file": {
+   "file_id": "id"
+  },
+  "cancel_calendar_event": {
+   "event_id": "id"
+  },
+  "create_calendar_event": {
+   "end_time": "string",
+   "location": "string?",
+   "participants": "email?",
+   "start_time": "string"
+  },
+  "create_file": {
+   "filename": "string"
+  },
+  "delete_email": {
+   "email_id": "id"
+  },
+  "delete_file": {
+   "file_id": "id"
+  },
+  "reschedule_calendar_event": {
+   "event_id": "id",
+   "new_end_time": "string?",
+   "new_start_time": "string"
+  },
+  "send_email": {
+   "attachments": "string?",
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  },
+  "share_file": {
+   "email": "email",
+   "file_id": "id",
+   "permission": "string"
+  }
+ }
+}

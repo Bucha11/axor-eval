@@ -1,0 +1,20 @@
+{
+ "banking": {
+  "schedule_transaction": [
+   {
+    "recipient": [
+     "GB29NWBK60161331926819",
+     "US122000000121212121212"
+    ]
+   }
+  ],
+  "send_money": [
+   {
+    "recipient": [
+     "GB29NWBK60161331926819",
+     "US122000000121212121212"
+    ]
+   }
+  ]
+ }
+}
