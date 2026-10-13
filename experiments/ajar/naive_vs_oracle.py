@@ -61,7 +61,8 @@ def replay(variant, suite, run):
 def main():
     root = os.path.join(os.environ.get("AJAR_AGENTDOJO_ROOT", "bench/agentdojo"), "runs")
     V = RR.variants()
-    naive, oracle = V["R0 L1+L2s+L4 naive"], V["R0 L1+L2s+L4 oracle"]
+    policy = os.environ.get("POLICY", "naive")  # naive | view
+    naive, oracle = V[f"R0 L1+L2s+L4 {policy}"], V["R0 L1+L2s+L4 oracle"]
     extra, tools, rows = 0, Counter(), []
     tot = {"naive": 0, "oracle": 0, "runs": 0}
     for model in MODELS:
@@ -83,7 +84,8 @@ def main():
     out = {"totals": tot, "naive_beyond_oracle": extra, "by_confirmed_tool": dict(tools.most_common()),
            "by_injection": dict(Counter(f"{r['suite']}/{r['injection_task']}" for r in rows).most_common()),
            "rows": rows}
-    json.dump(out, open(os.path.join(HERE, "results", "residuals_naive_vs_oracle_v3.json"), "w"), indent=1, default=str)
+    out["policy"] = policy
+    json.dump(out, open(os.path.join(HERE, "results", f"residuals_{policy}_vs_oracle_v3.json"), "w"), indent=1, default=str)
     print(json.dumps({k: v for k, v in out.items() if k != "rows"}, indent=1))
 
 
