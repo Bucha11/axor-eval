@@ -1,0 +1,246 @@
+{
+ "undefended": [
+  {
+   "banking": [
+    13,
+    16
+   ],
+   "slack": [
+    18,
+    21
+   ],
+   "travel": [
+    13,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  },
+  {
+   "banking": [
+    11,
+    16
+   ],
+   "slack": [
+    17,
+    21
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  },
+  {
+   "banking": [
+    13,
+    16
+   ],
+   "slack": [
+    17,
+    21
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  }
+ ],
+ "governed": [
+  {
+   "banking": [
+    8,
+    16
+   ],
+   "slack": [
+    10,
+    21
+   ],
+   "travel": [
+    11,
+    20
+   ],
+   "workspace": [
+    31,
+    40
+   ]
+  },
+  {
+   "banking": [
+    9,
+    16
+   ],
+   "slack": [
+    7,
+    21
+   ],
+   "travel": [
+    13,
+    20
+   ],
+   "workspace": [
+    29,
+    40
+   ]
+  },
+  {
+   "banking": [
+    7,
+    16
+   ],
+   "slack": [
+    7,
+    21
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    32,
+    40
+   ]
+  }
+ ],
+ "rows": {
+  "banking": {
+   "undefended": [
+    81.25,
+    68.75,
+    81.25
+   ],
+   "governed": [
+    50.0,
+    56.25,
+    43.75
+   ],
+   "paired": [
+    -31.25,
+    -12.5,
+    -37.5
+   ],
+   "undefended_mean": 77.08333333333333,
+   "undefended_sd": 5.892556509887896,
+   "governed_mean": 50.0,
+   "governed_sd": 5.103103630798287,
+   "paired_mean": -27.083333333333332,
+   "paired_sd": 10.622957319984968,
+   "unpaired_vs_paper": -17.900000000000006,
+   "paper_undefended": 67.9,
+   "complete": true
+  },
+  "slack": {
+   "undefended": [
+    85.71428571428571,
+    80.95238095238095,
+    80.95238095238095
+   ],
+   "governed": [
+    47.61904761904762,
+    33.333333333333336,
+    33.333333333333336
+   ],
+   "paired": [
+    -38.09523809523809,
+    -47.61904761904761,
+    -47.61904761904761
+   ],
+   "undefended_mean": 82.53968253968253,
+   "undefended_sd": 2.2447834323382447,
+   "governed_mean": 38.095238095238095,
+   "governed_sd": 6.734350297014738,
+   "paired_mean": -44.444444444444436,
+   "paired_sd": 4.489566864676493,
+   "unpaired_vs_paper": -46.7047619047619,
+   "paper_undefended": 84.8,
+   "complete": true
+  },
+  "travel": {
+   "undefended": [
+    65.0,
+    70.0,
+    70.0
+   ],
+   "governed": [
+    55.0,
+    65.0,
+    70.0
+   ],
+   "paired": [
+    -10.0,
+    -5.0,
+    0.0
+   ],
+   "undefended_mean": 68.33333333333333,
+   "undefended_sd": 2.3570226039551585,
+   "governed_mean": 63.333333333333336,
+   "governed_sd": 6.236095644623235,
+   "paired_mean": -5.0,
+   "paired_sd": 4.08248290463863,
+   "unpaired_vs_paper": 0.8333333333333357,
+   "paper_undefended": 62.5,
+   "complete": true
+  },
+  "workspace": {
+   "undefended": [
+    85.0,
+    85.0,
+    85.0
+   ],
+   "governed": [
+    77.5,
+    72.5,
+    80.0
+   ],
+   "paired": [
+    -7.5,
+    -12.5,
+    -5.0
+   ],
+   "undefended_mean": 85.0,
+   "undefended_sd": 0.0,
+   "governed_mean": 76.66666666666667,
+   "governed_sd": 3.1180478223116177,
+   "paired_mean": -8.333333333333334,
+   "paired_sd": 3.1180478223116177,
+   "unpaired_vs_paper": -7.633333333333326,
+   "paper_undefended": 84.3,
+   "complete": true
+  },
+  "all": {
+   "undefended": [
+    80.41237113402062,
+    78.35051546391753,
+    80.41237113402062
+   ],
+   "governed": [
+    61.855670103092784,
+    59.79381443298969,
+    61.855670103092784
+   ],
+   "paired": [
+    -18.556701030927833,
+    -18.55670103092784,
+    -18.556701030927833
+   ],
+   "undefended_mean": 79.72508591065292,
+   "undefended_sd": 0.9719680841052165,
+   "governed_mean": 61.16838487972509,
+   "governed_sd": 0.9719680841052198,
+   "paired_mean": -18.556701030927837,
+   "paired_sd": 3.3495305785253868e-15,
+   "unpaired_vs_paper": -16.039862542955326,
+   "paper_undefended": 77.20824742268042,
+   "complete": true
+  }
+ }
+}
