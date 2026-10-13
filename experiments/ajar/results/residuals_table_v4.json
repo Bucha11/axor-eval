@@ -1,0 +1,222 @@
+{
+ "table": {
+  "R1 addressee": {
+   "candidates": 2053,
+   "a": 210,
+   "b": 151,
+   "c-oracle": 151,
+   "c-naive": 1418,
+   "c-view": 376
+  },
+  "R1 shared_stores": {
+   "candidates": 2053,
+   "a": 146,
+   "b": 127,
+   "c-oracle": 127,
+   "c-naive": 846,
+   "c-view": 218
+  },
+  "R1 all_mutating": {
+   "candidates": 2053,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "R2 redirect (evaluated, fragments<=2 words)": {
+   "candidates": 11270,
+   "a": 6528,
+   "b": 6399,
+   "c-oracle": 6401,
+   "c-naive": 8580,
+   "c-view": 7196
+  },
+  "R3 rich free": {
+   "candidates": 55,
+   "a": 18,
+   "b": 17,
+   "c-oracle": 17,
+   "c-naive": 17,
+   "c-view": 17
+  },
+  "R3 rich under L4 digest": {
+   "candidates": 55,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 38,
+   "c-naive": 19,
+   "c-view": 17
+  }
+ },
+ "summary": {
+  "route1|addressee": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 127,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 175
+   },
+   "all": {
+    "candidates": 828,
+    "a": 188,
+    "b": 148,
+    "c-oracle": 148,
+    "c-naive": 441,
+    "c-view": 222
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 61,
+    "b": 24,
+    "c-oracle": 24,
+    "c-naive": 124,
+    "c-view": 47
+   }
+  },
+  "route1|shared_stores": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 139
+   },
+   "all": {
+    "candidates": 828,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 139
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   }
+  },
+  "route1|all_mutating": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "all": {
+    "candidates": 828,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   }
+  },
+  "route2_fragments_per_string_arg": {
+   "n": 260,
+   "median": 271.0,
+   "p90": 1257,
+   "max": 2895
+  },
+  "route2": {
+   "task_sinks_with_L1": 255,
+   "C_median": 205,
+   "C_p90": 73441,
+   "C_max": 2504508814096,
+   "tasks_with_L1": 91,
+   "tasks_k_gt_1": 85,
+   "share_tasks_k_gt_1": 0.934,
+   "redirectable_tuples": 3770667936068,
+   "candidates": 11270,
+   "a": 6528,
+   "b": 6399,
+   "c-oracle": 6401,
+   "c-naive": 8580,
+   "c-view": 7196
+  },
+  "route3": {
+   "rich_plan_calls": 55,
+   "tasks_with_rich_call": 44,
+   "a": {
+    "admitted": 18,
+    "admitted_from_read": 18,
+    "tasks": 15,
+    "via_confirmation": 0,
+    "via_request_or_template": 0,
+    "non_grant_sink": 18
+   },
+   "b": {
+    "admitted": 17,
+    "admitted_from_read": 17,
+    "tasks": 14,
+    "via_confirmation": 0,
+    "via_request_or_template": 17,
+    "non_grant_sink": 0
+   },
+   "c-oracle": {
+    "admitted": 55,
+    "admitted_from_read": 55,
+    "tasks": 44,
+    "via_confirmation": 38,
+    "via_request_or_template": 17,
+    "non_grant_sink": 0
+   },
+   "c-naive": {
+    "admitted": 36,
+    "admitted_from_read": 36,
+    "tasks": 31,
+    "via_confirmation": 19,
+    "via_request_or_template": 17,
+    "non_grant_sink": 0
+   },
+   "c-view": {
+    "admitted": 34,
+    "admitted_from_read": 34,
+    "tasks": 31,
+    "via_confirmation": 17,
+    "via_request_or_template": 17,
+    "non_grant_sink": 0
+   }
+  }
+ }
+}
