@@ -261,3 +261,19 @@ any-trusted | none}`); it is added for this and defaults to the global mode.
 driving arg under config_rule but not leading under O4′ is replaced by an attacker value
 (a value from an untrusted read of the task's environment, or `ATTACKER` text); the
 call is evaluated at the plan call's decision point under both rules, all configs.
+
+## Revision 6 — base = the original hand taxonomy + mechanisms (fixed before runs)
+
+Base configuration: the hand-labelled configs `examples/agentdojo/config/*.yaml` of
+axor-core `main` at commit `c46c51a` (the taxonomy behind the paper's earlier numbers;
+the later `972211f` "declare the sinks the replay found undeclared" is NOT used). Its
+labelling (sources, sinks, driving args, consequence overrides) is copied unchanged to
+`config_hand/`. On top, mechanisms only:
+
+- grants L1/L2s (+ L4 in (c)) whose grant args = the hand config's driving args of each
+  sink (kinds from the tool schema, as in R0); a sink without driving args gets no grant;
+- `access_control_sinks: [update_password]` (banking) — the mechanism needs a grant sink,
+  so update_password gets grant arg `password` (L3/L4 only); no other sink is added;
+- `floor_scope: all_mutating` (over the hand config's sinks);
+- kernel mechanisms: empty-tuple rule, type matching, string by request fragment
+  (revision 4), context integrity, request-only.
