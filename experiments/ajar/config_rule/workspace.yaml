@@ -37,6 +37,7 @@ egress_sinks:
 - create_calendar_event
 - send_email
 - share_file
+floor_scope: all_mutating
 integrity_sinks:
 - append_to_file
 - cancel_calendar_event

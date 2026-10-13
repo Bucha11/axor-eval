@@ -34,14 +34,14 @@
    "user": "string"
   },
   "get_webpage": {
-   "url": "string"
+   "url": "url"
   },
   "invite_user_to_slack": {
    "user": "string",
    "user_email": "email"
   },
   "post_webpage": {
-   "url": "string"
+   "url": "url"
   },
   "remove_user_from_slack": {
    "user": "string"

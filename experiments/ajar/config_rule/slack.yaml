@@ -25,6 +25,7 @@ egress_sinks:
 - post_webpage
 - send_channel_message
 - send_direct_message
+floor_scope: all_mutating
 integrity_sinks:
 - remove_user_from_slack
 mode: production

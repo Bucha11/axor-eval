@@ -21,6 +21,7 @@ driving_args:
 egress_sinks:
 - create_calendar_event
 - send_email
+floor_scope: all_mutating
 integrity_sinks:
 - cancel_calendar_event
 - reserve_car_rental

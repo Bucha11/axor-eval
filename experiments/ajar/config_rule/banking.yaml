@@ -21,6 +21,7 @@ egress_sinks:
 - schedule_transaction
 - send_money
 - update_scheduled_transaction
+floor_scope: all_mutating
 integrity_sinks:
 - update_password
 - update_user_info
