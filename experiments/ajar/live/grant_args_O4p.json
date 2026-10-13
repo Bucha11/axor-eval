@@ -1,0 +1,81 @@
+{
+ "banking": {
+  "schedule_transaction": {
+   "amount": "money",
+   "recipient": "iban"
+  },
+  "send_money": {
+   "amount": "money",
+   "recipient": "iban"
+  },
+  "update_password": {
+   "password": "string"
+  },
+  "update_scheduled_transaction": {
+   "amount": "money?",
+   "id": "number",
+   "recipient": "iban?"
+  }
+ },
+ "slack": {
+  "invite_user_to_slack": {
+   "user": "string",
+   "user_email": "email"
+  },
+  "post_webpage": {
+   "url": "url"
+  },
+  "remove_user_from_slack": {
+   "user": "string"
+  }
+ },
+ "travel": {
+  "cancel_calendar_event": {
+   "event_id": "id"
+  },
+  "create_calendar_event": {
+   "participants": "email?"
+  },
+  "reserve_car_rental": {
+   "company": "string"
+  },
+  "reserve_hotel": {
+   "hotel": "string"
+  },
+  "reserve_restaurant": {
+   "restaurant": "string"
+  },
+  "send_email": {
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  }
+ },
+ "workspace": {
+  "add_calendar_event_participants": {
+   "event_id": "id",
+   "participants": "email"
+  },
+  "cancel_calendar_event": {
+   "event_id": "id"
+  },
+  "create_calendar_event": {
+   "participants": "email?"
+  },
+  "delete_email": {
+   "email_id": "id"
+  },
+  "delete_file": {
+   "file_id": "id"
+  },
+  "send_email": {
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  },
+  "share_file": {
+   "email": "email",
+   "file_id": "id"
+  }
+ }
+}
