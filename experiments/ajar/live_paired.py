@@ -58,11 +58,16 @@ def confirmations(paths: list[str], suite: str) -> int:
     return c
 
 
+# GOV_ROOT: the governed passes (pass1..3 under it); default the paper's live_grants run.
+GOV_ROOT = os.environ.get("GOV_ROOT") or os.path.join(R, "live_grants")
+DEN = re.compile(r"benign denials:\s+\d+\s+\((\[.*\])\)")
+
+
 def passes() -> tuple[list[dict], list[dict]]:
     und = [{s: count(glob.glob(os.path.join(R, "live_o4mini", f"benign_{s}_undefended_*.log")), s) for s in SUITES}]
     for d in ("undef2", "undef3"):
         und.append({s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) for s in SUITES})
-    gov = [{s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) for s in SUITES}
+    gov = [{s: count(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s) for s in SUITES}
            for d in ("pass1", "pass2", "pass3")]
     return und, gov
 
@@ -74,9 +79,9 @@ def pct(c):
 def main() -> dict:
     und, gov = passes()
     out = {"undefended": und, "governed": gov, "rows": {}}
-    conf = {s: statistics.mean(confirmations(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) / N[s]
+    conf = {s: statistics.mean(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s) / N[s]
                                for d in ("pass1", "pass2", "pass3")) for s in SUITES}
-    conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s)
+    conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s)
                                    for s in SUITES) / sum(N.values()) for d in ("pass1", "pass2", "pass3"))
     hdr = (f"{'suite':10s} {'undefended (3)':>18s} {'grants+L4 (3)':>18s} {'paired cost':>15s} "
            f"{'vs paper':>10s} {'conf/task':>10s}")
@@ -107,7 +112,37 @@ def main() -> dict:
               f"{row['confirmations_per_task']:>9.2f}"
               f"{'' if complete else '  (incomplete)'}")
     out["n_tasks"] = sum(N.values())
-    name = "live_o4mini_paired.json" if EXCLUDE else "live_o4mini_paired_97.json"
+    # per-(task, pass) confirmations: p95 / p99 / max per suite and pooled; remaining denials by tool
+    import ast
+    import math
+    from collections import Counter
+    per = {s: [] for s in SUITES}
+    den = Counter()
+    for d in ("pass1", "pass2", "pass3"):
+        for s in SUITES:
+            seen = {}
+            for path in glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")):
+                text = open(path).read()
+                m = CONF.search(text)
+                if m:
+                    seen.update(ast.literal_eval(m.group(1)))
+                dm = DEN.search(text)
+                if dm:
+                    den.update(x.split(":")[0] for x in ast.literal_eval(dm.group(1)))
+            for i in range(N[s] + (1 if s == "slack" and EXCLUDE else 0)):
+                t = f"user_task_{i}"
+                if (s, t) not in EXCLUDE:
+                    per[s].append(int(seen.get(t, 0)))
+
+    def q(xs, p):
+        xs = sorted(xs)
+        return xs[max(0, math.ceil(p * len(xs)) - 1)]
+    out["confirmations_dist"] = {s: {"mean": round(statistics.mean(v), 3), "p95": q(v, .95), "p99": q(v, .99),
+                                     "max": max(v)} for s, v in list(per.items()) + [("all", sum(per.values(), []))]}
+    out["denials_by_tool"] = dict(den.most_common())
+    print("confirmations p95/p99/max:", {k: (v["p95"], v["p99"], v["max"]) for k, v in out["confirmations_dist"].items()})
+    print("remaining denials by tool (3 passes):", out["denials_by_tool"])
+    name = os.environ.get("OUT") or ("live_o4mini_paired.json" if EXCLUDE else "live_o4mini_paired_97.json")
     json.dump(out, open(os.path.join(R, name), "w"), indent=1)
     return out
 
