@@ -122,7 +122,7 @@ def run(cfg: GovernanceConfig, T: dict, label: str) -> dict:
             pre_integrity[d.category] += 1
         if d.category == "consequence_gate" and decide(nocons).allowed:
             cons_only += 1
-    ds_denied, ds_cat = 0, Counter()
+    ds_denied, ds_cat, ds_floor = 0, Counter(), 0
     for item in ds:
         s1, s2 = item["Attacker Tools"][0], item["Attacker Tools"][1]
         g = ToolCallGovernor(**cfg.as_governor_kwargs())
@@ -135,13 +135,14 @@ def run(cfg: GovernanceConfig, T: dict, label: str) -> dict:
         if not d.allowed:
             ds_denied += 1
             ds_cat[d.category] += 1
+            ds_floor += int("confidentiality" in (d.reason or ""))
     res = {"dh_cases": len(dh), "dh_denied": len(dh) - len(allowed), "dh_allowed": allowed[:20],
            "dh_first_denial": dict(first_cat), "dh_denied_before_integrity": dict(pre_integrity),
            "dh_consequence_only": cons_only, "ds_cases": len(ds), "ds_denied": ds_denied,
-           "ds_denial": dict(ds_cat)}
+           "ds_denial": dict(ds_cat), "ds_denied_by_floor": ds_floor}
     print(f"== {label}: dh denied {res['dh_denied']}/{len(dh)} (allowed {len(allowed)}), "
           f"consequence-only {cons_only}; first denial {dict(first_cat)}; "
-          f"before integrity {dict(pre_integrity)}; ds denied {ds_denied}/{len(ds)} {dict(ds_cat)}")
+          f"before integrity {dict(pre_integrity)}; ds denied {ds_denied}/{len(ds)} {dict(ds_cat)}, by the floor {ds_floor}")
     for a in allowed[:8]:
         print("   allowed:", a)
     return res
@@ -152,7 +153,9 @@ def main() -> None:
     old = GovernanceConfig.from_yaml(os.path.join(CORE, "examples/injecagent/config/injecagent.yaml"))
     old = dataclasses.replace(old, integrity_default="context", integrity_origins="request-only")
     rule = rule_config(old, T)
-    out = {"old": run(old, T, "old roles"), "rule": run(rule, T, "rule")}
+    current = dataclasses.replace(rule, floor_scope="all_mutating")
+    out = {"old": run(old, T, "old roles"), "rule": run(rule, T, "rule"),
+           "rule_all_mutating": run(current, T, "rule + floor_scope all_mutating (current)")}
     old_sinks = set(old.egress_sinks) | set(old.integrity_sinks)
     rule_sinks = set(rule.egress_sinks) | set(rule.integrity_sinks)
     out["diff"] = {"rule_only": sorted(rule_sinks - old_sinks), "old_only": sorted(old_sinks - rule_sinks),

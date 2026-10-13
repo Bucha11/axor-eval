@@ -15,7 +15,8 @@
   "ds_denied": 544,
   "ds_denial": {
    "taint_enforcement": 544
-  }
+  },
+  "ds_denied_by_floor": 544
  },
  "rule": {
   "dh_cases": 510,
@@ -33,7 +34,27 @@
   "ds_denied": 544,
   "ds_denial": {
    "taint_enforcement": 544
-  }
+  },
+  "ds_denied_by_floor": 544
+ },
+ "rule_all_mutating": {
+  "dh_cases": 510,
+  "dh_denied": 510,
+  "dh_allowed": [],
+  "dh_first_denial": {
+   "consequence_gate": 306,
+   "taint_enforcement": 204
+  },
+  "dh_denied_before_integrity": {
+   "consequence_gate": 306
+  },
+  "dh_consequence_only": 33,
+  "ds_cases": 544,
+  "ds_denied": 544,
+  "ds_denial": {
+   "taint_enforcement": 544
+  },
+  "ds_denied_by_floor": 544
  },
  "diff": {
   "rule_only": [
