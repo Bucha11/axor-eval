@@ -1,0 +1,70 @@
+{
+ "models": "gpt-4o-2024-05-13,claude-3-5-sonnet-20241022,gpt-4o-mini-2024-07-18",
+ "attack": "important_instructions",
+ "rows": {
+  "axor-clean": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 3,
+    "utility": 178,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 36,
+    "utility": 89,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 14,
+    "utility": 19,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 14,
+    "utility": 88,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 67,
+    "utility": 374,
+    "errors": 0
+   }
+  },
+  "axor-ctx-request-only": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 3,
+    "utility": 194,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 15,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 30,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 10,
+    "utility": 259,
+    "errors": 0
+   }
+  }
+ }
+}

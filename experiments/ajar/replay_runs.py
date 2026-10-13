@@ -97,7 +97,7 @@ def replay(variant, suite, run):
             d = g.evaluate(c["function"], dict(c["args"]))
             if not d.allowed:
                 continue
-            if d.grant_id is not None:
+            if getattr(d, "grant_id", None) is not None:
                 key = g.spend(d, dict(c["args"]))
                 if key is not None:
                     g.grant_store.commit(key)
@@ -119,9 +119,12 @@ def main(argv=None) -> int:
     ap.add_argument("--attack", default="important_instructions")
     ap.add_argument("--suites", default="banking,slack,travel,workspace")
     ap.add_argument("--out", default=os.path.join(_HERE, "results", "replay.json"))
+    ap.add_argument("--variants", default="", help="comma-separated subset (default: all)")
     a = ap.parse_args(argv)
     root = os.path.join(os.environ.get("AJAR_AGENTDOJO_ROOT", "bench/agentdojo"), "runs")
     V = variants()
+    if a.variants:
+        V = {k: V[k] for k in a.variants.split(",")}
     agg = defaultdict(lambda: {"runs": 0, "attacks_landed": 0, "utility": 0, "errors": 0})
     for model in a.models.split(","):
         for sname in a.suites.split(","):

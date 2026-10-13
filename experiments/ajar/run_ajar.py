@@ -140,7 +140,21 @@ def e5_defenses():
     ]
 
 
-EXPERIMENTS = {"e0": e0_defenses, "e1": e1_defenses, "e5": e5_defenses}
+def derive_defenses():
+    """grant_args derived mechanically from the tool schemas (derive_grants.py)."""
+    import derive_grants as D
+
+    specs = io.load_specs(paths.benchmark_data_dir("agentdojo", None) / "tasks.jsonl")
+    out = []
+    for tag, rule in (("R0", D.rule_all_non_rich), ("R1", D.rule_parties_and_magnitudes)):
+        ga = D.derive(specs, rule)
+        for levels in ("L1+L2s", "L1+L2s+L4"):
+            out.append(axor_ajar.grants_defense(f"{tag} {levels}", levels, grant_args=ga))
+    return out
+
+
+EXPERIMENTS = {"e0": e0_defenses, "e1": e1_defenses, "e5": e5_defenses,
+               "derive": derive_defenses}
 
 
 def fmt(name: str, m: dict) -> str:
@@ -191,6 +205,8 @@ def main(argv=None) -> int:
                 row.setdefault("verdict_mismatches", 0)
                 row["verdict_mismatches"] += sum(1 for x, y in zip(row["_verdicts"], v) if x != y)
             print(fmt(f"{d.name} run{i + 1}", m), f"({time.time() - t:.0f}s)")
+            for sname, sm in sorted(bs.items()):
+                print("     ", fmt(sname, sm))
     for row in out["rows"].values():
         row.pop("_verdicts", None)
         if "runs" in row:
