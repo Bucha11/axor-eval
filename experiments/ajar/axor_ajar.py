@@ -46,10 +46,26 @@ from ajar.core.types import Candidate, ContextRef, Verdict  # noqa: E402
 CONFIG_DIR = os.environ.get("AXOR_AJAR_CONFIG_DIR") or os.path.join(_CORE, "examples", "agentdojo", "config")
 
 
+# Secret modes (residuals_rules.md revision 2): "paper" = the config's sensitive_sources;
+# "declared" = + the operator's declaration of each suite's private store.
+DECLARED_SECRETS = {
+    "banking": {"get_user_info"},
+    "slack": {"read_inbox"},
+    "travel": {"get_user_information"},
+    "workspace": {"get_received_emails", "get_unread_emails", "search_emails"},
+}
+
+
 def load_config(suite: str, integrity_default: str | None, integrity_origins: str) -> GovernanceConfig:
     cfg = GovernanceConfig.from_yaml(os.path.join(CONFIG_DIR, f"{suite}.yaml"))
-    return dataclasses.replace(
+    cfg = dataclasses.replace(
         cfg, integrity_default=integrity_default, integrity_origins=integrity_origins)
+    mode = os.environ.get("AXOR_AJAR_SECRETS", "paper")
+    if mode == "declared":
+        cfg = dataclasses.replace(cfg, sensitive_sources=frozenset(cfg.sensitive_sources) | DECLARED_SECRETS[suite])
+    elif mode != "paper":
+        raise ValueError(f"AXOR_AJAR_SECRETS={mode!r}: expected paper | declared")
+    return cfg
 
 
 class PrefixRunner:

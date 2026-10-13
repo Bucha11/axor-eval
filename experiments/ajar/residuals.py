@@ -454,6 +454,9 @@ def main_ajar_attacks():
     import run_ajar
     from ajar.runner import run_defense
     data = run_ajar.load(None)
+    if os.environ.get("SUITES"):
+        keep = set(os.environ["SUITES"].split(","))
+        data = [(s, p) for s, p in data if s.task.suite in keep]
     out = {}
     for config, levels, policy in CONFIGS:
         if levels:
@@ -463,7 +466,9 @@ def main_ajar_attacks():
         m = paper_opl.summarize(d.name, [(s, p, run_defense(d, s, p)) for s, p in data])
         out[config] = m
         print(config, json.dumps({k: v for k, v in m.items() if k != "admitted_attack_calls"}), flush=True)
-    json.dump(out, open(os.path.join(RESULTS, "residuals_ajar_attacks.json"), "w"), indent=1)
+    tag = os.environ.get("TAG", "")
+    json.dump(out, open(os.path.join(RESULTS, f"residuals_ajar_attacks{('_' + tag) if tag else ''}.json"), "w"),
+              indent=1)
 
 
 if __name__ == "__main__":
