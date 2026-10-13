@@ -193,3 +193,28 @@ the swapped args; "other" covers anything else (expected 0).
 "Utility returned by grants" = admissions in (b) and not in (a) over Ajar's tests,
 split by the probe's expected label: ALLOW-labelled (plan calls, legitimate) vs
 DENY-labelled (attacker / over-privilege candidates).
+
+## Revision 4 — string literals by request fragment (fixed before code and rerun)
+
+Replaces "string only from quotes" (revision 1/3). Everything else of revision 3 stays.
+
+- An argument of kind `string` is admitted by L1 when its value, canonicalized
+  (case-folded, whitespace collapsed, trimmed), equals a contiguous fragment of the
+  canonicalized request that starts and ends at word boundaries (no letter, digit or
+  `_` immediately before or after it). Quotes are not required. An empty value is not
+  admitted.
+- Type matching is unchanged: a value that is itself a typed literal by syntax (IBAN,
+  e-mail, URL, `YYYY-MM-DD[ HH:MM]`, a number, a file-name-like `name.ext`) is NOT
+  admitted to a `string` slot — it binds only to its own kind.
+- access_control_sinks unchanged: no L1 grant at all.
+- Uses: a grant whose tuple contains string fragment arguments gives its `uses` (the
+  L1 quota, default 1) per distinct value of its string-argument tuple — the count the
+  per-literal grants gave.
+- R1 metric: for each task and each string grant argument, the number of admissible
+  values = distinct word-bounded fragments of the request that are not typed literals;
+  reported as median / p90 over (task, argument).
+
+slack refusal classes (live_v5): for each denied call, its grant-argument values are
+classed "in the request" (the canonical value occurs in the request at word boundaries,
+quoted or not — split into quoted / unquoted), "only in a read" (absent from the request
+but present in an earlier tool output of the same trajectory), or "other".
