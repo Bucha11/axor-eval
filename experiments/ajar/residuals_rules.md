@@ -125,3 +125,32 @@ not asked), dedup (an identical call — same sink and args — asked again in t
 reuses the earlier answer without asking), `--l4-max-refusals K` (after K refusals the
 session is terminated: every later call denied, connection closed). Cost of budget =
 p99 (pooled over tasks): tasks whose confirmations exceed it.
+
+## Revision 2 — `url` literal kind, all_mutating default (fixed before the rerun)
+
+Written and committed before the rerun with these changes.
+
+**`url` kind (typed, recognised by syntax like email/IBAN).**
+
+- Recognition (request_literals): a token starting with `http://`, `https://` or `www.`,
+  running to the next whitespace, quote or `<>`; trailing `. , ; : ! ? )` and a
+  leading `(` are stripped. No other text is a URL literal (a bare `example.com` is
+  not). A glued token stays as written (`www.our-company.com.They` is the literal
+  `www.our-company.com.They` and matches nothing).
+- Canonical form: scheme removed, host lower-cased, a trailing `/` removed; the path
+  is kept as written. `https://WWW.X.com/` and `www.x.com` are the same value.
+- Grant arg kind (derive_grants.kind_of): an argument named `url` or whose docstring
+  starts with "the URL"/"URL" is kind `url` (before: `string`).
+- Unchanged: `string` literals only from quotes/backticks; access-control sinks L3/L4.
+
+**floor_scope.** config_rule/ sets `floor_scope: all_mutating` (no shared_stores needed).
+
+**Secret modes.** "paper": the sensitive_sources of config_rule (travel
+get_user_information only). "declared": + the Revision-1 declaration (banking
+get_user_info, slack read_inbox, workspace get_received_emails / get_unread_emails /
+search_emails).
+
+**R2 breakdown (previous run).** The redirects (b) admits and (a) does not are grouped
+by sink, argument and literal; for each the reason (a) refuses is the denial category
+and the origin check's view of the value (the value as passed vs the request's text),
+and the reason (b) admits is the L1 grant that covers it (its canonical value).
