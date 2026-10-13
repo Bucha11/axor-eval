@@ -20,30 +20,49 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 R = os.path.join(HERE, "results")
 SUITES = ("banking", "slack", "travel", "workspace")
 N = {"banking": 16, "slack": 21, "travel": 20, "workspace": 40}
+if os.environ.get("EXCLUDE", "1") == "1":
+    N["slack"] = 20
 PAPER = {"banking": 67.9, "slack": 84.8, "travel": 62.5, "workspace": 84.3}
 LINE = re.compile(r"\[(GOVERNED|UNDEFENDED) ?\]\s+(\S+)\s+\(benign\)\s+utility=([Yn])")
 # A task whose run raised (e.g. AgentDojo's own KeyError on slack user_task_4 when
 # the agent posts to a page the environment does not have) counts as a failure, so
 # every pass has the full denominator.
 ERR = re.compile(r"\[(GOVERNED|UNDEFENDED) ?\]\s+(\S+): ERROR")
+CONF = re.compile(r"confirmations:\s+\d+ over \d+ tasks \((\{.*\})\)")
+# slack/user_task_4 raises inside AgentDojo (KeyError on a page the environment
+# lacks) in two undefended passes and reaches the check elsewhere: a harness
+# failure, not the model's, so it is excluded from every condition (EXCLUDE=1).
+EXCLUDE = {("slack", "user_task_4")} if os.environ.get("EXCLUDE", "1") == "1" else set()
 
 
-def count(paths: list[str]) -> tuple[int, int]:
+def count(paths: list[str], suite: str = "") -> tuple[int, int]:
     ok = n = 0
     for p in paths:
         text = open(p).read()
         for m in LINE.finditer(text):
+            if (suite, m.group(2)) in EXCLUDE:
+                continue
             n += 1
             ok += m.group(3) == "Y"
-        n += len(ERR.findall(text))
+        n += sum(1 for m in ERR.finditer(text) if (suite, m.group(2)) not in EXCLUDE)
     return ok, n
 
 
+def confirmations(paths: list[str], suite: str) -> int:
+    import ast
+    c = 0
+    for p in paths:
+        m = CONF.search(open(p).read())
+        if m:
+            c += sum(v for k, v in ast.literal_eval(m.group(1)).items() if (suite, k) not in EXCLUDE)
+    return c
+
+
 def passes() -> tuple[list[dict], list[dict]]:
-    und = [{s: count(glob.glob(os.path.join(R, "live_o4mini", f"benign_{s}_undefended_*.log"))) for s in SUITES}]
+    und = [{s: count(glob.glob(os.path.join(R, "live_o4mini", f"benign_{s}_undefended_*.log")), s) for s in SUITES}]
     for d in ("undef2", "undef3"):
-        und.append({s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log"))) for s in SUITES})
-    gov = [{s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log"))) for s in SUITES}
+        und.append({s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) for s in SUITES})
+    gov = [{s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) for s in SUITES}
            for d in ("pass1", "pass2", "pass3")]
     return und, gov
 
@@ -55,7 +74,12 @@ def pct(c):
 def main() -> dict:
     und, gov = passes()
     out = {"undefended": und, "governed": gov, "rows": {}}
-    hdr = f"{'suite':10s} {'undefended (3)':>18s} {'grants+L4 (3)':>18s} {'paired cost':>15s} {'vs paper':>10s}"
+    conf = {s: statistics.mean(confirmations(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) / N[s]
+                               for d in ("pass1", "pass2", "pass3")) for s in SUITES}
+    conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s)
+                                   for s in SUITES) / sum(N.values()) for d in ("pass1", "pass2", "pass3"))
+    hdr = (f"{'suite':10s} {'undefended (3)':>18s} {'grants+L4 (3)':>18s} {'paired cost':>15s} "
+           f"{'vs paper':>10s} {'conf/task':>10s}")
     print(hdr)
     rows = list(SUITES) + ["all"]
     for s in rows:
@@ -63,7 +87,7 @@ def main() -> dict:
             u = [100 * sum(p[x][0] for x in SUITES) / sum(p[x][1] for x in SUITES) for p in und]
             g = [100 * sum(p[x][0] for x in SUITES) / sum(p[x][1] for x in SUITES) for p in gov]
             paper = sum(PAPER[x] * N[x] for x in SUITES) / sum(N.values())
-            complete = all(sum(p[x][1] for x in SUITES) == 97 for p in und + gov)
+            complete = all(sum(p[x][1] for x in SUITES) == sum(N.values()) for p in und + gov)
         else:
             u = [pct(p[s]) for p in und]
             g = [pct(p[s]) for p in gov]
@@ -75,13 +99,16 @@ def main() -> dict:
                "governed_mean": statistics.mean(g), "governed_sd": statistics.pstdev(g),
                "paired_mean": statistics.mean(d), "paired_sd": statistics.pstdev(d),
                "unpaired_vs_paper": statistics.mean(g) - paper, "paper_undefended": paper,
-               "complete": complete}
+               "complete": complete, "confirmations_per_task": conf_all if s == "all" else conf[s]}
         out["rows"][s] = row
         print(f"{s:10s} {row['undefended_mean']:>9.1f}% ± {row['undefended_sd']:4.1f} "
               f"{row['governed_mean']:>9.1f}% ± {row['governed_sd']:4.1f} "
-              f"{row['paired_mean']:>+8.1f} ± {row['paired_sd']:4.1f} {row['unpaired_vs_paper']:>+9.1f}"
+              f"{row['paired_mean']:>+8.1f} ± {row['paired_sd']:4.1f} {row['unpaired_vs_paper']:>+9.1f} "
+              f"{row['confirmations_per_task']:>9.2f}"
               f"{'' if complete else '  (incomplete)'}")
-    json.dump(out, open(os.path.join(R, "live_o4mini_paired.json"), "w"), indent=1)
+    out["n_tasks"] = sum(N.values())
+    name = "live_o4mini_paired.json" if EXCLUDE else "live_o4mini_paired_97.json"
+    json.dump(out, open(os.path.join(R, name), "w"), indent=1)
     return out
 
 
