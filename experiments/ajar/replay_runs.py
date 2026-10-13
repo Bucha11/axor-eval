@@ -91,6 +91,8 @@ _R0 = None
 
 def _r0_table():
     global _R0
+    if _R0 is None and os.environ.get("AXOR_AJAR_GRANT_ARGS"):
+        _R0 = json.load(open(os.environ["AXOR_AJAR_GRANT_ARGS"]))
     if _R0 is None:
         import derive_grants as D
         from ajar import io, paths
