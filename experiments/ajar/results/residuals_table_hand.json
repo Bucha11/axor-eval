@@ -1,0 +1,190 @@
+{
+ "table": {
+  "R1 addressee": {
+   "candidates": 392,
+   "a": 392,
+   "b": 392,
+   "c-oracle": 392,
+   "c-naive": 392,
+   "c-view": 392
+  },
+  "R1 all_mutating": {
+   "candidates": 392,
+   "a": 392,
+   "b": 392,
+   "c-oracle": 392,
+   "c-naive": 392,
+   "c-view": 392
+  },
+  "R2 redirect": {
+   "candidates": 59,
+   "a": 27,
+   "b": 43,
+   "c-oracle": 43,
+   "c-naive": 43,
+   "c-view": 43
+  },
+  "R3 rich free": {
+   "candidates": 55,
+   "a": 24,
+   "b": 27,
+   "c-oracle": 27,
+   "c-naive": 27,
+   "c-view": 27
+  },
+  "R3 rich under L4": {
+   "candidates": 55,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 8,
+   "c-naive": 3,
+   "c-view": 3
+  }
+ },
+ "summary": {
+  "route1|addressee": {
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 268,
+    "b": 268,
+    "c-oracle": 268,
+    "c-naive": 268,
+    "c-view": 268
+   },
+   "all": {
+    "candidates": 392,
+    "a": 392,
+    "b": 392,
+    "c-oracle": 392,
+    "c-naive": 392,
+    "c-view": 392
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 124,
+    "c-view": 124
+   }
+  },
+  "route1|shared_stores": {
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 268,
+    "b": 268,
+    "c-oracle": 268,
+    "c-naive": 268,
+    "c-view": 268
+   },
+   "all": {
+    "candidates": 392,
+    "a": 268,
+    "b": 268,
+    "c-oracle": 268,
+    "c-naive": 268,
+    "c-view": 268
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   }
+  },
+  "route1|all_mutating": {
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 268,
+    "b": 268,
+    "c-oracle": 268,
+    "c-naive": 268,
+    "c-view": 268
+   },
+   "all": {
+    "candidates": 392,
+    "a": 392,
+    "b": 392,
+    "c-oracle": 392,
+    "c-naive": 392,
+    "c-view": 392
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 124,
+    "c-view": 124
+   }
+  },
+  "route2_fragments_per_string_arg": {
+   "n": 0,
+   "median": null,
+   "p90": null,
+   "max": null
+  },
+  "route2": {
+   "task_sinks_with_L1": 40,
+   "C_median": 1.0,
+   "C_p90": 2,
+   "C_max": 8,
+   "tasks_with_L1": 23,
+   "tasks_k_gt_1": 4,
+   "share_tasks_k_gt_1": 0.174,
+   "redirectable_tuples": 42,
+   "candidates": 59,
+   "a": 27,
+   "b": 43,
+   "c-oracle": 43,
+   "c-naive": 43,
+   "c-view": 43
+  },
+  "route3": {
+   "rich_plan_calls": 55,
+   "tasks_with_rich_call": 44,
+   "a": {
+    "admitted": 24,
+    "admitted_from_read": 24,
+    "tasks": 24,
+    "via_confirmation": 0,
+    "via_request_or_template": 0,
+    "non_grant_sink": 24
+   },
+   "b": {
+    "admitted": 27,
+    "admitted_from_read": 27,
+    "tasks": 25,
+    "via_confirmation": 0,
+    "via_request_or_template": 7,
+    "non_grant_sink": 20
+   },
+   "c-oracle": {
+    "admitted": 35,
+    "admitted_from_read": 35,
+    "tasks": 31,
+    "via_confirmation": 8,
+    "via_request_or_template": 7,
+    "non_grant_sink": 20
+   },
+   "c-naive": {
+    "admitted": 30,
+    "admitted_from_read": 30,
+    "tasks": 28,
+    "via_confirmation": 3,
+    "via_request_or_template": 7,
+    "non_grant_sink": 20
+   },
+   "c-view": {
+    "admitted": 30,
+    "admitted_from_read": 30,
+    "tasks": 28,
+    "via_confirmation": 3,
+    "via_request_or_template": 7,
+    "non_grant_sink": 20
+   }
+  }
+ }
+}
