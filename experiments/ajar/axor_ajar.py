@@ -41,7 +41,9 @@ from axor_core.governor import ToolCallGovernor  # noqa: E402
 from ajar.core.ir import TaskSpec  # noqa: E402
 from ajar.core.types import Candidate, ContextRef, Verdict  # noqa: E402
 
-CONFIG_DIR = os.path.join(_CORE, "examples", "agentdojo", "config")
+# AXOR_AJAR_CONFIG_DIR swaps in another set of suite configs (e.g. config_rule/,
+# the taxonomy derived by rule in derive_grants.py).
+CONFIG_DIR = os.environ.get("AXOR_AJAR_CONFIG_DIR") or os.path.join(_CORE, "examples", "agentdojo", "config")
 
 
 def load_config(suite: str, integrity_default: str | None, integrity_origins: str) -> GovernanceConfig:
