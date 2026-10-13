@@ -277,54 +277,58 @@ def _canon(kind, v):
 
 
 def route2(data):
-    stats, rows = [], []
+    """R2 with revision 4: a string grant arg admits every word-bounded request fragment
+    that is no typed literal. Per (task, sink): C = admissible tuples (product over the
+    grant's args; a string arg contributes its fragment count), P = plan calls covered.
+    Candidates evaluated: for each L1 grant, one arg varied at a time over its values
+    (string args: fragments of up to 2 words), the others at the plan's values."""
+    from axor_core.kernel.grants import ConstraintKind
+    from axor_core.kernel.request_literals import request_fragments
+    stats, rows, frag_counts = [], [], []
     for spec, probes in data:
         suite = spec.task.suite
-        ga = r0().get(suite, {})
         g = make_gov(spec, "b")
         grants = [x for x in g.grants.issued if x.source.value == "L1"]
+        frags_all = request_fragments(spec.prompt)
+        frags_eval = sorted(request_fragments(spec.prompt, max_words=2))
         by_sink = defaultdict(list)
         for x in grants:
             by_sink[x.sink].append(x)
         for sink, gs in by_sink.items():
-            kinds = ga.get(sink, {})
             plan_calls = [(i, c) for i, c in enumerate(spec.plan) if c.tool == sink]
-
-            def matches(grant, c):
-                for a, con in grant.constraints.items():
-                    kind = split_kind(kinds.get(a, "string"))[0]
-                    v = c.args.get(a)
-                    if v is None or v == [] or v == "":
-                        if con.values:
-                            return False
-                        continue
-                    vals = {_canon(kind, x) for x in (v if isinstance(v, (list, tuple)) else [v])}
-                    if vals != set(con.values):
-                        return False
-                return True
-
-            intended = [x for x in gs if any(matches(x, c) for _, c in plan_calls)]
-            redirect = [x for x in gs if x not in intended]
-            uses = [x.uses for x in redirect]
-            stats.append({"task": str(spec.task), "suite": suite, "sink": sink, "C": len(gs),
-                          "P": len(intended), "redirectable": len(redirect),
-                          "redirectable_uses": sum(u for u in uses if u is not None),
-                          "unlimited": any(u is None for u in uses), "plan_has_sink": bool(plan_calls)})
             idx = plan_calls[0][0] if plan_calls else len(spec.plan)
             base = dict(plan_calls[0][1].args) if plan_calls else dict(DEFAULTS[suite].get(sink, {}))
-            for x in redirect:
-                call = dict(base)
+            C = 0
+            for x in gs:
+                n = 1
                 for a, con in x.constraints.items():
-                    if not con.values:
-                        call.pop(a, None)
-                        continue
-                    v = next(iter(con.values))
-                    call[a] = [v] if isinstance(base.get(a), list) else v
-                res = {}
-                for config, _, _ in CONFIGS:
-                    d = run(spec, config, idx, [(sink, call, None)])
-                    res[config] = [bool(d.allowed), d.category if not d.allowed else getattr(d, "grant_source", None)]
-                rows.append({"task": str(spec.task), "suite": suite, "sink": sink, "k": idx, "call": call, "res": res})
+                    if con.kind is ConstraintKind.FRAGMENT:
+                        n *= len(frags_all) + (1 if con.optional else 0)
+                        frag_counts.append({"task": str(spec.task), "sink": sink, "arg": a, "n": len(frags_all)})
+                    else:
+                        n *= max(1, len(con.values))
+                C += n
+            P = sum(1 for _, c in plan_calls if any(x.covers(sink, dict(c.args), None) for x in gs))
+            stats.append({"task": str(spec.task), "suite": suite, "sink": sink, "C": C, "P": P,
+                          "redirectable": max(0, C - P), "plan_has_sink": bool(plan_calls)})
+            seen = set()
+            for x in gs:
+                for a, con in x.constraints.items():
+                    vals = frags_eval if con.kind is ConstraintKind.FRAGMENT else sorted(con.values)
+                    for v in vals:
+                        call = dict(base)
+                        call[a] = [v] if isinstance(base.get(a), list) else v
+                        key = json.dumps([sink, call], sort_keys=True, default=str)
+                        if key in seen or any(call == dict(c.args) for _, c in plan_calls):
+                            continue
+                        seen.add(key)
+                        res = {}
+                        for config, _, _ in CONFIGS:
+                            d = run(spec, config, idx, [(sink, call, None)])
+                            res[config] = [bool(d.allowed), d.category if not d.allowed else getattr(d, "grant_source", None)]
+                        rows.append({"task": str(spec.task), "suite": suite, "sink": sink, "k": idx, "arg": a,
+                                     "fragment": con.kind is ConstraintKind.FRAGMENT, "call": call, "res": res})
+    stats.append({"_frag_counts": frag_counts})
     return stats, rows
 
 
@@ -375,6 +379,11 @@ def summarize_routes(r1, r2s, r2, r3):
                     by_t[name][c[0]] += int(adm[c[0]])
         out[f"route1|{scope}"] = dict(by_t)
     # route 2
+    fc = next((s["_frag_counts"] for s in r2s if "_frag_counts" in s), [])
+    r2s = [s for s in r2s if "_frag_counts" not in s]
+    ns = [f["n"] for f in fc]
+    out["route2_fragments_per_string_arg"] = {"n": len(ns), "median": statistics.median(ns) if ns else None,
+                                              "p90": pct(ns, 0.9), "max": max(ns) if ns else None}
     Cs = [s["C"] for s in r2s]
     tasks_k = defaultdict(int)
     for s in r2s:
@@ -385,7 +394,6 @@ def summarize_routes(r1, r2s, r2, r3):
         "tasks_with_L1": len(tasks_k), "tasks_k_gt_1": sum(1 for v in tasks_k.values() if v > 1),
         "share_tasks_k_gt_1": round(sum(1 for v in tasks_k.values() if v > 1) / max(len(tasks_k), 1), 3),
         "redirectable_tuples": sum(s["redirectable"] for s in r2s),
-        "redirectable_uses": sum(s["redirectable_uses"] for s in r2s),
         "candidates": len(r2), **{c[0]: sum(int(r["res"][c[0]][0]) for r in r2) for c in CONFIGS},
     }
     # route 3
