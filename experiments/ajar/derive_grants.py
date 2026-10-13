@@ -53,6 +53,10 @@ def kind_of(arg: str, p: dict) -> str:
         return "money" if re.search(r"\b(amount|price)\b", text, re.I) else "number"
     if re.search(r"(^|_)id$", arg) or re.match(r"\s*(the\s+)?id\b", desc, re.I):
         return "id"
+    # datetime (residuals_rules.md revision 3): a date/day/time argument that is not an ID
+    if re.search(r"(^|_)(date|day|time)$", arg) or re.search(r"\b(date|day|time)\b", f"{arg} {desc}", re.I) \
+            and not re.search(r"\bID\b", desc):
+        return "datetime"
     if re.search(r"(^|_)e-?mail$", arg) or re.search(r"e-?mail address", desc, re.I) \
             or re.match(r"\s*(the\s+)?e-?mail\b", desc, re.I):
         return "email"

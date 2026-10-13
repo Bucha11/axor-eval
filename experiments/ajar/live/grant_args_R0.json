@@ -2,13 +2,13 @@
  "banking": {
   "schedule_transaction": {
    "amount": "money",
-   "date": "string",
+   "date": "datetime",
    "recipient": "iban",
    "recurring": "string"
   },
   "send_money": {
    "amount": "money",
-   "date": "string",
+   "date": "datetime",
    "recipient": "iban"
   },
   "update_password": {
@@ -16,7 +16,7 @@
   },
   "update_scheduled_transaction": {
    "amount": "money?",
-   "date": "string?",
+   "date": "datetime?",
    "id": "number",
    "recipient": "iban?",
    "recurring": "string?"
@@ -58,24 +58,24 @@
    "event_id": "id"
   },
   "create_calendar_event": {
-   "end_time": "string",
+   "end_time": "datetime",
    "location": "string?",
    "participants": "email?",
-   "start_time": "string"
+   "start_time": "datetime"
   },
   "reserve_car_rental": {
    "company": "string",
-   "end_time": "string?",
-   "start_time": "string"
+   "end_time": "datetime?",
+   "start_time": "datetime"
   },
   "reserve_hotel": {
-   "end_day": "string",
+   "end_day": "datetime",
    "hotel": "string",
-   "start_day": "string"
+   "start_day": "datetime"
   },
   "reserve_restaurant": {
    "restaurant": "string",
-   "start_time": "string"
+   "start_time": "datetime"
   },
   "send_email": {
    "attachments": "string?",
@@ -96,10 +96,10 @@
    "event_id": "id"
   },
   "create_calendar_event": {
-   "end_time": "string",
+   "end_time": "datetime",
    "location": "string?",
    "participants": "email?",
-   "start_time": "string"
+   "start_time": "datetime"
   },
   "create_file": {
    "filename": "string"
@@ -112,8 +112,8 @@
   },
   "reschedule_calendar_event": {
    "event_id": "id",
-   "new_end_time": "string?",
-   "new_start_time": "string"
+   "new_end_time": "datetime?",
+   "new_start_time": "datetime"
   },
   "send_email": {
    "attachments": "string?",

@@ -163,5 +163,38 @@ def _register_anyway(g, tool, args, out):
         g.register_output(d, out)
 
 
+def grants_return():
+    """Admissions in (b) and not in (a), over Ajar's tests, split by the probe's
+    expected label: ALLOW (a plan call — what grants give back in utility) vs DENY
+    (an attacker / over-privilege candidate). Also (c)-oracle vs (a)."""
+    import run_ajar
+    from ajar.runner import run_defense
+    data = run_ajar.load(None)
+    a = axor_ajar.AxorDefense("a", integrity_default="context", integrity_origins="request-only")
+    b = axor_ajar.grants_defense("b", "L1+L2s", grant_args=R.r0())
+    c = axor_ajar.grants_defense("c", "L1+L2s+L4", grant_args=R.r0(), confirm="oracle")
+    out = {"b_not_a": Counter(), "c_not_a": Counter(), "a_not_b": Counter(), "examples_b_not_a_deny": []}
+    for spec, probes in data:
+        ra, rb, rc = run_defense(a, spec, probes), run_defense(b, spec, probes), run_defense(c, spec, probes)
+        for x, y, z in zip(ra, rb, rc):
+            lab = x.probe.expected_label.name
+            A, B, C = (r.verdict.name == "ALLOW" for r in (x, y, z))
+            if B and not A:
+                out["b_not_a"][lab] += 1
+                if lab == "DENY" and len(out["examples_b_not_a_deny"]) < 40:
+                    out["examples_b_not_a_deny"].append({"task": str(spec.task), "k": len(x.probe.context.prefix),
+                                                         "tool": x.probe.candidate.tool,
+                                                         "args": dict(x.probe.candidate.args),
+                                                         "fault": x.probe.fault_class.name})
+            if C and not A:
+                out["c_not_a"][lab] += 1
+            if A and not B:
+                out["a_not_b"][lab] += 1
+    res = {k: (dict(v) if isinstance(v, Counter) else v) for k, v in out.items()}
+    tag = os.environ.get("TAG", "")
+    json.dump(res, open(os.path.join(R.RESULTS, f"residuals_grants_return{('_' + tag) if tag else ''}.json"), "w"), indent=1)
+    print(json.dumps({k: v for k, v in res.items() if not k.startswith("examples")}))
+
+
 if __name__ == "__main__":
-    {"baseline_diff": baseline_diff, "traj_floor": traj_floor}[sys.argv[1]]()
+    {"baseline_diff": baseline_diff, "traj_floor": traj_floor, "grants_return": grants_return}[sys.argv[1]]()
