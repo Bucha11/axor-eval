@@ -168,6 +168,7 @@ def main(argv=None) -> int:
     ap.add_argument("--suite")
     ap.add_argument("--runs", type=int, default=1)
     ap.add_argument("--no-baselines", action="store_true")
+    ap.add_argument("--tag", default="", help="suffix for the results file")
     a = ap.parse_args(argv)
 
     data = load(a.suite)
@@ -212,7 +213,8 @@ def main(argv=None) -> int:
         if "runs" in row:
             row.setdefault("verdict_mismatches", 0)
     os.makedirs(RESULTS, exist_ok=True)
-    path = os.path.join(RESULTS, f"{a.experiment}{'-' + a.suite if a.suite else ''}.json")
+    path = os.path.join(RESULTS, f"{a.experiment}{'-' + a.suite if a.suite else ''}"
+                                 f"{'-' + a.tag if a.tag else ''}.json")
     with open(path, "w") as f:
         json.dump(out, f, indent=1, sort_keys=True)
     print("wrote", path)

@@ -124,7 +124,7 @@ class AxorDefense:
         g = self.governor(spec)
         for call, out in PREFIXES.outputs(spec, ctx):
             d = g.evaluate(call.tool, dict(call.args))
-            if d.grant_id is not None:  # the call executed: its grant use is spent
+            if getattr(d, "grant_id", None) is not None:  # the call executed: its grant use is spent
                 key = g.spend(d, dict(call.args))
                 if key is not None:
                     g.grant_store.commit(key)
@@ -290,7 +290,7 @@ def plan_walk(defense: AxorDefense, spec: TaskSpec) -> dict[str, Any]:
     for call, out in PREFIXES.outputs(spec, full):
         d = g.evaluate(call.tool, dict(call.args))
         allowed &= d.allowed
-        if d.grant_id is not None:
+        if getattr(d, "grant_id", None) is not None:
             key = g.spend(d, dict(call.args))
             if key is not None:
                 g.grant_store.commit(key)
