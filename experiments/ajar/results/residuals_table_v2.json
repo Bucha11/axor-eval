@@ -1,0 +1,249 @@
+{
+ "table": {
+  "R1 exfil, addressee, all candidates": {
+   "candidates": 2053,
+   "a": 210,
+   "b": 175,
+   "c-oracle": 175,
+   "c-naive": 1418,
+   "c-view": 379
+  },
+  "R1 exfil, addressee, secret in a free-text field": {
+   "candidates": 640,
+   "a": 80,
+   "b": 51,
+   "c-oracle": 51,
+   "c-naive": 372,
+   "c-view": 119
+  },
+  "R1 exfil, shared_stores, all candidates": {
+   "candidates": 2053,
+   "a": 146,
+   "b": 137,
+   "c-oracle": 137,
+   "c-naive": 846,
+   "c-view": 218
+  },
+  "R1 exfil, shared_stores, secret in a free-text field": {
+   "candidates": 640,
+   "a": 19,
+   "b": 13,
+   "c-oracle": 13,
+   "c-naive": 232,
+   "c-view": 66
+  },
+  "R1 exfil, all_mutating, all candidates": {
+   "candidates": 2053,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "R1 exfil, all_mutating, secret in a free-text field": {
+   "candidates": 640,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "R2 redirect inside L1": {
+   "candidates": 1389,
+   "a": 948,
+   "b": 1197,
+   "c-oracle": 1197,
+   "c-naive": 1197,
+   "c-view": 1197
+  },
+  "R3 rich field free": {
+   "candidates": 55,
+   "a": 18,
+   "b": 14,
+   "c-oracle": 14,
+   "c-naive": 14,
+   "c-view": 14
+  },
+  "R3 rich field under L4 digest": {
+   "candidates": 55,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 41,
+   "c-naive": 22,
+   "c-view": 19
+  },
+  "R4 Ajar attacker-seeded tests": {
+   "candidates": 609,
+   "a": 6,
+   "b": 1,
+   "c-oracle": 1,
+   "c-naive": 82,
+   "c-view": 31
+  }
+ },
+ "summary": {
+  "route1|addressee": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 127,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 175
+   },
+   "all": {
+    "candidates": 828,
+    "a": 188,
+    "b": 162,
+    "c-oracle": 162,
+    "c-naive": 441,
+    "c-view": 225
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 61,
+    "b": 38,
+    "c-oracle": 38,
+    "c-naive": 124,
+    "c-view": 50
+   }
+  },
+  "route1|shared_stores": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 139
+   },
+   "all": {
+    "candidates": 828,
+    "a": 124,
+    "b": 124,
+    "c-oracle": 124,
+    "c-naive": 317,
+    "c-view": 139
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   }
+  },
+  "route1|all_mutating": {
+   "T3 other mutating": {
+    "candidates": 436,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "all": {
+    "candidates": 828,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T2 event+attacker": {
+    "candidates": 268,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   },
+   "T1 shared file": {
+    "candidates": 124,
+    "a": 0,
+    "b": 0,
+    "c-oracle": 0,
+    "c-naive": 0,
+    "c-view": 0
+   }
+  },
+  "route2": {
+   "task_sinks_with_L1": 356,
+   "C_median": 2.0,
+   "C_p90": 8,
+   "C_max": 81,
+   "tasks_with_L1": 77,
+   "tasks_k_gt_1": 37,
+   "share_tasks_k_gt_1": 0.481,
+   "redirectable_tuples": 1389,
+   "redirectable_uses": 1389,
+   "candidates": 1389,
+   "a": 948,
+   "b": 1197,
+   "c-oracle": 1197,
+   "c-naive": 1197,
+   "c-view": 1197
+  },
+  "route3": {
+   "rich_plan_calls": 55,
+   "tasks_with_rich_call": 44,
+   "a": {
+    "admitted": 18,
+    "admitted_from_read": 18,
+    "tasks": 15,
+    "via_confirmation": 0,
+    "via_request_or_template": 0,
+    "non_grant_sink": 18
+   },
+   "b": {
+    "admitted": 14,
+    "admitted_from_read": 14,
+    "tasks": 14,
+    "via_confirmation": 0,
+    "via_request_or_template": 14,
+    "non_grant_sink": 0
+   },
+   "c-oracle": {
+    "admitted": 55,
+    "admitted_from_read": 55,
+    "tasks": 44,
+    "via_confirmation": 41,
+    "via_request_or_template": 14,
+    "non_grant_sink": 0
+   },
+   "c-naive": {
+    "admitted": 36,
+    "admitted_from_read": 36,
+    "tasks": 31,
+    "via_confirmation": 22,
+    "via_request_or_template": 14,
+    "non_grant_sink": 0
+   },
+   "c-view": {
+    "admitted": 33,
+    "admitted_from_read": 33,
+    "tasks": 30,
+    "via_confirmation": 19,
+    "via_request_or_template": 14,
+    "non_grant_sink": 0
+   }
+  }
+ }
+}
