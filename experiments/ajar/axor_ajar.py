@@ -228,25 +228,18 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
     table = GRANT_ARGS if grant_args is None else grant_args
 
     def matcher(spec):
+        """The scripted confirmer's oracle: approve iff the WHOLE proposed call —
+        every argument, rich fields included — equals a call in the reference plan
+        (kernel.confirm.call_digest; grant args compared by canonical value)."""
         def ok(a, c):
-            from axor_core.kernel.handles import canonicalize, split_kind
+            from axor_core.kernel.confirm import call_digest
+            from axor_core.kernel.handles import HandleTable
 
             kinds = table.get(spec.task.suite, {}).get(c[0], {})
-
-            def proj(args):
-                out = []
-                for k, spec_kind in sorted(kinds.items()):
-                    kind = split_kind(spec_kind)[0]
-                    v = args.get(k)
-                    vals = v if isinstance(v, (list, tuple)) else [v]
-                    try:
-                        out.append((k, tuple(sorted(canonicalize(kind, x) for x in vals if x is not None))))
-                    except ValueError:
-                        out.append((k, ("<bad>",)))
-                return tuple(out)
-
-            want = proj(c[1])
-            return any(p.tool == c[0] and proj(dict(p.args)) == want for p in spec.plan)
+            t = HandleTable()
+            want = call_digest(c[0], c[1], kinds, t)
+            return any(p.tool == c[0] and call_digest(p.tool, dict(p.args), kinds, t) == want
+                       for p in spec.plan)
         return ok
 
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
