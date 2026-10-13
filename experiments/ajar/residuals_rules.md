@@ -154,3 +154,42 @@ search_emails).
 by sink, argument and literal; for each the reason (a) refuses is the denial category
 and the origin check's view of the value (the value as passed vs the request's text),
 and the reason (b) admits is the L1 grant that covers it (its canonical value).
+
+## Revision 3 — L1 type matching (fixed before code and rerun)
+
+An L1 literal binds to a grant argument only when its syntactic type is the argument's
+kind. Each literal gets its type from its syntax alone (request_literals):
+
+| literal (syntax) | type(s) |
+|---|---|
+| IBAN | `iban` |
+| e-mail address | `email` |
+| URL (scheme or `www.`, revision 2) | `url` |
+| `YYYY-MM-DD` | `date`, `datetime` |
+| `YYYY-MM-DD HH:MM` (space or `T`) | `datetime` |
+| a number with a decimal part or a currency sign / thousands separator | `money`, `number` |
+| a bare integer (digits only) | `money`, `number`, `id` |
+| a file-name-like token (`name.ext`) | `path` |
+| a fragment in quotes/backticks that is not itself one of the typed literals above | `string` |
+
+A quoted fragment that IS a typed literal (`'sarah.connor@gmail.com'`, `'2024-05-19'`)
+has only that type. A capitalised word is no literal. Consequences, slot by slot:
+
+- `datetime` / `date` slots: only date/datetime literals, exact canonical match (a date
+  literal does not cover a datetime value with that date);
+- `id` slots: only bare integers (never a date, e-mail, URL, IBAN, amount with
+  decimals, file name or quoted text);
+- `string` slots: only quoted text that is no typed literal;
+- `email` / `iban` / `url` / `money` / `number` / `path`: only their own type.
+
+Slot kinds (derive_grants.kind_of): unchanged except a new `datetime` kind — a
+non-numeric argument whose name or first docstring line names a date, day or time
+(`date`, `day`, `time`, `*_time`, `*_day`), unless it is an ID. Canonical forms:
+`datetime`/`date` — trimmed, `T` → space; the others as before.
+
+R2 split of what remains: a redirect is a "same-type swap" when every swapped literal's
+type is the slot's kind (it always is now, by construction) — reported as such, with
+the swapped args; "other" covers anything else (expected 0).
+"Utility returned by grants" = admissions in (b) and not in (a) over Ajar's tests,
+split by the probe's expected label: ALLOW-labelled (plan calls, legitimate) vs
+DENY-labelled (attacker / over-privilege candidates).
