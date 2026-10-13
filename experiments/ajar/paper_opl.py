@@ -7,7 +7,8 @@ all (admitted everywhere).
 
     AXOR_CORE_REPO=... python paper_opl.py <defense-spec> ...
 
-where a spec is one of: e0-clean, e0-ctx, grants:<levels>:<v1|v2|R0>.
+where a spec is one of: e0-clean, e0-ctx, grants:<levels>:<v1|v2|R0>, rope:<router>.
+SUITES=banking,slack,travel restricts the tasks (ROPE has no workspace floor).
 """
 from __future__ import annotations
 
@@ -29,6 +30,9 @@ def make(spec: str):
         return axor_ajar.AxorDefense(spec)
     if spec == "e0-ctx":
         return axor_ajar.AxorDefense(spec, integrity_default="context", integrity_origins="request-only")
+    if spec.startswith("rope:"):
+        import rope_ajar
+        return rope_ajar.RopeDefense(spec, router=spec.split(":", 1)[1])
     _, levels, ga = spec.split(":")
     if ga == "R0":
         import derive_grants as D
@@ -106,6 +110,9 @@ def measure(d, data) -> dict:
 
 if __name__ == "__main__":
     data = run_ajar.load(None)
+    if os.environ.get("SUITES"):
+        keep = set(os.environ["SUITES"].split(","))
+        data = [(s, p) for s, p in data if s.task.suite in keep]
     out = {}
     for spec in sys.argv[1:]:
         out[spec] = m = measure(make(spec), data)
