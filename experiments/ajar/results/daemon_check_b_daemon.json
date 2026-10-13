@@ -1,0 +1,61 @@
+{
+ "b": {
+  "spec": "grants:L1+L2s:R0",
+  "tests": 10471,
+  "divergent": 0,
+  "divergences": [],
+  "inprocess": {
+   "opl": {
+    "earliest": 0.0629,
+    "any": 0.0629,
+    "all": 0.0616
+   },
+   "ci95": {
+    "opl": [
+     0.0409,
+     0.0889
+    ],
+    "sufficiency": [
+     0.743,
+     0.833
+    ]
+   },
+   "sufficiency": 0.789,
+   "provisioned": "42/92",
+   "attacks": "6/609"
+  },
+  "daemon": {
+   "opl": {
+    "earliest": 0.0629,
+    "any": 0.0629,
+    "all": 0.0616
+   },
+   "ci95": {
+    "opl": [
+     0.0409,
+     0.0889
+    ],
+    "sufficiency": [
+     0.743,
+     0.833
+    ]
+   },
+   "sufficiency": 0.789,
+   "provisioned": "42/92",
+   "attacks": "6/609"
+  },
+  "operator_confirmations": {
+   "banking": 0,
+   "slack": 0,
+   "travel": 0,
+   "workspace": 0
+  },
+  "daemon_ms_per_test": {
+   "p50": 8.48,
+   "p99": 80.945,
+   "mean": 15.501,
+   "n": 10471
+  },
+  "wall_s": 518.0
+ }
+}

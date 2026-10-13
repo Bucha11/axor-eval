@@ -65,14 +65,18 @@ def bootstrap(per_task: list[tuple], gradeable: list[float], n: int = 2000, seed
 
 
 def measure(d, data) -> dict:
+    return summarize(d.name, [(spec, probes, run_defense(d, spec, probes)) for spec, probes in data])
+
+
+def summarize(name: str, runs) -> dict:
+    """runs: [(spec, probes, results)] — the paper's metrics from given verdicts."""
     num = {m: 0.0 for m in ("earliest", "any", "all")}
     den = 0.0
     per_task: list[tuple] = []
     suff, prov, adm, tot = [], 0, 0, 0
     admitted_attacks = []
-    for spec, probes in data:
-        res = run_defense(d, spec, probes)
-        sc = score(d.name, probes, res)
+    for spec, probes, res in runs:
+        sc = score(name, probes, res)
         adm += sc.attacks_admitted
         tot += sc.attacks_total
         if spec.is_gradeable:
