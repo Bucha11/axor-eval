@@ -1,0 +1,38 @@
+{
+ "banking": {
+  "schedule_transaction": {
+   "recipient": "iban"
+  },
+  "send_money": {
+   "recipient": "iban"
+  },
+  "update_password": {
+   "password": "string"
+  },
+  "update_scheduled_transaction": {
+   "recipient": "iban?"
+  }
+ },
+ "slack": {
+  "post_webpage": {
+   "url": "url"
+  }
+ },
+ "travel": {
+  "send_email": {
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  }
+ },
+ "workspace": {
+  "send_email": {
+   "bcc": "email?",
+   "cc": "email?",
+   "recipients": "email"
+  },
+  "share_file": {
+   "email": "email"
+  }
+ }
+}

@@ -27,7 +27,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
 
-R0 = json.load(open(os.path.join(HERE, "live", "grant_args_R0.json")))
+CONFIG_DIR = os.environ.get("AXOR_AJAR_CONFIG_DIR") or os.path.join(HERE, "config_rule")
+R0 = json.load(open(os.environ.get("AXOR_AJAR_GRANT_ARGS") or os.path.join(HERE, "live", "grant_args_R0.json")))
+GRANTS = os.environ.get("REPLAY_GRANTS", "1") == "1"  # 0: configuration (a), no grants
 TPL = json.load(open(os.path.join(HERE, "live", "templates_L2s.json")))
 
 
@@ -41,6 +43,9 @@ def text_of(msg):
 def parse_call(tc):
     if isinstance(tc, dict):
         return tc["function"], dict(tc["args"])
+    if isinstance(tc, str) and tc.startswith("{'function'"):
+        d = ast.literal_eval(tc)
+        return d["function"], dict(d["args"])
     s = str(tc)
     fn = re.search(r"function='(\w+)'", s).group(1)
     args = ast.literal_eval(re.search(r"args=(\{.*?\}) id=", s, re.S).group(1))
@@ -48,16 +53,25 @@ def parse_call(tc):
 
 
 def governor(suite, prompt):
-    cfg = GovernanceConfig.from_yaml(os.path.join(HERE, "config_rule", f"{suite}.yaml"))
+    cfg = GovernanceConfig.from_yaml(os.path.join(CONFIG_DIR, f"{suite}.yaml"))
     cfg = dataclasses.replace(cfg, integrity_default="context", integrity_origins="request-only")
     kw = cfg.as_governor_kwargs()
-    kw["grant_args"] = R0.get(suite, {})
-    if TPL.get(suite):
-        kw["grant_templates"] = TPL[suite]
+    if GRANTS:
+        kw["grant_args"] = R0.get(suite, {})
+        if TPL.get(suite):
+            kw["grant_templates"] = TPL[suite]
     g = ToolCallGovernor(**kw)
     g.register_task(prompt)
-    g.grants.from_request(prompt)
+    if GRANTS:
+        g.grants.from_request(prompt)
     return g
+
+
+def _calls_of(msg):
+    tcs = msg.get("tool_calls")
+    if isinstance(tcs, str):
+        tcs = ast.literal_eval(tcs) if tcs not in ("None", "") else []
+    return tcs or []
 
 
 def replay(d):
@@ -68,9 +82,9 @@ def replay(d):
     calls = []
     reads = ""  # recorded outputs before the current call (kept for denied calls: the audit)
     for x in msgs:
-        if x["role"] != "assistant" or not x.get("tool_calls"):
+        if x["role"] != "assistant":
             continue
-        for tc in x["tool_calls"]:
+        for tc in _calls_of(x):
             fn, args = parse_call(tc)
             tid = tc.get("id") if isinstance(tc, dict) else re.search(r"id='([^']+)'", str(tc)).group(1)
             dec = g.evaluate(fn, dict(args))
@@ -93,7 +107,27 @@ def replay(d):
     return {"suite": d["suite"], "task": d["user_task_id"], "utility": d["utility"], "prompt": prompt, "calls": calls}
 
 
+def main_benign(root, out):
+    """The 288 recorded benign AgentDojo trajectories (3 models x 96 tasks)."""
+    import glob
+    res = []
+    for model in ("gpt-4o-2024-05-13", "claude-3-5-sonnet-20241022", "gpt-4o-mini-2024-07-18"):
+        for suite in ("banking", "slack", "travel", "workspace"):
+            for p in sorted(glob.glob(os.path.join(root, model, suite, "user_task_*", "none", "none.json"))):
+                d = json.load(open(p))
+                if (suite, d["user_task_id"]) == ("slack", "user_task_4"):
+                    continue
+                d["suite"] = suite
+                r = replay(d)
+                r["pass"] = model
+                res.append(r)
+    json.dump(res, open(out, "w"), indent=1, default=str)
+    print(out, len(res), "trajectories,", sum(len(r["calls"]) for r in res), "calls")
+
+
 def main(path, out):
+    if os.path.isdir(path):
+        return main_benign(path, out)
     tf = tarfile.open(path)
     res = []
     for m in sorted(tf.getmembers(), key=lambda m: m.name):
