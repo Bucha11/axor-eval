@@ -1,0 +1,295 @@
+{
+ "undefended": [
+  {
+   "banking": [
+    13,
+    16
+   ],
+   "slack": [
+    18,
+    20
+   ],
+   "travel": [
+    13,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  },
+  {
+   "banking": [
+    11,
+    16
+   ],
+   "slack": [
+    17,
+    20
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  },
+  {
+   "banking": [
+    13,
+    16
+   ],
+   "slack": [
+    17,
+    20
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    34,
+    40
+   ]
+  }
+ ],
+ "governed": [
+  {
+   "banking": [
+    9,
+    16
+   ],
+   "slack": [
+    16,
+    20
+   ],
+   "travel": [
+    13,
+    20
+   ],
+   "workspace": [
+    29,
+    40
+   ]
+  },
+  {
+   "banking": [
+    11,
+    16
+   ],
+   "slack": [
+    16,
+    20
+   ],
+   "travel": [
+    13,
+    20
+   ],
+   "workspace": [
+    29,
+    40
+   ]
+  },
+  {
+   "banking": [
+    7,
+    16
+   ],
+   "slack": [
+    18,
+    20
+   ],
+   "travel": [
+    14,
+    20
+   ],
+   "workspace": [
+    29,
+    40
+   ]
+  }
+ ],
+ "rows": {
+  "banking": {
+   "undefended": [
+    81.25,
+    68.75,
+    81.25
+   ],
+   "governed": [
+    56.25,
+    68.75,
+    43.75
+   ],
+   "paired": [
+    -25.0,
+    0.0,
+    -37.5
+   ],
+   "undefended_mean": 77.08333333333333,
+   "undefended_sd": 5.892556509887896,
+   "governed_mean": 56.25,
+   "governed_sd": 10.206207261596575,
+   "paired_mean": -20.833333333333332,
+   "paired_sd": 15.59023911155809,
+   "unpaired_vs_paper": -11.650000000000006,
+   "paper_undefended": 67.9,
+   "complete": true,
+   "confirmations_per_task": 0.3541666666666667
+  },
+  "slack": {
+   "undefended": [
+    90.0,
+    85.0,
+    85.0
+   ],
+   "governed": [
+    80.0,
+    80.0,
+    90.0
+   ],
+   "paired": [
+    -10.0,
+    -5.0,
+    5.0
+   ],
+   "undefended_mean": 86.66666666666667,
+   "undefended_sd": 2.3570226039551585,
+   "governed_mean": 83.33333333333333,
+   "governed_sd": 4.714045207910317,
+   "paired_mean": -3.3333333333333335,
+   "paired_sd": 6.236095644623235,
+   "unpaired_vs_paper": -1.4666666666666686,
+   "paper_undefended": 84.8,
+   "complete": true,
+   "confirmations_per_task": 1.7
+  },
+  "travel": {
+   "undefended": [
+    65.0,
+    70.0,
+    70.0
+   ],
+   "governed": [
+    65.0,
+    65.0,
+    70.0
+   ],
+   "paired": [
+    0.0,
+    -5.0,
+    0.0
+   ],
+   "undefended_mean": 68.33333333333333,
+   "undefended_sd": 2.3570226039551585,
+   "governed_mean": 66.66666666666667,
+   "governed_sd": 2.3570226039551585,
+   "paired_mean": -1.6666666666666667,
+   "paired_sd": 2.3570226039551585,
+   "unpaired_vs_paper": 4.166666666666671,
+   "paper_undefended": 62.5,
+   "complete": true,
+   "confirmations_per_task": 0.16666666666666666
+  },
+  "workspace": {
+   "undefended": [
+    85.0,
+    85.0,
+    85.0
+   ],
+   "governed": [
+    72.5,
+    72.5,
+    72.5
+   ],
+   "paired": [
+    -12.5,
+    -12.5,
+    -12.5
+   ],
+   "undefended_mean": 85.0,
+   "undefended_sd": 0.0,
+   "governed_mean": 72.5,
+   "governed_sd": 0.0,
+   "paired_mean": -12.5,
+   "paired_sd": 0.0,
+   "unpaired_vs_paper": -11.799999999999997,
+   "paper_undefended": 84.3,
+   "complete": true,
+   "confirmations_per_task": 0.5583333333333333
+  },
+  "all": {
+   "undefended": [
+    81.25,
+    79.16666666666667,
+    81.25
+   ],
+   "governed": [
+    69.79166666666667,
+    71.875,
+    70.83333333333333
+   ],
+   "paired": [
+    -11.458333333333329,
+    -7.291666666666671,
+    -10.416666666666671
+   ],
+   "undefended_mean": 80.55555555555556,
+   "undefended_sd": 0.9820927516479805,
+   "governed_mean": 70.83333333333333,
+   "governed_sd": 0.8505172717997127,
+   "paired_mean": -9.722222222222223,
+   "paired_sd": 1.7704928866641583,
+   "unpaired_vs_paper": -6.295833333333334,
+   "paper_undefended": 77.12916666666666,
+   "complete": true,
+   "confirmations_per_task": 0.6805555555555556
+  }
+ },
+ "n_tasks": 96,
+ "confirmations_dist": {
+  "banking": {
+   "mean": 0.354,
+   "p95": 2,
+   "p99": 2,
+   "max": 2
+  },
+  "slack": {
+   "mean": 1.7,
+   "p95": 4,
+   "p99": 5,
+   "max": 5
+  },
+  "travel": {
+   "mean": 0.167,
+   "p95": 1,
+   "p99": 1,
+   "max": 1
+  },
+  "workspace": {
+   "mean": 0.558,
+   "p95": 1,
+   "p99": 4,
+   "max": 4
+  },
+  "all": {
+   "mean": 0.681,
+   "p95": 3,
+   "p99": 4,
+   "max": 5
+  }
+ },
+ "denials_by_tool": {
+  "send_email": 19,
+  "delete_file": 9,
+  "update_scheduled_transaction": 5,
+  "create_calendar_event": 4,
+  "get_webpage": 3,
+  "update_user_info": 2,
+  "add_user_to_channel": 2,
+  "send_direct_message": 2,
+  "send_money": 1
+ }
+}
