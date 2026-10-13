@@ -83,7 +83,7 @@ def main() -> dict:
                                for d in ("pass1", "pass2", "pass3")) for s in SUITES}
     conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s)
                                    for s in SUITES) / sum(N.values()) for d in ("pass1", "pass2", "pass3"))
-    hdr = (f"{'suite':10s} {'undefended (3)':>18s} {'grants+L4 (3)':>18s} {'paired cost':>15s} "
+    hdr = (f"{'suite':10s} {'undefended (3)':>18s} {os.environ.get('LABEL', 'grants+L4') + ' (3)':>18s} {'paired cost':>15s} "
            f"{'vs paper':>10s} {'conf/task':>10s}")
     print(hdr)
     rows = list(SUITES) + ["all"]
