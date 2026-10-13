@@ -1,0 +1,113 @@
+"""Re-decide the recorded live o4-mini trajectories with a given kernel (no model).
+
+    AXOR_CORE_REPO=<kernel> python replay_live.py <trajectories.tgz> <out.json>
+
+Each governed trajectory (live v4: grants+L4, live v5: grants no-human) is replayed
+call by call through a fresh ToolCallGovernor built exactly as the live runner builds
+it (config_rule/<suite>.yaml, context integrity, request-only, R0 grant args, L1+L2s
+grants from the request, NO confirmer): every recorded call is evaluated and, if it
+was executed in the recording, its recorded output is registered (and its grant use
+spent if the replay admits it). The verdict is "admitted without a human". Two
+kernels (the quote rule, revision 4) are diffed by diff_live().
+"""
+from __future__ import annotations
+
+import ast
+import dataclasses
+import json
+import os
+import re
+import sys
+import tarfile
+
+CORE = os.environ["AXOR_CORE_REPO"]
+sys.path.insert(0, CORE)
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+from axor_core.config import GovernanceConfig  # noqa: E402
+from axor_core.governor import ToolCallGovernor  # noqa: E402
+
+R0 = json.load(open(os.path.join(HERE, "live", "grant_args_R0.json")))
+TPL = json.load(open(os.path.join(HERE, "live", "templates_L2s.json")))
+
+
+def text_of(msg):
+    c = msg.get("content")
+    if isinstance(c, list):
+        return "\n".join(b.get("content", "") or "" for b in c if isinstance(b, dict))
+    return str(c or "")
+
+
+def parse_call(tc):
+    if isinstance(tc, dict):
+        return tc["function"], dict(tc["args"])
+    s = str(tc)
+    fn = re.search(r"function='(\w+)'", s).group(1)
+    args = ast.literal_eval(re.search(r"args=(\{.*?\}) id=", s, re.S).group(1))
+    return fn, args
+
+
+def governor(suite, prompt):
+    cfg = GovernanceConfig.from_yaml(os.path.join(HERE, "config_rule", f"{suite}.yaml"))
+    cfg = dataclasses.replace(cfg, integrity_default="context", integrity_origins="request-only")
+    kw = cfg.as_governor_kwargs()
+    kw["grant_args"] = R0.get(suite, {})
+    if TPL.get(suite):
+        kw["grant_templates"] = TPL[suite]
+    g = ToolCallGovernor(**kw)
+    g.register_task(prompt)
+    g.grants.from_request(prompt)
+    return g
+
+
+def replay(d):
+    msgs = d["messages"]
+    prompt = next(text_of(x) for x in msgs if x["role"] == "user")
+    g = governor(d["suite"], prompt)
+    outs = {x.get("tool_call_id"): x for x in msgs if x["role"] == "tool"}
+    calls = []
+    reads = ""  # recorded outputs before the current call (kept for denied calls: the audit)
+    for x in msgs:
+        if x["role"] != "assistant" or not x.get("tool_calls"):
+            continue
+        for tc in x["tool_calls"]:
+            fn, args = parse_call(tc)
+            tid = tc.get("id") if isinstance(tc, dict) else re.search(r"id='([^']+)'", str(tc)).group(1)
+            dec = g.evaluate(fn, dict(args))
+            rec = outs.get(tid) or {}
+            executed = "governance kernel" not in str(rec.get("error")) and rec.get("error") in (None, "None")
+            recorded_allowed = "governance kernel" not in str(rec.get("error"))
+            if dec.allowed and getattr(dec, "grant_id", None) is not None:
+                k = g.spend(dec, dict(args))
+                if k is not None:
+                    g.grant_store.commit(k)
+            calls.append({"tool": fn, "args": args, "allowed": bool(dec.allowed), "category": dec.category,
+                          "reason": (dec.reason or "")[:200], "recorded_allowed": recorded_allowed,
+                          **({} if dec.allowed else {"reads_before": reads})})
+            if executed:
+                try:
+                    g.register_output(dec, text_of(rec))
+                except Exception:
+                    pass
+                reads += "\n" + text_of(rec)
+    return {"suite": d["suite"], "task": d["user_task_id"], "utility": d["utility"], "prompt": prompt, "calls": calls}
+
+
+def main(path, out):
+    tf = tarfile.open(path)
+    res = []
+    for m in sorted(tf.getmembers(), key=lambda m: m.name):
+        if not m.name.endswith(".json"):
+            continue
+        d = json.load(tf.extractfile(m))
+        if (d["suite"], d["user_task_id"]) == ("slack", "user_task_4"):
+            continue
+        r = replay(d)
+        r["pass"] = m.name.split("/")[1]
+        res.append(r)
+    json.dump(res, open(out, "w"), indent=1, default=str)
+    print(out, len(res), "trajectories,", sum(len(r["calls"]) for r in res), "calls")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2])
