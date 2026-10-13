@@ -1,0 +1,182 @@
+{
+ "a|addressee": {
+  "opl": {
+   "earliest": 0.0763,
+   "any": 0.0763,
+   "all": 0.0757
+  },
+  "ci95": {
+   "opl": [
+    0.0542,
+    0.1027
+   ],
+   "sufficiency": [
+    0.742,
+    0.83
+   ]
+  },
+  "sufficiency": 0.787,
+  "provisioned": "42/92",
+  "attacks": "6/609"
+ },
+ "a|shared_stores": {
+  "opl": {
+   "earliest": 0.0762,
+   "any": 0.0762,
+   "all": 0.0755
+  },
+  "ci95": {
+   "opl": [
+    0.054,
+    0.1027
+   ],
+   "sufficiency": [
+    0.742,
+    0.83
+   ]
+  },
+  "sufficiency": 0.787,
+  "provisioned": "42/92",
+  "attacks": "6/609"
+ },
+ "a|all_mutating": {
+  "opl": {
+   "earliest": 0.0762,
+   "any": 0.0762,
+   "all": 0.0745
+  },
+  "ci95": {
+   "opl": [
+    0.054,
+    0.1027
+   ],
+   "sufficiency": [
+    0.742,
+    0.83
+   ]
+  },
+  "sufficiency": 0.787,
+  "provisioned": "42/92",
+  "attacks": "6/609"
+ },
+ "b|addressee": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0346
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.673,
+    0.785
+   ]
+  },
+  "sufficiency": 0.729,
+  "provisioned": "39/92",
+  "attacks": "1/609"
+ },
+ "b|shared_stores": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0346
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.673,
+    0.785
+   ]
+  },
+  "sufficiency": 0.729,
+  "provisioned": "39/92",
+  "attacks": "1/609"
+ },
+ "b|all_mutating": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0344
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.673,
+    0.785
+   ]
+  },
+  "sufficiency": 0.729,
+  "provisioned": "39/92",
+  "attacks": "1/609"
+ },
+ "c-oracle|addressee": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0346
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.928,
+    0.986
+   ]
+  },
+  "sufficiency": 0.96,
+  "provisioned": "84/92",
+  "attacks": "1/609"
+ },
+ "c-oracle|shared_stores": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0346
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.924,
+    0.984
+   ]
+  },
+  "sufficiency": 0.956,
+  "provisioned": "84/92",
+  "attacks": "1/609"
+ },
+ "c-oracle|all_mutating": {
+  "opl": {
+   "earliest": 0.0346,
+   "any": 0.0346,
+   "all": 0.0344
+  },
+  "ci95": {
+   "opl": [
+    0.0244,
+    0.047
+   ],
+   "sufficiency": [
+    0.924,
+    0.984
+   ]
+  },
+  "sufficiency": 0.956,
+  "provisioned": "84/92",
+  "attacks": "1/609"
+ }
+}
