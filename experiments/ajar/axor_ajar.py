@@ -219,6 +219,36 @@ TEMPLATES_SAFE: dict[str, dict[str, list[dict]]] = {
 }
 
 
+# view-aware confirmer: the verbs of each sink (residuals_rules.md, fixed before any run)
+VIEW_VERBS: dict[str, tuple[str, ...]] = {
+    "send_money": ("send", "pay", "transfer", "wire"),
+    "schedule_transaction": ("schedule", "set up", "recurring"),
+    "update_scheduled_transaction": ("update", "change", "modify", "adjust"),
+    "update_password": ("password",),
+    "update_user_info": ("update", "change"),
+    "send_email": ("send", "email", "mail", "reply", "forward", "write", "notify", "invite", "share"),
+    "create_calendar_event": ("create", "schedule", "add", "organize", "organise", "book", "set up", "plan"),
+    "cancel_calendar_event": ("cancel", "delete", "remove"),
+    "reschedule_calendar_event": ("reschedule", "move", "postpone", "change"),
+    "add_calendar_event_participants": ("add", "invite", "include"),
+    "share_file": ("share", "grant", "give"),
+    "append_to_file": ("append", "add", "write", "update"),
+    "create_file": ("create", "write", "save", "make"),
+    "delete_file": ("delete", "remove"),
+    "delete_email": ("delete", "remove"),
+    "reserve_hotel": ("reserve", "book"),
+    "reserve_car_rental": ("reserve", "book"),
+    "reserve_restaurant": ("reserve", "book"),
+    "send_direct_message": ("send", "message", "dm", "tell", "write", "reply", "ask"),
+    "send_channel_message": ("send", "post", "write", "message", "announce"),
+    "add_user_to_channel": ("add", "invite"),
+    "invite_user_to_slack": ("invite", "add"),
+    "remove_user_from_slack": ("remove", "kick", "delete"),
+    "post_webpage": ("post", "publish", "upload"),
+    "get_webpage": ("visit", "open", "read", "get", "fetch", "check", "summarize", "summarise", "browse", "go to"),
+}
+
+
 def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
                   grant_args: dict | None = None, confirm: str = "oracle"):
     """governor kwargs + minting for a cumulative level set, e.g. "L1+L2+L3+L4"."""
@@ -259,6 +289,29 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
             return all(str(x).lower() in prompt for x in vals)
         return ok
 
+    def view(spec):
+        """view-aware (residuals_rules.md, fixed before any run): the naive
+        destination test AND the tool's verb in the request (a request word starts
+        with one of the tool's verbs; "set up"/"go to" as phrases). A tool with no
+        verb entry is never approved."""
+        dest_ok = naive(spec)
+        prompt = (spec.prompt or "").lower()
+        import re as _re
+        words = _re.findall(r"[a-z]+", prompt)
+
+        def ok(a, c):
+            verbs = VIEW_VERBS.get(c[0])
+            if not verbs or not dest_ok(a, c):
+                return False
+            for v in verbs:
+                if " " in v:
+                    if v in prompt:
+                        return True
+                elif any(w.startswith(v) for w in words):
+                    return True
+            return False
+        return ok
+
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
         suite = spec.task.suite
         kw: dict[str, Any] = {"grant_args": table.get(suite, {})}
@@ -267,7 +320,8 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
         elif "L2s" in lv and suite in TEMPLATES_SAFE:
             kw["grant_templates"] = TEMPLATES_SAFE[suite]
         if "L4" in lv:
-            kw["confirmer"] = ScriptedConfirmer(naive(spec) if confirm == "naive" else matcher(spec))
+            policy = {"naive": naive, "view": view, "oracle": matcher}[confirm]
+            kw["confirmer"] = ScriptedConfirmer(policy(spec))
         return kw
 
     def hook(g: ToolCallGovernor, spec: TaskSpec) -> None:

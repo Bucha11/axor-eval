@@ -1,0 +1,56 @@
+{
+ "banking": {
+  "n": 48,
+  "mean": 0.333,
+  "p95": 1,
+  "p99": 2,
+  "max": 2,
+  "zero_share": 0.708
+ },
+ "slack": {
+  "n": 60,
+  "mean": 1.633,
+  "p95": 4,
+  "p99": 5,
+  "max": 5,
+  "zero_share": 0.017
+ },
+ "travel": {
+  "n": 60,
+  "mean": 0.133,
+  "p95": 1,
+  "p99": 1,
+  "max": 1,
+  "zero_share": 0.867
+ },
+ "workspace": {
+  "n": 120,
+  "mean": 0.583,
+  "p95": 1,
+  "p99": 3,
+  "max": 9,
+  "zero_share": 0.55
+ },
+ "all": {
+  "n": 288,
+  "mean": 0.667,
+  "p95": 3,
+  "p99": 5,
+  "max": 9,
+  "zero_share": 0.531
+ },
+ "budget_p99": {
+  "budget": 5,
+  "runs_over": 1,
+  "runs": 288,
+  "share_over": 0.0035,
+  "over": [
+   {
+    "suite": "workspace",
+    "pass": "pass3",
+    "task": "user_task_33",
+    "confirmations": 9
+   }
+  ]
+ }
+}
