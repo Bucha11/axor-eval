@@ -5,10 +5,28 @@
   "calls": 91,
   "target_calls": 26,
   "mangled_calls": 22,
-  "mangled_share_all": 0.242,
-  "mangled_share_target": 0.846,
   "mangled_with_error": 15,
-  "episodes_with_mangled": 11
+  "raw_calls": 3,
+  "whole_ref_calls": 1,
+  "episodes_with_mangled": 11,
+  "failed": [
+   "banking/user_task_12",
+   "banking/user_task_15",
+   "banking/user_task_4",
+   "slack/user_task_1",
+   "slack/user_task_11",
+   "slack/user_task_15",
+   "slack/user_task_2",
+   "slack/user_task_6",
+   "travel/user_task_6",
+   "workspace/user_task_13",
+   "workspace/user_task_19",
+   "workspace/user_task_21",
+   "workspace/user_task_25",
+   "workspace/user_task_9"
+  ],
+  "mangled_share_target": 0.846,
+  "mangled_share_all": 0.242
  },
  "hint": {
   "episodes": 19,
@@ -16,9 +34,61 @@
   "calls": 80,
   "target_calls": 22,
   "mangled_calls": 21,
-  "mangled_share_all": 0.263,
-  "mangled_share_target": 0.955,
   "mangled_with_error": 18,
-  "episodes_with_mangled": 7
+  "raw_calls": 0,
+  "whole_ref_calls": 1,
+  "episodes_with_mangled": 7,
+  "failed": [
+   "banking/user_task_12",
+   "banking/user_task_15",
+   "slack/user_task_1",
+   "slack/user_task_11",
+   "slack/user_task_15",
+   "slack/user_task_2",
+   "slack/user_task_6",
+   "workspace/user_task_13",
+   "workspace/user_task_19",
+   "workspace/user_task_21",
+   "workspace/user_task_9"
+  ],
+  "mangled_share_target": 0.955,
+  "mangled_share_all": 0.263
+ },
+ "descr": {
+  "episodes": 20,
+  "utility": 17,
+  "calls": 83,
+  "target_calls": 22,
+  "mangled_calls": 3,
+  "mangled_with_error": 3,
+  "raw_calls": 4,
+  "whole_ref_calls": 15,
+  "episodes_with_mangled": 1,
+  "failed": [
+   "banking/user_task_12",
+   "banking/user_task_15",
+   "banking/user_task_4"
+  ],
+  "mangled_share_target": 0.136,
+  "mangled_share_all": 0.036
+ },
+ "descr_note": {
+  "episodes": 20,
+  "utility": 16,
+  "calls": 99,
+  "target_calls": 27,
+  "mangled_calls": 11,
+  "mangled_with_error": 9,
+  "raw_calls": 3,
+  "whole_ref_calls": 13,
+  "episodes_with_mangled": 2,
+  "failed": [
+   "banking/user_task_12",
+   "banking/user_task_15",
+   "banking/user_task_4",
+   "workspace/user_task_25"
+  ],
+  "mangled_share_target": 0.407,
+  "mangled_share_all": 0.111
  }
 }
