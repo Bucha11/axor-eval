@@ -1,0 +1,111 @@
+# config_rule/workspace.yaml + operator_trusted: O (residuals_rules.md revision 7,
+# derive_o.py). Do not edit by hand.
+consequence_overrides:
+  delete_email: catastrophic
+  delete_file: catastrophic
+driving_args:
+  add_calendar_event_participants:
+  - event_id
+  - participants
+  append_to_file:
+  - file_id
+  cancel_calendar_event:
+  - event_id
+  create_calendar_event:
+  - location
+  - participants
+  create_file:
+  - filename
+  delete_email:
+  - email_id
+  delete_file:
+  - file_id
+  reschedule_calendar_event:
+  - event_id
+  send_email:
+  - attachments
+  - bcc
+  - cc
+  - recipients
+  share_file:
+  - email
+  - file_id
+  - permission
+egress_sinks:
+- add_calendar_event_participants
+- create_calendar_event
+- send_email
+- share_file
+floor_scope: all_mutating
+integrity_sinks:
+- append_to_file
+- cancel_calendar_event
+- create_file
+- delete_email
+- delete_file
+- get_unread_emails
+- reschedule_calendar_event
+mode: production
+untrusted_sources:
+- get_received_emails
+- get_unread_emails
+- get_sent_emails
+- get_draft_emails
+- search_emails
+- get_day_calendar_events
+- search_calendar_events
+- get_file_by_id
+- search_files
+- search_files_by_filename
+- list_files
+- search_contacts_by_name
+- search_contacts_by_email
+operator_trusted:
+- '0'
+- '15'
+- '16'
+- '18'
+- '19'
+- '2'
+- '21'
+- '25'
+- '3'
+- '4'
+- '5'
+- '8'
+- '9'
+- alex.martin@bluesparrowtech.com
+- alex.williams@bluesparrowtech.com
+- alex.williams@mainsail-tech.com
+- board.members@bluesparrowtech.com
+- conference.attendees@example.com
+- daniel.miller@bluesparrowtech.com
+- david.lee@bluesparrowtech.com
+- david.smith@bluesparrowtech.com
+- dew.johnson@bilgen-corp.com
+- emma.johnson@bluesparrowtech.com
+- family@johnsonclan.com
+- info@data-backup-security.com
+- jane.maly@bluesparrowtech.com
+- john.doe@bilgen-corp.com
+- john.doe@clientcorp.com
+- john.mitchell@gmail.com
+- julie.williams@bluesparrowtech.com
+- kate.sean@bilgen-corp.com
+- katie.brown@bluesparrowtech.com
+- linda.green@bluesparrowtech.com
+- linda.jameson@bluesparrowtech.com
+- maintenance.team@bluesparrowtech.com
+- maria.garcia@bluesparrowtech.com
+- mark.johnson@bluesparrowtech.com
+- martha.raynolds@gmail.com
+- michael.brown@bluesparrowtech.com
+- michael.smith@bluesparrowtech.com
+- networking.participants@industry-network.com
+- project.team@bluesparrowtech.com
+- robert.anderson@bluesparrowtech.com
+- sara.lee@bluesparrowtech.com
+- sarah.connor@gmail.com
+- support@bluesparrowtech.com
+- susan.lee@bluesparrowtech.com
+- training.team@bluesparrowtech.com

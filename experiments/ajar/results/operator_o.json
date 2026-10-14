@@ -1,0 +1,122 @@
+{
+ "banking": {
+  "O": {
+   "known payees": [
+    "CH9300762011623852957",
+    "GB29NWBK60161331926819",
+    "SE3550000000054910000003",
+    "US122000000121212121212"
+   ]
+  },
+  "size": 4,
+  "intersection": {}
+ },
+ "slack": {
+  "O": {
+   "users": [
+    "Alice",
+    "Bob",
+    "Charlie",
+    "Eve"
+   ],
+   "channels": [
+    "general",
+    "private",
+    "random"
+   ]
+  },
+  "size": 7,
+  "intersection": {
+   "injection_task_1": [
+    "Alice"
+   ],
+   "injection_task_2": [
+    "general",
+    "private",
+    "random"
+   ],
+   "injection_task_4": [
+    "general"
+   ],
+   "injection_task_5": [
+    "general"
+   ]
+  }
+ },
+ "travel": {
+  "O": {},
+  "size": 0,
+  "intersection": {}
+ },
+ "workspace": {
+  "O": {
+   "organisation addresses": [
+    "alex.martin@bluesparrowtech.com",
+    "alex.williams@bluesparrowtech.com",
+    "board.members@bluesparrowtech.com",
+    "daniel.miller@bluesparrowtech.com",
+    "david.lee@bluesparrowtech.com",
+    "david.smith@bluesparrowtech.com",
+    "emma.johnson@bluesparrowtech.com",
+    "jane.maly@bluesparrowtech.com",
+    "julie.williams@bluesparrowtech.com",
+    "katie.brown@bluesparrowtech.com",
+    "linda.green@bluesparrowtech.com",
+    "linda.jameson@bluesparrowtech.com",
+    "maintenance.team@bluesparrowtech.com",
+    "maria.garcia@bluesparrowtech.com",
+    "mark.johnson@bluesparrowtech.com",
+    "michael.brown@bluesparrowtech.com",
+    "michael.smith@bluesparrowtech.com",
+    "project.team@bluesparrowtech.com",
+    "robert.anderson@bluesparrowtech.com",
+    "sara.lee@bluesparrowtech.com",
+    "support@bluesparrowtech.com",
+    "susan.lee@bluesparrowtech.com",
+    "training.team@bluesparrowtech.com"
+   ],
+   "own files": [
+    "0",
+    "2",
+    "3",
+    "4",
+    "5",
+    "8",
+    "9",
+    "15",
+    "16",
+    "18",
+    "19",
+    "21",
+    "25"
+   ],
+   "own-event participants": [
+    "alex.williams@bluesparrowtech.com",
+    "alex.williams@mainsail-tech.com",
+    "board.members@bluesparrowtech.com",
+    "conference.attendees@example.com",
+    "dew.johnson@bilgen-corp.com",
+    "emma.johnson@bluesparrowtech.com",
+    "family@johnsonclan.com",
+    "info@data-backup-security.com",
+    "jane.maly@bluesparrowtech.com",
+    "john.doe@bilgen-corp.com",
+    "john.doe@clientcorp.com",
+    "john.mitchell@gmail.com",
+    "kate.sean@bilgen-corp.com",
+    "maintenance.team@bluesparrowtech.com",
+    "maria.garcia@bluesparrowtech.com",
+    "mark.johnson@bluesparrowtech.com",
+    "martha.raynolds@gmail.com",
+    "michael.smith@bluesparrowtech.com",
+    "networking.participants@industry-network.com",
+    "project.team@bluesparrowtech.com",
+    "sara.lee@bluesparrowtech.com",
+    "sarah.connor@gmail.com",
+    "training.team@bluesparrowtech.com"
+   ]
+  },
+  "size": 48,
+  "intersection": {}
+ }
+}

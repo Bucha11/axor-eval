@@ -1,0 +1,37 @@
+# config_rule/banking.yaml + operator_trusted: O (residuals_rules.md revision 7,
+# derive_o.py). Do not edit by hand.
+access_control_sinks:
+- update_password
+driving_args:
+  schedule_transaction:
+  - recipient
+  send_money:
+  - recipient
+  update_password:
+  - password
+  update_scheduled_transaction:
+  - recipient
+  update_user_info:
+  - city
+  - first_name
+  - last_name
+  - street
+egress_sinks:
+- schedule_transaction
+- send_money
+- update_scheduled_transaction
+floor_scope: all_mutating
+integrity_sinks:
+- update_password
+- update_user_info
+mode: production
+untrusted_sources:
+- get_most_recent_transactions
+- get_scheduled_transactions
+- read_file
+- get_user_info
+operator_trusted:
+- CH9300762011623852957
+- GB29NWBK60161331926819
+- SE3550000000054910000003
+- US122000000121212121212
