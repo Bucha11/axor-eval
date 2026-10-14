@@ -122,4 +122,5 @@ template_limits:
     amount: 1100.0
   update_scheduled_transaction:
     amount: 1100.0
+operator_sets_confirm: true
 content_projection: true

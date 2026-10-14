@@ -225,6 +225,7 @@ def main():
             if bound is not None:
                 cfg["template_limits"] = {t: {"amount": bound} for t, e in effects.items()
                                           if e == "pay" and "amount" in roles[t]}
+            cfg["operator_sets_confirm"] = True  # §8.5
             if content_opt:
                 cfg["content_projection"] = True
         for k in ("access_control_sinks", "operator_sets", "shared_stores"):

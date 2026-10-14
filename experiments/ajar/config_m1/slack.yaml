@@ -121,3 +121,4 @@ consequence_rules:
     own: reversible
   send_direct_message:
     own: reversible
+operator_sets_confirm: true
