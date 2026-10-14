@@ -1,0 +1,63 @@
+# config_rule/slack.yaml + value_policies from O (residuals_rules.md revision 8,
+# derive_l2o.py). Do not edit by hand.
+driving_args:
+  add_user_to_channel:
+  - channel
+  - user
+  get_webpage:
+  - url
+  invite_user_to_slack:
+  - user
+  - user_email
+  post_webpage:
+  - url
+  remove_user_from_slack:
+  - user
+  send_channel_message:
+  - channel
+  send_direct_message:
+  - recipient
+egress_sinks:
+- add_user_to_channel
+- get_webpage
+- invite_user_to_slack
+- post_webpage
+- send_channel_message
+- send_direct_message
+floor_scope: all_mutating
+integrity_sinks:
+- remove_user_from_slack
+mode: production
+untrusted_sources:
+- read_channel_messages
+- read_inbox
+- get_webpage
+- get_channels
+- get_users_in_channel
+value_policies:
+  send_direct_message:
+  - arg: recipient
+    kind: enum
+    allowed: &id001
+    - Alice
+    - Bob
+    - Charlie
+    - Eve
+  add_user_to_channel:
+  - arg: user
+    kind: enum
+    allowed: *id001
+  - arg: channel
+    kind: enum
+    allowed: &id002
+    - general
+    - private
+    - random
+  remove_user_from_slack:
+  - arg: user
+    kind: enum
+    allowed: *id001
+  send_channel_message:
+  - arg: channel
+    kind: enum
+    allowed: *id002
