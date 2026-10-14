@@ -31,18 +31,41 @@ NOTE = ("[note: a value written as <kind>_from_untrusted_read_hidden_<code> is a
         "the real value]")
 
 
+INT_HANDLE = (10_000_000, 99_999_999)  # (0c) integer handles: far outside any real id
+
+
 class RefTable:
-    def __init__(self, fmt: str, seed: int | None = None) -> None:
-        assert fmt in ("opaque", "hint", "descr", "descr_note")
+    def __init__(self, fmt: str, seed: int | None = None, prompt: str = "",
+                 own: "set[str] | frozenset[str]" = frozenset()) -> None:
+        assert fmt in ("opaque", "hint", "descr", "descr_note", "descr_v2")
         self.fmt = fmt
         self.rng = random.Random(seed)
-        self.by_value: dict[tuple[str, str], str] = {}
-        self.by_ref: dict[str, tuple[str, Any]] = {}  # token -> (kind, original value)
+        self.by_value: dict[tuple[str, str], Any] = {}
+        self.by_ref: dict[Any, tuple[str, Any]] = {}  # token (str, or int handle) -> (kind, original value)
+        # (0c) shown raw: values the request names (origin R) and own entities (entity model)
+        self.prompt = prompt.casefold()
+        self.own = {str(v).casefold() for v in own}
 
-    def ref(self, kind: str, value: Any) -> str:
+    def visible(self, value: Any) -> bool:
+        if self.fmt != "descr_v2":
+            return False
+        v = str(value).casefold()
+        return v in self.own or (len(v) > 2 and v in self.prompt) or (len(v) <= 2 and v in self.own)
+
+    def ref(self, kind: str, value: Any) -> Any:
+        if self.visible(value):
+            return value
         key = (kind, str(value))
         if key in self.by_value:
             return self.by_value[key]
+        if self.fmt == "descr_v2" and kind == "id" and isinstance(value, int) and not isinstance(value, bool):
+            while True:  # an integer parameter takes an integer handle
+                h = self.rng.randrange(*INT_HANDLE)
+                if h not in self.by_ref:
+                    break
+            self.by_value[key] = h
+            self.by_ref[h] = (kind, value)
+            return h
         descr = self.fmt.startswith("descr")
         while True:
             rid = f"{self.rng.randrange(16 ** (4 if descr else 3)):0{4 if descr else 3}x}"
@@ -78,7 +101,7 @@ class RefTable:
 
     def format_output(self, result: Any) -> str:
         out = self._format_output(result)
-        if self.fmt == "descr_note" and DESCR.search(out):
+        if self.fmt == "descr_note" and DESCR.search(out):  # only (d) carries the note
             out = NOTE + "\n" + out
         return out
 
@@ -94,6 +117,8 @@ class RefTable:
 
     # ── call side ─────────────────────────────────────────────────────────────
     def resolve(self, x: Any) -> Any:
+        if isinstance(x, int) and not isinstance(x, bool) and x in self.by_ref:
+            return self.by_ref[x][1]
         if isinstance(x, list):
             return [self.resolve(v) for v in x]
         if isinstance(x, dict):

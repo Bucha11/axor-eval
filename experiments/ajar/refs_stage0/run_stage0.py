@@ -94,6 +94,13 @@ class ResolveForScoring(BasePipelineElement):
         return query, runtime, env, out, extra_args
 
 
+# (0c) own entities = the entity model's own set (config_m1_c814 audience: own addresses, accounts,
+# and own file / event / e-mail / standing-order ids)
+import yaml as _yaml  # noqa: E402
+OWN = {s: set(map(str, _yaml.safe_load(open(os.path.join(HERE, "..", "config_m1_c814", f"{s}.yaml")))
+                  .get("audience") or ())) for s in ("banking", "slack", "travel", "workspace")}
+
+
 def main(fmt: str, outdir: str) -> None:
     sel = json.load(open(os.path.join(HERE, "tasks.json")))
     llm = Recorder(OpenRouterLLM(model="openai/o4-mini", max_tokens=4096))
@@ -108,8 +115,9 @@ def main(fmt: str, outdir: str) -> None:
         for it in items:
             tid = it["task"]
             seed += 1
-            ex.table, ex.calls = RefTable(fmt, seed=zlib.crc32(f"{fmt}|{s}|{tid}".encode())), []
             ut = suite.get_user_task_by_id(tid)
+            ex.table, ex.calls = RefTable(fmt, seed=zlib.crc32(f"{fmt}|{s}|{tid}".encode()),
+                                          prompt=ut.PROMPT, own=OWN.get(s, ())), []
             try:
                 util, _ = suite.run_task_with_pipeline(pipeline, ut, None, {})
                 err = None
@@ -118,7 +126,8 @@ def main(fmt: str, outdir: str) -> None:
             print(f"  [{fmt}] {s} {tid:<14} utility={'Y' if util else 'n'}{'  ERROR ' + err if err else ''}", flush=True)
             json.dump({"suite": s, "user_task_id": tid, "tier": it["tier"], "format": fmt, "utility": bool(util),
                        "error": err, "prompt": ut.PROMPT, "messages": llm.last, "calls": ex.calls,
-                       "refs": {tok: [k, v] for tok, (k, v) in ex.table.by_ref.items()}},
+                       "refs": {str(tok): [k, v] for tok, (k, v) in ex.table.by_ref.items()},
+                       "int_handles": [t for t in ex.table.by_ref if isinstance(t, int)]},
                       open(os.path.join(outdir, f"{s}_{tid}.json"), "w"), indent=1, default=str)
 
 
