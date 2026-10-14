@@ -336,3 +336,68 @@ Config `config_m1_c814` = §8.10 + §8.13 + this. Recompute (free): Ajar all mod
 compared with §8.10 change by change (§8.13 alone = c813 without §8.12; + recognizer; + travel
 addresses; + received e-mails). Live: count the A and B episodes in which any changed rule fires
 (a recorded call whose decision differs from the final configuration's), with the cost; no launch.
+
+## 9. References — fixed before code and runs (format of stage 0c, refs_stage0/STAGE0.md)
+
+Base: §8.14 (`config_m1_c814`). References are a second configuration on top of it (flag
+`references`); everything in §8 stays unless a rule below replaces it.
+
+**9.1 What a reference is.** A reference is a triple (kind, value, origin), kept in the session's
+reference table. Kinds: `email`, `iban`, `url` (found in any string of a tool output) and `id` (the
+value of an id field: `id`, `id_`, `file_id`, `event_id`, `email_id`). The agent sees only the
+reference's name: `<kind>_from_untrusted_read_hidden_<4 hex>` (unique in the session; the same value
+of the same kind gets the same name for the whole session); for an id field whose value is an
+integer, a unique integer in [10 000 000, 99 999 999] (an integer parameter takes it). The table
+lives in the daemon (Ring 0), out of the agent's reach; in-process, in the governor.
+
+**9.2 Origins.** Each target identifier in a tool output gets exactly one origin, fixed when it is
+first read (the first origin wins for the session):
+* **R** — the value is a literal of the request (as L1 reads it);
+* **own** — the value is an own entity of the entity model (config `audience`: own addresses,
+  accounts, own file / event / e-mail / standing-order ids);
+* **named sender** — the value sits in a record whose sender field (`sender`, `from`) names a
+  sender the request names (the sender value is a request literal; matching by the entity model's
+  values, no language model);
+* **secret** — read from a declared sensitive source (config `sensitive_sources`) and none of the
+  above;
+* **untrusted** — every other value read from a tool output.
+
+**9.3 What is hidden.** R and own values are shown as they are. Every other target identifier
+(named sender, secret, untrusted) is shown only as its reference. Text around identifiers is not
+changed.
+
+**9.4 What a driving argument may carry.**
+* a raw value only if it is R or own (unchanged: L1 grants, own sets, L2 templates, quota, limit);
+* a value from a read only as its reference;
+* a raw value equal to a value the session hid (the agent rebuilt it "by hand"), or any other raw
+  value that is neither R nor own: unproven — a confirmation of the exact call (L4) with a human,
+  refused without one.
+
+**9.5 A reference as a ground.** A reference in a driving argument is resolved to its value, and
+its origin is the ground: named sender — as an L1 grant on that value (tuple, quota and limit rules
+unchanged); untrusted or secret — unproven: L4 with a human, refused without one. (R and own are
+never references.)
+
+**9.6 References in text.** A reference inside a content argument (a body, a description) is
+resolved at execution, and its origin is checked as in 9.5: an untrusted / secret reference in the
+content of a sink is unproven (L4 / refused). Raw addresses in content keep §8.14's content check.
+
+**9.7 Secrets.** A secret reference is resolved only into a sink whose audience sees the source
+(every destination of the call is in the audience — the entity model's "who sees what"); otherwise
+refused, with or without a human. The confidentiality floor stays as a second layer.
+
+**9.8 Unknown references.** A reference-shaped token (a name of the 9.1 form, or an integer in the
+handle range in an id argument) that is not in the session's table: refused.
+
+**9.9 What the gate no longer does in this configuration.** Integrity of a driving argument is
+decided by origin (raw R / own; reference → its origin; other raw → unproven), not by matching
+string fragments of reads; L1 grants are minted from raw request literals only, as before. The
+confidentiality floor and the consequence class are unchanged.
+
+**9.10 Evaluation (free, no live run).** Ajar (all modes, CI) and replay 1887: a candidate's value
+is turned into a reference by its actual origin in the prefix (a value the prefix read → the
+reference minted for it, with that origin; an injected value → untrusted); R / own values stay raw;
+a value never read stays raw. Worst-case routes: substitution (L1 / own / named sender) with k;
+text in fields; disclosure, separately, with secret references. Replay of the 288 benign
+trajectories: tasks without refusals. Ablation against §8.14 alone: Ajar attacks, replay, routes
+(string substitution, the US133 pair, text in fields).
