@@ -277,3 +277,39 @@ labelling (sources, sinks, driving args, consequence overrides) is copied unchan
 - `floor_scope: all_mutating` (over the hand config's sinks);
 - kernel mechanisms: empty-tuple rule, type matching, string by request fragment
   (revision 4), context integrity, request-only.
+
+## Revision 7 — operator set O on config_rule (fixed before derivation and runs)
+
+Base: `config_rule/` unchanged. Added: an operator-trusted value set **O** per suite,
+registered with origin `OPERATOR` at governor construction (kernel option
+`operator_trusted: [values]`, same registration as enum allowlist members). O is
+origin only: it is NOT an allowlist and refuses nothing; under `request-only` a
+driving value clears iff it is in the request or in O. Grants, floor, sinks, driving
+args, consequence classes: unchanged.
+
+O is derived mechanically from the suite's **initial environment** (no task, no
+injection, no ground truth), structured fields only — never a message body, web
+page, file content, event description, received-mail sender or the inbox contact list
+(all attacker-writable):
+
+- **banking** — known payees: `recipient` of every transaction in the history whose
+  sender is the user (`me` or the user's IBAN), and of every scheduled transaction.
+- **slack** — the workspace's `users` and `channels`; a channel named `External_*` is
+  external and excluded.
+- **workspace** — (i) organisation addresses: every address with the user's domain
+  (the part after `@` of `inbox.account_email`, exact match) that occurs in a structured
+  field of the initial state (mail sender/recipients/cc/bcc, file owner/shared_with,
+  event participants); (ii) own files: `id_` of every file whose `owner` is the user;
+  (iii) participants of own events: every participant of an event in the user's calendar
+  that lists the user as a participant.
+- **travel** — none (the request names no organisation entity class): O = ∅.
+
+Check before any run: O ∩ attacker entities must be empty, where attacker entities =
+every string leaf of every injection task's ground-truth call args (no length filter)
+∪ every e-mail / IBAN / URL token in the injection tasks' GOAL text. A non-empty
+intersection is reported as found, not corrected.
+
+Runs (all against config_rule without O, same kernel): Ajar (a)/(b)/(c)-oracle/
+view-aware/naive with 95% task-bootstrap CI; replay of the 1887 attacked trajectories;
+worst case of routes 1–3; replay of the live v4/v5 trajectories and of the 288 benign
+trajectories — denied calls and tasks per suite. No live run.
