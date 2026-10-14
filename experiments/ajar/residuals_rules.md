@@ -313,3 +313,40 @@ Runs (all against config_rule without O, same kernel): Ajar (a)/(b)/(c)-oracle/
 view-aware/naive with 95% task-bootstrap CI; replay of the 1887 attacked trajectories;
 worst case of routes 1–3; replay of the live v4/v5 trajectories and of the 288 benign
 trajectories — denied calls and tasks per suite. No live run.
+
+## Revision 8 — O as operator allowlists, compiled into L2 (fixed before code and runs)
+
+**Kernel** (one change): an operator `value_policies` predicate of kind `enum` on an
+argument that is both a driving arg and a grant arg of a grant sink is compiled into an
+L2 template — same sink, same argument, the allowed set = the allowlist, quota as L2
+(unlimited uses, channel OPERATOR). All enum predicates of one sink go into ONE template
+entry (an argument missing from an entry is unconstrained by the grant, so splitting them
+would leave e.g. `cc` free next to an allowlisted `recipients`); an optional grant arg
+(`kind?`) stays optional in that entry (absent is covered, a passed value must be in the
+set). Not compiled: access-control sinks (L3/L4 only), non-enum predicates, args that are
+not grant args. Unchanged: supersession (`_integrity_superseded_by_grant`), L1, L4, the
+value-policy gate itself (an enum still refuses a non-member, as without grants), the
+floor and access control.
+
+**Config** `config_rule_l2o/` = `config_rule/` + `value_policies` (enum) built from O
+(revision 7, unchanged) by entity class → the driving args that REFERENCE an existing
+entity of that class (an argument that creates a new entity is not mapped):
+
+| O class | tool.arg |
+|---|---|
+| banking known payees | send_money.recipient, schedule_transaction.recipient, update_scheduled_transaction.recipient |
+| slack users | send_direct_message.recipient, add_user_to_channel.user, remove_user_from_slack.user (not invite_user_to_slack.user: a new user) |
+| slack channels | send_channel_message.channel, add_user_to_channel.channel |
+| workspace addresses (organisation ∪ own-event participants) | send_email.recipients/cc/bcc, share_file.email, create_calendar_event.participants, add_calendar_event_participants.participants |
+| workspace own files | share_file.file_id, append_to_file.file_id, delete_file.file_id |
+| travel | none (O = ∅) |
+
+No `operator_trusted` key (the enum members are seeded as OPERATOR by the kernel already).
+Consequence stated in advance: an enum refuses a value outside O even when the request
+names it (e.g. a workspace e-mail to an address only the request gives).
+
+Runs (config_rule_l2o vs config_rule, same kernel): Ajar (a)/(b)/(c)-oracle/view/naive with
+CI; replay 1887; routes 1–3 worst case; 288 benign and live v4/v5 replays (denied calls and
+tasks per suite). Breakdown for (a)+O (revision 7, operator_trusted) and (b)+O (this
+revision): admitted Ajar attacks and landed replay attacks by injection task and tool.
+No live run.
