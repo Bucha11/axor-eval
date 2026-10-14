@@ -47,7 +47,8 @@ def main(configs):
     for c in configs:
         inproc = paper_opl.make(SPEC[c])
         daemons = daemon_ajar.start_daemons(c, ga)
-        dd = daemon_ajar.DaemonDefense(f"daemon-{c}", daemons, oracle=(c == "c"), grant_args=ga)
+        shadow = paper_opl.make(SPEC[c]) if os.environ.get("AXOR_AJAR_REFS_SHADOW") == "1" else None
+        dd = daemon_ajar.DaemonDefense(f"daemon-{c}", daemons, oracle=(c == "c"), grant_args=ga, shadow=shadow)
         runs_in, runs_dm, diffs = [], [], []
         t0 = time.time()
         try:

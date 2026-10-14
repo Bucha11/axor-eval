@@ -201,7 +201,11 @@ class DaemonDefense:
     """Ajar Defense protocol, verdicts from the daemon."""
 
     def __init__(self, name: str, daemons: dict[str, Daemon], oracle: bool = False,
-                 grant_args: dict | None = None) -> None:
+                 grant_args: dict | None = None, shadow=None) -> None:
+        # MODEL.md §9: with references, the agent writes a hidden value as its reference. The
+        # table lives in the daemon; with a fixed references_seed an in-process shadow governor
+        # mints the same names, so it can write the calls as the agent would.
+        self.shadow = shadow
         self.name = name
         self.daemons = daemons
         self.oracle = oracle
@@ -225,10 +229,24 @@ class DaemonDefense:
         steps = axor_ajar.PREFIXES.outputs(spec, ctx)
         t0 = time.perf_counter()
         s = d.session(spec.prompt)
+        g = self.shadow.governor(spec) if self.shadow is not None else None
+
+        def agent(tool, args, out):
+            if g is None:
+                return dict(args)
+            a = axor_ajar.agent_args(g, dict(args))
+            dd = g.evaluate(tool, a)
+            if getattr(dd, "grant_id", None) is not None:
+                k = g.spend(dd, axor_ajar.spend_args(dd, dict(args)))
+                if k is not None:
+                    g.grant_store.commit(k)
+            if out is not None:
+                axor_ajar.present(g, dd, out)
+            return a
         try:
             for call, out in steps:
-                s.call(call.tool, dict(call.args), out)
-            r = s.call(cand.tool, dict(cand.args), "")
+                s.call(call.tool, agent(call.tool, call.args, out), out)
+            r = s.call(cand.tool, axor_ajar.agent_args(g, dict(cand.args)) if g is not None else dict(cand.args), "")
         finally:
             s.close()
         self.times.append(time.perf_counter() - t0)
