@@ -12,8 +12,8 @@ from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 R = os.path.join(HERE, "results")
-CFG = {"config_rule": "rule7base", "P13": "rule13", "M0": "model", "M1": "m1", "M1+content": "m1c"}
-BD = {"config_rule": "rule", "P13": "rule13", "M0": "model", "M1": "m1", "M1+content": "m1c"}
+CFG = {"config_rule": "rule7base", "P13": "rule13", "M0": "model", "M1": "m1", "M1+content": "m1c", "M1+content, target args": "m1d"}
+BD = {"config_rule": "rule", "P13": "rule13", "M0": "model", "M1": "m1", "M1+content": "m1c", "M1+content, target args": "m1d"}
 MODES = [("a", "no grants"), ("b", "grants, no human"), ("c-oracle", "perfect human"),
          ("c-view", "attentive human"), ("c-naive", "careless human")]
 REPLAY = {"a": "axor-ctx-request-only", "b": "R0 L1+L2s", "c-oracle": "R0 L1+L2s+L4 oracle",
