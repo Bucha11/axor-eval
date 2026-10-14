@@ -103,3 +103,14 @@ destination_args:
   - recipient
 shared_stores:
   remove_user_from_slack: always
+content_args:
+  invite_user_to_slack: []
+  get_webpage: []
+  send_direct_message:
+  - body
+  remove_user_from_slack: []
+  add_user_to_channel: []
+  post_webpage:
+  - content
+  send_channel_message:
+  - body

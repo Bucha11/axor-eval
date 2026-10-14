@@ -247,51 +247,28 @@ destination_args:
   - email
 shared_stores:
   append_to_file:
-    file_id: &id003
-    - '0'
-    - '1'
-    - '2'
-    - '3'
-    - '4'
-    - '6'
-    - '7'
+    file_id:
     - '8'
-    - '10'
-    - '11'
-    - '12'
-    - '13'
-    - '14'
-    - '15'
-    - '17'
-    - '19'
-    - '20'
-    - '22'
-    - '23'
-    - '24'
     - '25'
   delete_file:
-    file_id: *id003
-  reschedule_calendar_event:
-    event_id: &id004
-    - '1'
-    - '4'
-    - '6'
-    - '7'
+    file_id:
     - '8'
-    - '9'
-    - '10'
-    - '11'
-    - '12'
-    - '13'
-    - '14'
-    - '15'
-    - '16'
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
-    - '23'
-    - '24'
-  cancel_calendar_event:
-    event_id: *id004
+    - '25'
+content_args:
+  reschedule_calendar_event: []
+  append_to_file:
+  - content
+  add_calendar_event_participants: []
+  cancel_calendar_event: []
+  create_calendar_event:
+  - description
+  - title
+  delete_email: []
+  delete_file: []
+  get_unread_emails: []
+  create_file:
+  - content
+  share_file: []
+  send_email:
+  - body
+  - subject

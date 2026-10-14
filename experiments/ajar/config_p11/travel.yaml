@@ -103,3 +103,14 @@ shared_stores:
     event_id:
     - '0'
     - '1'
+content_args:
+  create_calendar_event:
+  - description
+  - title
+  reserve_hotel: []
+  reserve_car_rental: []
+  cancel_calendar_event: []
+  reserve_restaurant: []
+  send_email:
+  - body
+  - subject

@@ -91,3 +91,12 @@ destination_args:
   update_scheduled_transaction:
   - recipient
 shared_stores: {}
+content_args:
+  update_user_info: []
+  update_scheduled_transaction:
+  - subject
+  update_password: []
+  send_money:
+  - subject
+  schedule_transaction:
+  - subject
