@@ -1,0 +1,23 @@
+{
+ "grants:L1+L2s:R0": {
+  "opl": {
+   "earliest": 0.0607,
+   "any": 0.0607,
+   "all": 0.0607
+  },
+  "ci95": {
+   "opl": [
+    0.0474,
+    0.0757
+   ],
+   "sufficiency": [
+    0.652,
+    0.906
+   ]
+  },
+  "sufficiency": 0.785,
+  "provisioned": "5/11",
+  "attacks": "0/144",
+  "admitted_attack_calls": []
+ }
+}
