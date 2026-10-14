@@ -132,10 +132,49 @@ replay 1887, routes 1–3, live v4/v5 and 288 benign replays. Results: §6.1 (fi
 ## 7. Known gaps
 
 - Entities created during the task (§1.4).
-- Magnitude limits in L2 tuple templates (§3.5).
-- The content role (§5).
-- O's values are seeded OPERATOR-trusted without their kind (an own event id "13" clears a file id
-  "13" at the integrity check; rule 3.2 still refuses it on `delete_file`, which is per argument).
+- Magnitude limits in L2 tuple templates (§3.5) — closed in M1 (§8.3).
+- The content role (§5) — a second configuration in M1 (§8.4).
+- O's values are seeded OPERATOR-trusted without their kind — closed in M1 (§8.2).
 - Degradation states do not lower the ceiling in the synchronous governor (§3.3).
 - Invariant 2 of the paper ("every egress destination is in the operator's allowlist") becomes
   "every destination or object of an effect is own, named by the request, or confirmed".
+
+## 8. Revision M1 — fixed before code and runs
+
+**8.1 Consequence class per call, κ(x) = effect × target × magnitude** (was: per tool).
+- *Target*: a call is **own-targeted** when every value of its destination and object arguments
+  is in that argument's own set (§1); otherwise **external**.
+- *Magnitude bound* N (entity model): the largest amount the user has sent — own outgoing and
+  scheduled transactions (banking: 1100).
+
+| effect | own target | external target |
+|---|---|---|
+| read | BENIGN | BENIGN |
+| write_own | REVERSIBLE | CONSEQUENTIAL |
+| send, share, fetch | REVERSIBLE | CONSEQUENTIAL |
+| invite (a new member), reserve | CONSEQUENTIAL | CONSEQUENTIAL |
+| pay | CONSEQUENTIAL; CATASTROPHIC if amount > N | same |
+| delete, credential | CATASTROPHIC | CATASTROPHIC |
+
+A call whose κ is CATASTROPHIC takes L3/L4 only; a request (L1) or template (L2) grant that covers it
+is not a ground, and the confirmation is asked instead.
+
+**8.2 Own sets by slot** (kernel gap §7, closed). An own value is trusted only in a slot of its
+own set — the (tool, argument) whose set contains it. It is no longer registered as a trusted
+value everywhere; an own event id "13" does not clear a file id "13".
+
+**8.3 Magnitude limit in L2 templates** (§3.5, closed). A magnitude argument with a limit is a
+template component "≤ limit" (any provenance) instead of a request literal. Compiled: the banking
+payment templates get `amount ≤ N`. One limit per sink (a per-payee limit is a refinement, not done).
+
+**8.4 Content projection** (§5, as a second configuration `config_model_content`). From every
+content argument of a call with an effect, tokens are extracted by syntax only — URL (with or
+without scheme, `www.` or a dotted host with a TLD), e-mail, IBAN; no model, no meaning. Each token
+must be own (in the audience, compared in canonical form by kind) or named by the request (by
+canonical form); otherwise the call is refused, before grants and confirmation (as rule 3.2).
+The extractor is covered by fuzz tests (tokens embedded in random text are found; text with no
+`@`, no dotted host and no IBAN shape yields none). Paper §5.6 is extended with this projection
+and its premise.
+
+Runs: both configurations (`config_model`, `config_model_content`) on the free checks; the
+pre-M1 `config_model` run is kept as M0.
