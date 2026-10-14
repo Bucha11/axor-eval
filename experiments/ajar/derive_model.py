@@ -229,6 +229,7 @@ def main():
                 cfg["template_limits"] = {t: {"amount": bound} for t, e in effects.items()
                                           if e == "pay" and "amount" in roles[t]}
             cfg["operator_sets_confirm"] = True  # §8.5
+            cfg["absent_driving_is_empty"] = True  # §8.8
             # §8.7: grant arguments = driving arguments (kinds from the schema table R0);
             # unlimited quota on tools whose own-targeted class is REVERSIBLE
             r0 = json.load(open(os.path.join(HERE, "live", "grant_args_R0.json")))[s]

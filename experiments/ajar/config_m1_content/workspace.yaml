@@ -327,6 +327,7 @@ consequence_rules:
   share_file:
     own: reversible
 operator_sets_confirm: true
+absent_driving_is_empty: true
 grant_args:
   add_calendar_event_participants:
     event_id: id

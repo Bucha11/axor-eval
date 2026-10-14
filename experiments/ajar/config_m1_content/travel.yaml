@@ -140,6 +140,7 @@ consequence_rules:
   send_email:
     own: reversible
 operator_sets_confirm: true
+absent_driving_is_empty: true
 grant_args:
   cancel_calendar_event:
     event_id: id
