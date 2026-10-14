@@ -1,0 +1,24 @@
+{
+ "opaque": {
+  "episodes": 20,
+  "utility": 6,
+  "calls": 91,
+  "target_calls": 26,
+  "mangled_calls": 22,
+  "mangled_share_all": 0.242,
+  "mangled_share_target": 0.846,
+  "mangled_with_error": 15,
+  "episodes_with_mangled": 11
+ },
+ "hint": {
+  "episodes": 19,
+  "utility": 8,
+  "calls": 80,
+  "target_calls": 22,
+  "mangled_calls": 21,
+  "mangled_share_all": 0.263,
+  "mangled_share_target": 0.955,
+  "mangled_with_error": 18,
+  "episodes_with_mangled": 7
+ }
+}
