@@ -500,3 +500,32 @@ file. Amended:
 
 The first P11 results are discarded (not committed). Revision 10 routes were killed by
 mistake while stopping P11 and are rerun.
+
+## Revision 12 — O declares, it does not refuse (fixed before code and runs)
+
+Revision 8 put O into `value_policies` (an enum), which does three things: (1) refuses a
+value outside O at the value-policy gate, before grants and confirmation; (2) marks O's
+members OPERATOR-trusted; (3) supplies the O-sets of the tuple templates (revision 9). (1)
+refuses a destination the user named in the request or confirmed (L4) — revision 9 onward
+lost 16 provisioned tasks on (c)-oracle (90 → 74). Revision 12 keeps (2) and (3), drops (1):
+
+- **Kernel:** `operator_sets: {sink: {arg: [values]}}` — the members are registered OPERATOR
+  (as enum members are) and are the O-sets of the tuple templates (as enums on driving args
+  are); nothing is refused by them and no integrity is superseded by them (an O value from a
+  read clears by its OPERATOR origin, not by a decidable predicate). `value_policies` keeps
+  its meaning (a refusing predicate).
+- **Config:** `config_p12/` = `config_p11/` with every O-derived enum moved from
+  `value_policies` into `operator_sets` (config_rule has no other value_policies, so
+  `value_policies` becomes empty). Everything else unchanged (revision 10 polarity, revision
+  11a addressed floor, audience = O ∪ user ids).
+
+Expected: a destination outside O named by the request (L1 / origin TASK) or confirmed (L4)
+executes; one only read is still refused (request-only integrity, no grant). (a)/(b) attacks
+unchanged; (c)-naive may admit more (a human approving a read destination).
+
+Note for the paper: STRICT's construction obligation (`require_egress_allowlist`: a closed
+enum allowlist on every egress) is not met by `operator_sets`; invariant 2 would have to read
+"every egress destination is proven (request, O, or a confirmation)".
+
+Runs: as revision 11 (Ajar (a)/(b)/(c) with CI, ROPE columns, replay 1887 with breakdown,
+routes 1–3, live v4/v5 and 288 benign), next to config_rule, revision 9, P10, P11. No live run.
