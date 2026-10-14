@@ -1,0 +1,118 @@
+# config_p12/slack.yaml + operator_sets_refuse_above: reversible (residuals_rules.md revision 13).
+# Do not edit by hand.
+driving_args:
+  add_user_to_channel:
+  - channel
+  - user
+  get_webpage:
+  - url
+  invite_user_to_slack:
+  - user
+  - user_email
+  post_webpage:
+  - url
+  remove_user_from_slack:
+  - user
+  send_channel_message:
+  - channel
+  send_direct_message:
+  - recipient
+egress_sinks:
+- add_user_to_channel
+- get_webpage
+- invite_user_to_slack
+- post_webpage
+- send_channel_message
+- send_direct_message
+floor_scope: all_mutating
+integrity_sinks:
+- remove_user_from_slack
+mode: production
+untrusted_sources:
+- read_channel_messages
+- read_inbox
+- get_webpage
+- get_channels
+- get_users_in_channel
+consequence_overrides:
+  add_user_to_channel: reversible
+  get_channels: benign
+  get_users_in_channel: benign
+  get_webpage: consequential
+  invite_user_to_slack: consequential
+  post_webpage: consequential
+  read_channel_messages: benign
+  read_inbox: benign
+  remove_user_from_slack: catastrophic
+  send_channel_message: reversible
+  send_direct_message: reversible
+max_unattended_consequence: reversible
+sensitive_sources:
+- read_channel_messages
+- read_inbox
+floor_mode: audience
+audience:
+- Alice
+- Bob
+- Charlie
+- Eve
+- general
+- private
+- random
+destination_args:
+  add_user_to_channel:
+  - channel
+  - user
+  get_webpage:
+  - url
+  invite_user_to_slack:
+  - user
+  - user_email
+  post_webpage:
+  - url
+  send_channel_message:
+  - channel
+  send_direct_message:
+  - recipient
+shared_stores:
+  remove_user_from_slack: always
+content_args:
+  invite_user_to_slack: []
+  get_webpage: []
+  send_direct_message:
+  - body
+  remove_user_from_slack: []
+  add_user_to_channel: []
+  post_webpage:
+  - content
+  send_channel_message:
+  - body
+operator_sets:
+  send_direct_message:
+    recipient:
+    - Alice
+    - Bob
+    - Charlie
+    - Eve
+  add_user_to_channel:
+    user:
+    - Alice
+    - Bob
+    - Charlie
+    - Eve
+    channel:
+    - general
+    - private
+    - random
+  remove_user_from_slack:
+    user:
+    - Alice
+    - Bob
+    - Charlie
+    - Eve
+  send_channel_message:
+    channel:
+    - general
+    - private
+    - random
+operator_sets_refuse_above: reversible
