@@ -122,7 +122,6 @@ consequence_rules:
   send_direct_message:
     own: reversible
 operator_sets_confirm: true
-absent_driving_is_empty: true
 grant_args:
   add_user_to_channel:
     channel: string

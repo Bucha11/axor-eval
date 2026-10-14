@@ -212,3 +212,11 @@ for provenance to check, exactly as when they are passed empty. The kernel's fal
 every argument when no declared driving argument is present — exists for a destination
 smuggled into an undeclared field; under the model every argument has a role and the content
 projection covers content, so for M1 the fallback is off (`absent_driving_is_empty`).
+
+**8.9 Decision: the final configuration is §8.7 (§8.8 not adopted).** §8.7 → §8.8 changed one
+setting (`absent_driving_is_empty`). Its whole gain — +6 tasks without a human, +6 with a perfect
+human, +14 benign trajectories with no refusal — came from calls with no target passed
+(`create_calendar_event` without participants: 12 travel, 2 workspace), the same calls through
+which travel injection 2 (an event with the attacker's text in the user's calendar) went from 1 to
+21 admitted Ajar attacks. The fallback (no declared driving argument passed → check every
+argument) stays on. Final config: `config_m1_content` without that key; routes computed on it.
