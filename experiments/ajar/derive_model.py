@@ -5,6 +5,8 @@
         default -> config_model/   (M0)
         --m1    -> config_m1/      (MODEL.md §8: consequence per call, magnitude limits)
         --m1 --content -> config_m1_content/ (+ content projection, §8.4)
+        --m1 --content --content-confirm -> config_m1_c812/ (+ content_to_confirmation, §8.12)
+        --m1 --content --content-confirm --own-orders -> config_m1_c813/ (+ own standing orders, §8.13)
 
 The content role (MODEL.md §5) is not compiled: it needs sub-field extraction the gate does not
 do (paper §5.6); its cost is measured offline (content_role_cost.py). Run in the Ajar venv.
@@ -32,6 +34,9 @@ EMAIL_ARGS = {"recipients", "cc", "bcc", "participants", "email", "user_email"}
 TOKEN = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+|\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b|(?:https?://|www\.)\S+")
 
 
+OWN_ORDERS = "--own-orders" in sys.argv  # §8.13
+
+
 def role(arg, prop, override):
     if arg in override:
         return override[arg]
@@ -53,6 +58,8 @@ def entities(name, env):
         ba = env.bank_account
         own["payee"] = sorted({t.recipient for t in ba.transactions if t.sender in ("me", ba.iban)}
                               | {t.recipient for t in ba.scheduled_transactions})
+        if OWN_ORDERS:  # §8.13: the user's standing orders are own objects
+            own["standing_order"] = sorted((str(t.id) for t in ba.scheduled_transactions), key=int)
         ids = [ba.iban]
     elif name == "slack":
         own["slack_user"] = sorted(env.slack.users)
@@ -90,6 +97,8 @@ def entity_class(suite, tool, arg, rl):
     """Which own-entity class a destination/object argument draws from (by suite and kind)."""
     if suite == "banking" and arg == "recipient":
         return "payee"
+    if OWN_ORDERS and suite == "banking" and tool == "update_scheduled_transaction" and arg == "id":
+        return "standing_order"
     if suite == "slack" and arg in ("recipient", "user") and tool != "invite_user_to_slack":
         return "slack_user"   # inviting creates a new member: not an own entity
     if suite == "slack" and arg == "channel":
@@ -121,7 +130,10 @@ def main():
     model = yaml.safe_load(open(os.path.join(HERE, "model", "tools.yaml")))
     m1 = "--m1" in sys.argv
     content_opt = m1 and "--content" in sys.argv
-    out_dir = os.path.join(HERE, "config_m1_content" if content_opt else "config_m1" if m1 else "config_model")
+    content_confirm = content_opt and "--content-confirm" in sys.argv
+    out_dir = os.path.join(HERE, "config_m1_c813" if content_confirm and OWN_ORDERS else
+                           "config_m1_c812" if content_confirm else "config_m1_content" if content_opt
+                           else "config_m1" if m1 else "config_model")
     os.makedirs(out_dir, exist_ok=True)
     report = {}
     for s in SUITES:
@@ -231,6 +243,8 @@ def main():
             cfg["operator_sets_confirm"] = True  # §8.5
             # §8.8 (absent_driving_is_empty) measured and NOT adopted — see MODEL.md §8.9
             cfg["fallback_to_confirmation"] = True  # §8.10
+            if content_confirm:
+                cfg["content_to_confirmation"] = True  # §8.12
             # the live runner takes the integrity mode from the config (offline harnesses set
             # the same two values explicitly): context default, request-only origins
             cfg["integrity_default"] = "context"

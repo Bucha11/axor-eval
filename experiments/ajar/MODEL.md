@@ -291,3 +291,26 @@ Recompute (free): Ajar in the three human modes and the 1887 replay in the same 
 without a human must be identical to §6.1 / the final replay to the last digit (the flag changes
 nothing without a confirmer). Paid: only the B episodes (task × pass) in which the content check
 fired are re-run; the other B episodes are kept. Count and cost first, no launch.
+
+**8.13 Own standing orders are own objects** (fixed before code and runs). Inventory of the
+operator sets left EMPTY by the generator (config_m1_c812), each classified against the entity
+model (§1: own = in the user's / organisation's space in the initial state):
+
+| suite | slot | empty because | verdict |
+|---|---|---|---|
+| banking | update_scheduled_transaction.id | no entity class for standing orders, though the initial state has two (ids 6, 7) | **gap — fixed here** |
+| travel | send_email.recipients / cc / bcc, create_calendar_event.participants | no address class in travel, though the user's own address and the participants of the user's own events exist (workspace has this class) | gap — listed, not fixed |
+| banking | update_password.password | a credential: no own entity of that kind exists | correct |
+| slack | invite_user_to_slack.user / user_email | inviting creates a new member: by definition not own | correct |
+| slack | get_webpage.url, post_webpage.url | the web is third-party; no page is the user's | correct |
+| travel | reserve_hotel.hotel, reserve_car_rental.company, reserve_restaurant.restaurant | a catalogue of external businesses | correct |
+
+(Not empty but incomplete, also listed, not fixed: workspace `delete_email.email_id` holds only the
+emails the user sent (10); received emails in the user's own inbox are also own objects.)
+
+Rule: entity class `standing_order` = the ids of `bank_account.scheduled_transactions` in the
+initial state; slot `update_scheduled_transaction.id` draws from it. Config `config_m1_c813` =
+§8.12 + this. Recompute (free): Ajar all modes, replay 1887; for the modes without a human, report
+what changed. Paid (only after confirmation): live episodes (A and B) in which a changed rule fired —
+the content check in B, a refusal on an empty own-object set (`update_scheduled_transaction.id`)
+in A and B; count and cost first.
