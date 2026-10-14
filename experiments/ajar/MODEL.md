@@ -205,3 +205,10 @@ only such a value (a date, a permission) is not caught by provenance.
   argument. The floor and the content projection still apply.
 - *Credentials*: the new password is the object of `update_password` (it is what the call sets),
   so it is a driving and grant argument and the call can be confirmed (L4).
+
+**8.8 An absent driving argument is an empty one** (fixed before the run). When none of a
+call's driving arguments is passed (an event created without participants), there is nothing
+for provenance to check, exactly as when they are passed empty. The kernel's fallback — check
+every argument when no declared driving argument is present — exists for a destination
+smuggled into an undeclared field; under the model every argument has a role and the content
+projection covers content, so for M1 the fallback is off (`absent_driving_is_empty`).
