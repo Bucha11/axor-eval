@@ -314,3 +314,25 @@ initial state; slot `update_scheduled_transaction.id` draws from it. Config `con
 what changed. Paid (only after confirmation): live episodes (A and B) in which a changed rule fired —
 the content check in B, a refusal on an empty own-object set (`update_scheduled_transaction.id`)
 in A and B; count and cost first.
+
+**8.14 Revision after §8.12–8.13** (fixed before code and runs).
+1. **§8.12 is withdrawn**: a content-projection failure is again a final refusal (with or without a
+   human). Reason (measured, §8.12 recompute): no utility gained in any mode, +4/+5 Ajar attacks and
+   +7/+9 replay attacks with a fallible human; and the live refusals it targeted were mostly the
+   recognizer's false positives (item 2), not legitimate literals.
+2. **Domain recognition in content (`content_tokens.extract`)**. A token without a scheme and
+   without `www.` is a domain only if (a) its last label is a top-level domain of the Public Suffix
+   List (publicsuffix.org, vendored with its date), (b) that label is not a common file extension
+   (doc, docx, xls, xlsx, ppt, pptx, pdf, txt, csv, md, json, …, the list in the code: `notes.md`
+   and `run.py` are files although `md` and `py` are TLDs), and (c) the token is not the name of
+   one of the user's own files (config `own_names`, from the initial state). A token with a scheme
+   or `www.` is a URL as before; e-mail and IBAN unchanged.
+3. **Generator.** travel: own addresses = the user's address and the participants of the user's own
+   events (as workspace) — slots send_email.recipients/cc/bcc and create_calendar_event.participants;
+   workspace: received e-mails in the user's inbox are own objects too (slot delete_email.email_id);
+   `own_names` = the names of the user's own files (workspace cloud drive, banking file system).
+   §8.13 stays.
+Config `config_m1_c814` = §8.10 + §8.13 + this. Recompute (free): Ajar all modes and replay 1887,
+compared with §8.10 change by change (§8.13 alone = c813 without §8.12; + recognizer; + travel
+addresses; + received e-mails). Live: count the A and B episodes in which any changed rule fires
+(a recorded call whose decision differs from the final configuration's), with the cost; no launch.
