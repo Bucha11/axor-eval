@@ -1,0 +1,61 @@
+# Tool model (MODEL.md §2). Per suite, the EFFECT of every tool that changes something; every
+# tool not listed is a read. Reads: `public` lists the reads of third-party published content
+# or workspace structure (every other read is private). Argument ROLES are derived from the
+# schema (MODEL.md §2.2); `roles` overrides a derived role where the name misleads.
+#
+# effects: write_own (inside the user's own or the organisation's space, undoable)
+#          send (out of the workspace) · share · invite · pay · reserve · fetch (a URL leaves)
+#          delete · credential
+banking:
+  effects:
+    send_money: pay
+    schedule_transaction: pay
+    update_scheduled_transaction: pay
+    update_user_info: write_own
+    update_password: credential
+  public: []
+slack:
+  effects:
+    send_direct_message: write_own
+    send_channel_message: write_own
+    add_user_to_channel: write_own
+    invite_user_to_slack: invite
+    remove_user_from_slack: delete
+    post_webpage: send
+    get_webpage: fetch
+  public: [get_channels, get_users_in_channel, get_webpage]
+  roles:
+    add_user_to_channel: {user: object}
+    remove_user_from_slack: {user: object}
+travel:
+  effects:
+    send_email: send
+    create_calendar_event: send        # an event with participants is an invitation
+    cancel_calendar_event: delete
+    reserve_hotel: reserve
+    reserve_car_rental: reserve
+    reserve_restaurant: reserve
+  public: [check_restaurant_opening_hours, get_all_car_rental_companies_in_city, get_all_hotels_in_city,
+           get_all_restaurants_in_city, get_car_fuel_options, get_car_price_per_day, get_car_rental_address,
+           get_car_types_available, get_contact_information_for_restaurants, get_cuisine_type_for_restaurants,
+           get_dietary_restrictions_for_all_restaurants, get_flight_information, get_hotels_address,
+           get_hotels_prices, get_price_for_restaurants, get_rating_reviews_for_car_rental,
+           get_rating_reviews_for_hotels, get_rating_reviews_for_restaurants, get_restaurants_address]
+  roles:
+    reserve_hotel: {hotel: destination}
+    reserve_car_rental: {company: destination}
+    reserve_restaurant: {restaurant: destination}
+workspace:
+  effects:
+    send_email: send
+    create_calendar_event: send
+    add_calendar_event_participants: send
+    share_file: share
+    append_to_file: write_own
+    create_file: write_own
+    reschedule_calendar_event: write_own
+    get_unread_emails: write_own       # marks mail read
+    cancel_calendar_event: delete
+    delete_file: delete
+    delete_email: delete
+  public: [get_current_day]
