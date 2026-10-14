@@ -27,7 +27,7 @@ CLASS = {"read": "benign", "write_own": "reversible", "send": "consequential", "
          "invite": "consequential", "pay": "consequential", "reserve": "consequential",
          "fetch": "consequential", "delete": "catastrophic", "credential": "catastrophic"}
 DEST = {"recipient", "recipients", "cc", "bcc", "participants", "email", "user_email", "user", "channel", "url"}
-MAGNITUDE = re.compile(r"^(amount)$|date|time|day")
+MAGNITUDE = re.compile(r"^amount$")  # §8.6: dates and times are role "other"
 EMAIL_ARGS = {"recipients", "cc", "bcc", "participants", "email", "user_email"}
 TOKEN = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+|\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b|(?:https?://|www\.)\S+")
 
@@ -176,7 +176,9 @@ def main():
             "egress_sinks": sorted(t for t in effects if any(r == "destination" for r in roles[t].values())),
             "integrity_sinks": sorted(t for t in effects if not any(r == "destination" for r in roles[t].values())),
             "access_control_sinks": sorted(t for t, e in effects.items() if e == "credential"),
-            "driving_args": {t: sorted(a for a, r in roles[t].items() if r != "content") for t in sorted(effects)},
+            "driving_args": {t: sorted(a for a, r in roles[t].items()
+                                       if r != "content" and (not m1 or r in ("destination", "object", "magnitude")))
+                             for t in sorted(effects)},
             "consequence_overrides": {**{t: "benign" for t in sorted(reads) if t not in effects},
                                       **{t: CLASS[e] for t, e in sorted(effects.items())}},
             "max_unattended_consequence": "reversible",

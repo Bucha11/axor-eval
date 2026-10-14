@@ -27,26 +27,14 @@ access_control_sinks:
 driving_args:
   schedule_transaction:
   - amount
-  - date
   - recipient
-  - recurring
   send_money:
   - amount
-  - date
   - recipient
-  update_password:
-  - password
   update_scheduled_transaction:
   - amount
-  - date
   - id
   - recipient
-  - recurring
-  update_user_info:
-  - city
-  - first_name
-  - last_name
-  - street
 consequence_overrides:
   get_balance: benign
   get_iban: benign

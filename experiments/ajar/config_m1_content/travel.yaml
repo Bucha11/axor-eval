@@ -40,23 +40,14 @@ driving_args:
   cancel_calendar_event:
   - event_id
   create_calendar_event:
-  - end_time
-  - location
   - participants
-  - start_time
   reserve_car_rental:
   - company
-  - end_time
-  - start_time
   reserve_hotel:
-  - end_day
   - hotel
-  - start_day
   reserve_restaurant:
   - restaurant
-  - start_time
   send_email:
-  - attachments
   - bcc
   - cc
   - recipients

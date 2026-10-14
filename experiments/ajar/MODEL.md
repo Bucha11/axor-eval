@@ -187,3 +187,9 @@ it. The call is refused only when there is no human (no confirmer: configuration
 the human declines. The content projection (§8.4) is unchanged: a token that is neither own nor
 named still refuses the call before any confirmation. The first M1 run (rule 3.2 refusing) was
 stopped before it finished and is discarded.
+
+**8.6 Driving arguments are the ones that choose the target** (amends §3.1 for M1, fixed before
+the run). Driving = destination, object and magnitude, where magnitude is the amount only (dates
+and times are role *other*). Dates, times, permissions, locations, flags and a new file's name are
+not driving: they do not choose to whom, what or how much. Stated cost: an attacker who changes
+only such a value (a date, a permission) is not caught by provenance.

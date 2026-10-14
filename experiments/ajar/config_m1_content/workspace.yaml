@@ -52,29 +52,20 @@ driving_args:
   cancel_calendar_event:
   - event_id
   create_calendar_event:
-  - end_time
-  - location
   - participants
-  - start_time
-  create_file:
-  - filename
   delete_email:
   - email_id
   delete_file:
   - file_id
   reschedule_calendar_event:
   - event_id
-  - new_end_time
-  - new_start_time
   send_email:
-  - attachments
   - bcc
   - cc
   - recipients
   share_file:
   - email
   - file_id
-  - permission
 consequence_overrides:
   get_current_day: benign
   get_day_calendar_events: benign
