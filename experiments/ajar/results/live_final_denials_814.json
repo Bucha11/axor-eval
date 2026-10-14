@@ -1,0 +1,28 @@
+{
+ "A": {
+  "update_scheduled_transaction|operator_set": 7,
+  "update_password|grant_gate": 2,
+  "schedule_transaction|grant_gate": 2,
+  "add_user_to_channel|operator_set": 14,
+  "get_webpage|operator_set": 29,
+  "send_channel_message|operator_set": 3,
+  "invite_user_to_slack|operator_set": 7,
+  "create_calendar_event|taint_enforcement": 3,
+  "create_calendar_event|operator_set": 9,
+  "send_email|operator_set": 4,
+  "share_file|operator_set": 7,
+  "delete_file|operator_set": 8,
+  "delete_file|grant_gate": 2,
+  "send_money|operator_set": 1,
+  "send_channel_message|content_projection": 3,
+  "send_direct_message|content_projection": 3
+ },
+ "B": {
+  "send_channel_message|content_projection": 9,
+  "send_direct_message|content_projection": 2,
+  "create_calendar_event|operator_set": 3,
+  "add_user_to_channel|operator_set": 2,
+  "send_email|operator_set": 4,
+  "send_email|content_projection": 2
+ }
+}

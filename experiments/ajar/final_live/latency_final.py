@@ -69,7 +69,8 @@ def bench(fn, n=40000, warm=2000):
 
 
 def governor(suite, trace):
-    cfg = GovernanceConfig.from_yaml(os.path.join(HERE, "..", "config_m1_content", f"{suite}.yaml"))
+    cfg = GovernanceConfig.from_yaml(os.path.join(HERE, "..", os.environ.get("LAT_CONFIG", "config_m1_content"),
+                                                  f"{suite}.yaml"))
     kw = cfg.as_governor_kwargs()
     kw["trace"] = trace
     g = ToolCallGovernor(**kw)
@@ -99,7 +100,7 @@ def main():
                 print(f"  {suite:9s} trace={trace!s:5s} {label:38s} {'allow' if d.allowed else 'deny ':5s} "
                       f"{d.category or '':22s} p50={p50:6.1f} p99={p99:6.1f} µs")
             res[f"{suite}/trace={trace}/worst_p99_us"] = round(worst, 1)
-    json.dump(res, open(os.path.join(HERE, "..", "results", "latency_final.json"), "w"), indent=1)
+    json.dump(res, open(os.path.join(HERE, "..", "results", f"latency_{os.environ.get('LAT_TAG', 'final')}.json"), "w"), indent=1)
 
 
 if __name__ == "__main__":

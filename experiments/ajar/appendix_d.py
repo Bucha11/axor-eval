@@ -68,7 +68,7 @@ def main():
                   f"{v['admitted']}/{v['required']} denied={[(x['tool'], x['check']) for x in denied]} "
                   f"attacker_admitted={[(x['tool'], x['args'].get('recipient')) for x in atk]}", flush=True)
     json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "results",
-                                     f"appendix_d_{arm}.json"), "w"), indent=1, default=str)
+                                     f"appendix_d{os.environ.get('OUT', '')}_{arm}.json"), "w"), indent=1, default=str)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,29 @@
+=== latency_gate (core-m1 09e98af)
+host: x86_64 | CPython 3.11.17 (1 thread)
+
+trace=True:
+  allow egress             p50=  95.5  p99= 225.5  µs
+  deny egress              p50= 110.4  p99= 216.1  µs
+  benign read              p50=  42.7  p99= 107.9  µs
+  integrity-sink prompt    p50=  64.8  p99= 138.8  µs
+  integrity-sink injected  p50=  74.6  p99= 197.7  µs
+  unclassified tool        p50=  84.6  p99= 246.7  µs
+  mixed throughput: 6,487 checks/s   worst-call p99 = 246.7 µs
+
+trace=False:
+  allow egress             p50=  28.6  p99=  67.2  µs
+  deny egress              p50=  31.9  p99=  94.9  µs
+  benign read              p50=  23.1  p99=  60.3  µs
+  integrity-sink prompt    p50=  28.9  p99=  66.3  µs
+  integrity-sink injected  p50=  38.0  p99=  78.8  µs
+  unclassified tool        p50=   8.4  p99=  27.8  µs
+  mixed throughput: 30,392 checks/s   worst-call p99 = 94.9 µs
+=== latency_grants (core-m1 09e98af)
+host: x86_64 | CPython 3.11.17 (1 thread)
+grants in store: 9
+  match (find)                p50=   6.7  p99=  28.8  µs
+  charge (reserve+commit)     p50=   9.2  p99=  45.2  µs
+  evaluate on a grant sink trace=True   p50=  94.0  p99= 282.2  µs
+  evaluate + charge trace=True       p50= 121.7  p99= 290.5  µs
+  evaluate on a grant sink trace=False  p50=  50.5  p99= 102.9  µs
+  evaluate + charge trace=False      p50=  58.5  p99= 125.8  µs

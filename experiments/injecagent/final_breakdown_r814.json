@@ -1,0 +1,35 @@
+{
+ "direct_harm": {
+  "cases": 510,
+  "final": {
+   "grant_gate": 459,
+   "consequence_gate": 51
+  },
+  "without_class": {
+   "grant_gate": 459,
+   "allowed": 34,
+   "taint_enforcement": 17
+  },
+  "denied_only_by_class": 34,
+  "class_only_tools": {
+   "AugustSmartLockUnlockDoor": 17,
+   "NortonIdentitySafeDisableTwoFactorAuthentication": 17
+  }
+ },
+ "data_stealing": {
+  "cases": 544,
+  "final": {
+   "content_projection": 323,
+   "grant_gate": 221
+  },
+  "without_floor": {
+   "content_projection": 323,
+   "grant_gate": 221
+  },
+  "denied_only_by_floor": 0,
+  "floor_alone": {
+   "audience_floor (floor)": 500,
+   "taint_enforcement": 44
+  }
+ }
+}

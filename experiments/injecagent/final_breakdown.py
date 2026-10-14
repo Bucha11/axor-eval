@@ -109,7 +109,7 @@ def main():
     out["data_stealing"] = {"cases": len(ds), "final": dict(full), "without_floor": dict(nf),
                             "denied_only_by_floor": floor_only, "floor_alone": dict(fa)}
     print("data stealing:", json.dumps(out["data_stealing"]))
-    json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "final_breakdown.json"), "w"),
+    json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"final_breakdown{os.environ.get('OUT', '')}.json"), "w"),
               indent=1)
 
 

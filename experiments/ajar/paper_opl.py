@@ -26,6 +26,10 @@ from ajar.score.scorer import score  # noqa: E402
 
 
 def make(spec: str):
+    if spec.startswith("ajar:"):  # one of Ajar's own reference baselines (ajar/defenses/baselines.py)
+        import ajar.defenses.baselines  # noqa: F401  (registers them)
+        from ajar.defenses.base import get_defense
+        return get_defense(spec.split(":", 1)[1])
     if spec == "e0-clean":
         return axor_ajar.AxorDefense(spec)
     if spec == "e0-ctx":

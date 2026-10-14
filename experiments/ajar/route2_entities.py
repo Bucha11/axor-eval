@@ -79,12 +79,14 @@ def pct(xs, q):
 
 def main():
     from agentdojo.task_suite.load_suites import get_suite
-    d = json.load(gzip.open(os.path.join(HERE, "results", "residuals_routes_final2.json.gz")))
+    tag = os.environ.get("ROUTES_TAG", "final2")
+    rp = os.path.join(HERE, "results", f"residuals_routes_{tag}.json")
+    d = json.load(gzip.open(rp + ".gz") if os.path.exists(rp + ".gz") else open(rp))
     rows = d["route2"]
     plan_has = {(s["task"], s["sink"]): s["plan_has_sink"] for s in d["route2_stats"] if "task" in s}
     ents = {s: entities(s, get_suite("v1", s).load_and_inject_default_environment({}))
             for s in ("banking", "slack", "travel", "workspace")}
-    cfg = {s: yaml.safe_load(open(os.path.join(HERE, "config_m1_content", f"{s}.yaml"))) for s in ents}
+    cfg = {s: yaml.safe_load(open(os.path.join(HERE, os.environ.get("ROUTES_CONFIG", "config_m1_content"), f"{s}.yaml"))) for s in ents}
     kept, dropped, magnitude = [], 0, []
     for r in rows:
         k = kind_of(r["suite"], r["arg"])
@@ -118,7 +120,7 @@ def main():
     mag_adm = [r for r in magnitude if r["res"]["b"][0]]
     out["non_entity_admitted"] = {"admitted": len(mag_adm),
                                   "by_source": collections.Counter(r["res"]["b"][1] for r in mag_adm)}
-    json.dump(out, open(os.path.join(HERE, "results", "route2_entities.json"), "w"), indent=1, default=str)
+    json.dump(out, open(os.path.join(HERE, "results", f"route2_entities{os.environ.get('OUT', '')}.json"), "w"), indent=1, default=str)
     print(json.dumps(out, indent=1, default=str))
 
 
