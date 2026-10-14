@@ -15,7 +15,18 @@ sys.path.insert(0, HERE)
 from refs import ANY_REF, DESCR  # noqa: E402
 
 
+ID_ARGS = {"id", "id_", "file_id", "event_id", "email_id"}
+
+
+def own_sets():
+    import yaml
+    return {su: {str(v).casefold() for v in (yaml.safe_load(open(os.path.join(HERE, "..", "config_m1_c814", f"{su}.yaml")))
+                                             .get("audience") or ())} for su in ("banking", "slack", "travel", "workspace")}
+
+
 def code(tok):
+    if tok.isdigit():  # (0c) an integer handle is its own code
+        return tok
     if tok.startswith("⟨"):
         return tok[1:-1].split(":", 1)[1].split("…")[0]
     return tok.rsplit("_", 1)[1]
@@ -23,7 +34,8 @@ def code(tok):
 
 def main():
     res = {}
-    for fmt in ("opaque", "hint", "descr", "descr_note"):
+    OWN = own_sets()
+    for fmt in ("opaque", "hint", "descr", "descr_note", "descr_v2"):
         files = sorted(glob.glob(os.path.join(HERE, "runs", fmt, "*.json")))
         if not files:
             continue
@@ -48,10 +60,17 @@ def main():
                         if re.search(r"(?<![0-9a-f])" + cd + r"(?![0-9a-f])", s) and t not in s:
                             mangled = True
                     pat = DESCR if fmt.startswith("descr") else ANY_REF
+                    if fmt == "descr_v2":
+                        pass  # integer handles are checked below
                     if any(m.group(0) not in toks for m in pat.finditer(s)):
                         mangled = True
                     if any(x in s for x in vals if len(x) > 3 and x not in d["prompt"]):
                         raw = True
+                    # (0c) an integer id argument that is neither a handle nor a value shown raw
+                    if fmt == "descr_v2" and _k in ID_ARGS and isinstance(v, int) and not isinstance(v, bool) \
+                            and str(v) not in toks and str(v).casefold() not in OWN[d["suite"]] \
+                            and str(v) not in d["prompt"]:
+                        mangled = True
                 if mangled or whole or raw:
                     r["target_calls"] += 1
                 r["whole_ref_calls"] += whole and not mangled

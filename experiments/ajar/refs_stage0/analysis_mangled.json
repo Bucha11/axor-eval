@@ -90,5 +90,22 @@
   ],
   "mangled_share_target": 0.407,
   "mangled_share_all": 0.111
+ },
+ "descr_v2": {
+  "episodes": 20,
+  "utility": 18,
+  "calls": 87,
+  "target_calls": 7,
+  "mangled_calls": 0,
+  "mangled_with_error": 0,
+  "raw_calls": 0,
+  "whole_ref_calls": 7,
+  "episodes_with_mangled": 0,
+  "failed": [
+   "travel/user_task_1",
+   "workspace/user_task_25"
+  ],
+  "mangled_share_target": 0.0,
+  "mangled_share_all": 0.0
  }
 }
