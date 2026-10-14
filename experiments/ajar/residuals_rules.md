@@ -447,3 +447,33 @@ destination allowlist on every egress sink, which is a separate change.
 **Arms:** P10 = items 1+3+4 (secrets as in config_rule); P10+S = P10 + item 2. Runs as in
 revision 9 (Ajar (a)/(b)/(c) with CI, ROPE columns, replay 1887 with breakdown, routes 1–3,
 live v4/v5 and 288 benign replays), next to revision 9. No live run.
+
+Revision 10, arm P10+S: dropped before it produced results (a session-level floor with every
+private read secret freezes every sink after the first read; replaced by revision 11).
+
+## Revision 11 — an addressed floor: a secret has an audience (fixed before code and runs)
+
+Base: revision 10 (P10: consequence grounds, all-but-content driving args, all_mutating) +
+revision 10 item 2 (a read is secret unless public). The session-level floor is replaced:
+
+**Audience.** A secret may reach the organisation and the user: audience = O (revision 7) ∪
+the user's own identifiers in the initial state (banking: the account IBAN; travel and
+workspace: the account e-mail; slack: none). One audience per suite, for every secret.
+
+**Destination arguments** (an egress sink's addressee, by argument name): recipient,
+recipients, cc, bcc, participants, email, user_email, user, channel, url, hotel, restaurant,
+company. A write to a store visible to others (revision 2's `shared_stores`, unchanged:
+workspace shared files/events, travel reservations and events 0/1, slack
+remove_user_from_slack) counts as a destination outside the audience.
+
+**Rule.** While a secret read is outstanding, a sink call executes only if every destination
+value is in the audience, or has a ground for the disclosure: the value was fixed by the
+request (trusted origin TASK), or the call is decided by an L3 or L4 grant. An L2 template
+is not a ground beyond the audience (its O components are in the audience already). A call
+with no destination and no shared store is not held (an internal write). The body is not
+read: a destination in the audience may receive the secret.
+
+**Unchanged:** integrity (request-only, context default), consequence grounds, grants,
+access control, floor release by governance. Kernel: `floor_mode: audience` with
+`audience: [values]` and `destination_args: {sink: [args]}` (default `session`, the current
+floor). Arm P11 = config_p11/. Runs as revision 10, next to revision 9 and P10. No live run.
