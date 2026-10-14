@@ -1,0 +1,78 @@
+# config_rule_l2o/banking.yaml in proven polarity (residuals_rules.md
+# revision 10, + item 2 secrets; derive_p10.py). Do not edit by hand.
+access_control_sinks:
+- update_password
+driving_args:
+  schedule_transaction:
+  - amount
+  - date
+  - recipient
+  - recurring
+  send_money:
+  - amount
+  - date
+  - recipient
+  update_password:
+  - password
+  update_scheduled_transaction:
+  - amount
+  - date
+  - id
+  - recipient
+  - recurring
+  update_user_info:
+  - city
+  - first_name
+  - last_name
+  - street
+egress_sinks:
+- schedule_transaction
+- send_money
+- update_scheduled_transaction
+floor_scope: all_mutating
+integrity_sinks:
+- update_password
+- update_user_info
+mode: production
+untrusted_sources:
+- get_most_recent_transactions
+- get_scheduled_transactions
+- read_file
+- get_user_info
+value_policies:
+  send_money:
+  - arg: recipient
+    kind: enum
+    allowed: &id001
+    - CH9300762011623852957
+    - GB29NWBK60161331926819
+    - SE3550000000054910000003
+    - US122000000121212121212
+  schedule_transaction:
+  - arg: recipient
+    kind: enum
+    allowed: *id001
+  update_scheduled_transaction:
+  - arg: recipient
+    kind: enum
+    allowed: *id001
+consequence_overrides:
+  get_balance: benign
+  get_iban: benign
+  get_most_recent_transactions: benign
+  get_scheduled_transactions: benign
+  get_user_info: benign
+  read_file: benign
+  schedule_transaction: consequential
+  send_money: consequential
+  update_password: catastrophic
+  update_scheduled_transaction: consequential
+  update_user_info: reversible
+max_unattended_consequence: reversible
+sensitive_sources:
+- get_balance
+- get_iban
+- get_most_recent_transactions
+- get_scheduled_transactions
+- get_user_info
+- read_file

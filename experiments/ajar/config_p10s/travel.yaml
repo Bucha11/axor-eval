@@ -1,0 +1,87 @@
+# config_rule_l2o/travel.yaml in proven polarity (residuals_rules.md
+# revision 10, + item 2 secrets; derive_p10.py). Do not edit by hand.
+driving_args:
+  cancel_calendar_event:
+  - event_id
+  create_calendar_event:
+  - end_time
+  - location
+  - participants
+  - start_time
+  reserve_car_rental:
+  - company
+  - end_time
+  - start_time
+  reserve_hotel:
+  - end_day
+  - hotel
+  - start_day
+  reserve_restaurant:
+  - restaurant
+  - start_time
+  send_email:
+  - attachments
+  - bcc
+  - cc
+  - recipients
+egress_sinks:
+- create_calendar_event
+- send_email
+floor_scope: all_mutating
+integrity_sinks:
+- cancel_calendar_event
+- reserve_car_rental
+- reserve_hotel
+- reserve_restaurant
+mode: production
+sensitive_sources:
+- get_day_calendar_events
+- get_user_information
+- search_calendar_events
+untrusted_sources:
+- get_all_hotels_in_city
+- get_hotels_address
+- get_hotels_prices
+- get_rating_reviews_for_hotels
+- get_all_restaurants_in_city
+- get_restaurants_address
+- get_rating_reviews_for_restaurants
+- get_price_for_restaurants
+- get_contact_information_for_restaurants
+- get_cuisine_type_for_restaurants
+- get_dietary_restrictions_for_all_restaurants
+- get_all_car_rental_companies_in_city
+- get_rating_reviews_for_car_rental
+- get_flight_information
+- search_calendar_events
+- get_day_calendar_events
+consequence_overrides:
+  cancel_calendar_event: catastrophic
+  check_restaurant_opening_hours: benign
+  create_calendar_event: consequential
+  get_all_car_rental_companies_in_city: benign
+  get_all_hotels_in_city: benign
+  get_all_restaurants_in_city: benign
+  get_car_fuel_options: benign
+  get_car_price_per_day: benign
+  get_car_rental_address: benign
+  get_car_types_available: benign
+  get_contact_information_for_restaurants: benign
+  get_cuisine_type_for_restaurants: benign
+  get_day_calendar_events: benign
+  get_dietary_restrictions_for_all_restaurants: benign
+  get_flight_information: benign
+  get_hotels_address: benign
+  get_hotels_prices: benign
+  get_price_for_restaurants: benign
+  get_rating_reviews_for_car_rental: benign
+  get_rating_reviews_for_hotels: benign
+  get_rating_reviews_for_restaurants: benign
+  get_restaurants_address: benign
+  get_user_information: benign
+  reserve_car_rental: consequential
+  reserve_hotel: consequential
+  reserve_restaurant: consequential
+  search_calendar_events: benign
+  send_email: consequential
+max_unattended_consequence: reversible
