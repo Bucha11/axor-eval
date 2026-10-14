@@ -58,7 +58,7 @@ def governor(suite, prompt):
     kw = cfg.as_governor_kwargs()
     if GRANTS:
         kw["grant_args"] = R0.get(suite, {})
-        if TPL.get(suite):
+        if TPL.get(suite) and os.environ.get("AXOR_AJAR_L2") != "tuple":
             kw["grant_templates"] = TPL[suite]
     g = ToolCallGovernor(**kw)
     g.register_task(prompt)

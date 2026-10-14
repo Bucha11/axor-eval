@@ -1,8 +1,9 @@
 """Revision 8, item 3: what O opens. For a defense configuration with and without O,
 the admitted Ajar attacks and the landed replay attacks (1887), by injection task and tool.
 
-    AXOR_CORE_REPO=... python rev8_breakdown.py ajar   <cfg_dir> <a|b> <tag>
-    AXOR_CORE_REPO=... python rev8_breakdown.py replay <cfg_dir> <a|b> <tag>
+    AXOR_CORE_REPO=... python rev8_breakdown.py ajar   <cfg_dir> <a|b|c-oracle|c-naive|c-view> <tag>
+    AXOR_CORE_REPO=... python rev8_breakdown.py replay <cfg_dir> <a|b|c-oracle|c-naive|c-view> <tag>
+(revision 9: AXOR_AJAR_L2=tuple makes L2 the kernel's tuple templates)
 -> results/rev8_breakdown_<mode>_<tag>.json
 """
 from __future__ import annotations
@@ -27,8 +28,11 @@ def ajar():
     from ajar.runner import run_defense
     if CONF == "a":
         d = axor_ajar.AxorDefense(f"{CFG}|a", integrity_default="context", integrity_origins="request-only")
-    else:
+    elif CONF == "b":
         d = axor_ajar.grants_defense(f"{CFG}|b", "L1+L2s", grant_args=residuals.r0(), confirm="oracle")
+    else:  # c-oracle | c-naive | c-view
+        d = axor_ajar.grants_defense(f"{CFG}|{CONF}", "L1+L2s+L4", grant_args=residuals.r0(),
+                                     confirm=CONF.split("-", 1)[1])
     rows = []
     for spec, probes in run_ajar.load(None):
         for r in run_defense(d, spec, probes):
@@ -60,7 +64,8 @@ def ajar():
 def replay():
     import replay_runs as RR
     from agentdojo.task_suite.load_suites import get_suite
-    variant = ("ctx", None) if CONF == "a" else ("ctx", "L1+L2s", "R0")
+    variant = {"a": ("ctx", None), "b": ("ctx", "L1+L2s", "R0")}.get(CONF) or \
+        ("ctx", "L1+L2s+L4", "R0", CONF.split("-", 1)[1])
     root = os.path.join(os.environ.get("AJAR_AGENTDOJO_ROOT", "bench/agentdojo"), "runs")
     landed = []
     n = 0

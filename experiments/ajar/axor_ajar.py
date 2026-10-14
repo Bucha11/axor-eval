@@ -331,7 +331,9 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
         suite = spec.task.suite
         kw: dict[str, Any] = {"grant_args": table.get(suite, {})}
-        if "L2" in lv and suite in TEMPLATES:
+        if os.environ.get("AXOR_AJAR_L2") == "tuple":
+            pass  # revision 9: L2 = the kernel's tuple templates from the config's value_policies
+        elif "L2" in lv and suite in TEMPLATES:
             kw["grant_templates"] = TEMPLATES[suite]
         elif "L2s" in lv and suite in TEMPLATES_SAFE:
             kw["grant_templates"] = TEMPLATES_SAFE[suite]
