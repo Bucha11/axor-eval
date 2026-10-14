@@ -141,6 +141,8 @@ consequence_rules:
     own: reversible
 operator_sets_confirm: true
 fallback_to_confirmation: true
+integrity_default: context
+integrity_origins: request-only
 grant_args:
   cancel_calendar_event:
     event_id: id

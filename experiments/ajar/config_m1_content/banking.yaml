@@ -117,6 +117,8 @@ template_limits:
     amount: 1100.0
 operator_sets_confirm: true
 fallback_to_confirmation: true
+integrity_default: context
+integrity_origins: request-only
 grant_args:
   schedule_transaction:
     amount: money
