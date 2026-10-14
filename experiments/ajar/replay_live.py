@@ -27,6 +27,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
 
+sys.path.insert(0, HERE)
+import axor_ajar  # noqa: E402  (agent_args / present / spend_args: MODEL.md §9 references)
+
 CONFIG_DIR = os.environ.get("AXOR_AJAR_CONFIG_DIR") or os.path.join(HERE, "config_rule")
 R0 = json.load(open(os.environ.get("AXOR_AJAR_GRANT_ARGS") or os.path.join(HERE, "live", "grant_args_R0.json")))
 GRANTS = os.environ.get("REPLAY_GRANTS", "1") == "1"  # 0: configuration (a), no grants
@@ -88,12 +91,12 @@ def replay(d):
         for tc in _calls_of(x):
             fn, args = parse_call(tc)
             tid = tc.get("id") if isinstance(tc, dict) else re.search(r"id='([^']+)'", str(tc)).group(1)
-            dec = g.evaluate(fn, dict(args))
+            dec = g.evaluate(fn, axor_ajar.agent_args(g, dict(args)))
             rec = outs.get(tid) or {}
             executed = "governance kernel" not in str(rec.get("error")) and rec.get("error") in (None, "None")
             recorded_allowed = "governance kernel" not in str(rec.get("error"))
             if dec.allowed and getattr(dec, "grant_id", None) is not None:
-                k = g.spend(dec, dict(args))
+                k = g.spend(dec, axor_ajar.spend_args(dec, dict(args)))
                 if k is not None:
                     g.grant_store.commit(k)
             calls.append({"tool": fn, "args": args, "allowed": bool(dec.allowed), "category": dec.category,
@@ -101,7 +104,7 @@ def replay(d):
                           **({} if dec.allowed else {"reads_before": reads})})
             if executed:
                 try:
-                    g.register_output(dec, text_of(rec))
+                    axor_ajar.present(g, dec, text_of(rec))
                 except Exception:
                     pass
                 reads += "\n" + text_of(rec)

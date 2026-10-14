@@ -123,17 +123,17 @@ def replay(variant, suite, run):
         g.register_task(prompt)
         from agentdojo.agent_pipeline.tool_execution import tool_result_to_str
         for c in calls:
-            d = g.evaluate(c["function"], dict(c["args"]))
+            d = g.evaluate(c["function"], axor_ajar.agent_args(g, dict(c["args"])))
             if not d.allowed:
                 continue
             if getattr(d, "grant_id", None) is not None:
-                key = g.spend(d, dict(c["args"]))
+                key = g.spend(d, axor_ajar.spend_args(d, dict(c["args"])))
                 if key is not None:
                     g.grant_store.commit(key)
             res, err = runtime.run_function(env, c["function"], dict(c["args"]))
             executed.append(FunctionCall(function=c["function"], args=dict(c["args"])))
             if err is None:
-                g.register_output(d, tool_result_to_str(res))
+                axor_ajar.present(g, d, tool_result_to_str(res))
     inj = suite.injection_tasks.get(run.get("injection_task_id") or "")
     sec = None
     if inj is not None:

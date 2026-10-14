@@ -68,6 +68,57 @@ def load_config(suite: str, integrity_default: str | None, integrity_origins: st
     return cfg
 
 
+# ── MODEL.md §9 (references): the agent's side of a call, for offline evaluation ──────────────
+_REF_ID_KEYS = ("id", "id_", "file_id", "event_id", "email_id")
+
+
+def agent_args(g, args):
+    """The call as an agent behind references would write it (§9.10): a value the session hid is
+    given by its reference; R / own / never-read values stay raw. No-op without references."""
+    t = getattr(g, "_xrefs", None)
+    if t is None or not t.by_name:
+        return args
+    hid = {}
+    for name, r in t.by_name.items():
+        hid.setdefault(str(r.value).casefold(), name)
+    long = sorted((v for v in hid if len(v) >= 6 and not v.isdigit()), key=len, reverse=True)
+
+    def go(x, key):
+        if isinstance(x, dict):
+            return {k: go(v, k) for k, v in x.items()}
+        if isinstance(x, (list, tuple)):
+            return [go(v, key) for v in x]
+        if isinstance(x, bool) or x is None:
+            return x
+        if isinstance(x, int):
+            n = hid.get(str(x)) if key in _REF_ID_KEYS else None
+            return n if n is not None else x
+        if isinstance(x, str):
+            n = hid.get(x.casefold())
+            if n is not None and (key in _REF_ID_KEYS or not str(n).isdigit()):
+                return n if not isinstance(n, int) else n
+            out = x
+            for v in long:  # a hidden address inside text is written as its reference
+                if v in out.casefold():
+                    import re as _re
+                    out = _re.sub(_re.escape(v), str(hid[v]), out, flags=_re.I)
+            return out
+        return x
+    return go(dict(args), None)
+
+
+def present(g, d, out):
+    """Register an executed output (and, with references, mint its references)."""
+    if getattr(g, "_xrefs", None) is not None:
+        return g.present_output(d, out)
+    g.register_output(d, out)
+    return out
+
+
+def spend_args(d, args):
+    return d.resolved_args if getattr(d, "resolved_args", None) is not None else args
+
+
 class PrefixRunner:
     """Executes plan prefixes in AgentDojo and returns each step's output string.
 
@@ -141,14 +192,14 @@ class AxorDefense:
     def decide(self, spec: TaskSpec, ctx: ContextRef, cand: Candidate) -> Verdict:
         g = self.governor(spec)
         for call, out in PREFIXES.outputs(spec, ctx):
-            d = g.evaluate(call.tool, dict(call.args))
+            d = g.evaluate(call.tool, agent_args(g, dict(call.args)))
             if getattr(d, "grant_id", None) is not None:  # the call executed: its grant use is spent
-                key = g.spend(d, dict(call.args))
+                key = g.spend(d, spend_args(d, dict(call.args)))
                 if key is not None:
                     g.grant_store.commit(key)
             if out is not None:  # the live executor registers only clean executions
-                g.register_output(d, out)
-        d = g.evaluate(cand.tool, dict(cand.args))
+                present(g, d, out)
+        d = g.evaluate(cand.tool, agent_args(g, dict(cand.args)))
         self.decisions += 1
         self.log.append({"ctx": ctx.label, "prefix": list(ctx.prefix), "tool": cand.tool,
                          "allowed": d.allowed, "category": d.category})
@@ -376,12 +427,12 @@ def plan_walk(defense: AxorDefense, spec: TaskSpec) -> dict[str, Any]:
     full = _C(task=spec.task, prefix=tuple(range(len(spec.plan))))
     allowed = True
     for call, out in PREFIXES.outputs(spec, full):
-        d = g.evaluate(call.tool, dict(call.args))
+        d = g.evaluate(call.tool, agent_args(g, dict(call.args)))
         allowed &= d.allowed
         if getattr(d, "grant_id", None) is not None:
-            key = g.spend(d, dict(call.args))
+            key = g.spend(d, spend_args(d, dict(call.args)))
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            g.register_output(d, out)
+            present(g, d, out)
     return {"confirmations": getattr(g, "confirmations", 0), "plan_admitted": allowed}

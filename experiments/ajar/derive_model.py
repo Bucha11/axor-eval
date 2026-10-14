@@ -40,6 +40,7 @@ OWN_ORDERS = "--own-orders" in sys.argv  # §8.13
 OWN_NAMES = "--own-names" in sys.argv  # §8.14.2: own file names are never domains
 TRAVEL_ADDR = "--travel-addresses" in sys.argv  # §8.14.3: travel own addresses
 RECV_EMAILS = "--received-emails" in sys.argv  # §8.14.3: every e-mail in the user's inbox is own
+REFERENCES = "--references" in sys.argv  # §9: untrusted target identifiers only as references
 
 
 def role(arg, prop, override):
@@ -267,6 +268,8 @@ def main():
             cfg["fallback_to_confirmation"] = True  # §8.10
             if content_confirm:
                 cfg["content_to_confirmation"] = True  # §8.12
+            if REFERENCES:
+                cfg["references"] = True  # §9
             # the live runner takes the integrity mode from the config (offline harnesses set
             # the same two values explicitly): context default, request-only origins
             cfg["integrity_default"] = "context"

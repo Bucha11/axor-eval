@@ -145,14 +145,14 @@ def make_gov(spec, config, secrets=False, scope=None):
 
 
 def step(g, tool, args, out):
-    d = g.evaluate(tool, dict(args))
+    d = g.evaluate(tool, axor_ajar.agent_args(g, dict(args)))
     if d.allowed:
         if getattr(d, "grant_id", None) is not None:
-            key = g.spend(d, dict(args))
+            key = g.spend(d, axor_ajar.spend_args(d, dict(args)))
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            g.register_output(d, out)
+            axor_ajar.present(g, d, out)
     return d
 
 
@@ -165,13 +165,13 @@ def run(spec, config, k, attack, secrets=False, scope=None):
     attacker's steps [(tool, args, output)]; returns the last decision."""
     g = make_gov(spec, config, secrets, scope)
     for call, out in prefix_outputs(spec, k):
-        d = g.evaluate(call.tool, dict(call.args))
+        d = g.evaluate(call.tool, axor_ajar.agent_args(g, dict(call.args)))
         if getattr(d, "grant_id", None) is not None:
-            key = g.spend(d, dict(call.args))
+            key = g.spend(d, axor_ajar.spend_args(d, dict(call.args)))
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            g.register_output(d, out)
+            axor_ajar.present(g, d, out)
     d = None
     for tool, args, out in attack:
         d = step(g, tool, args, out)
