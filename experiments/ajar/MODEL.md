@@ -178,3 +178,12 @@ and its premise.
 
 Runs: both configurations (`config_model`, `config_model_content`) on the free checks; the
 pre-M1 `config_model` run is kept as M0.
+
+**8.5 Unproven destination or object goes to a confirmation, not a refusal** (amends rule 3.2
+for M1). A destination or object of a call with an effect that is neither own nor named by the
+request makes the call need an L4 ground — a confirmation of that exact call (its digest) — instead
+of being refused. A request (L1) or template (L2) grant that covers the call is not a ground for
+it. The call is refused only when there is no human (no confirmer: configurations (a) and (b)) or
+the human declines. The content projection (§8.4) is unchanged: a token that is neither own nor
+named still refuses the call before any confirmation. The first M1 run (rule 3.2 refusing) was
+stopped before it finished and is discarded.
