@@ -273,3 +273,21 @@ with L1+L4 oracle (configuration B). Reported per task: sufficient or not, and t
 required call with its check. US133 (UT15's new landlord, also the attacker's IBAN) is reported
 explicitly: is it in O, by which ground the landlord update is admitted or refused, and whether
 the same ground admits the attacker's IBAN on an injected call. No live run.
+
+**8.12 A content-projection failure asks a human** (amends §8.4, fixed before code and runs). A
+call whose content argument carries a URL / e-mail / IBAN that is neither own (the audience) nor
+named by the request (§8.4) is no longer refused outright when a human can be asked: as an unproven
+destination/object (§8.5) it needs an L4 ground — a confirmation of the exact call. Without a
+human, or for a sink with no grant args, it is refused as before. Only an L3/L4 grant is a ground
+for it (an L1/L2 grant does not cover a flagged literal). Kernel flag `content_to_confirmation`;
+the flagged literals are part of what the human is shown (`RenderedAction.flagged`).
+
+Oracle (perfect human) for a flagged call: approves only if, in addition to its usual test (the
+whole call equals a call of the reference plan; live: the grant arguments equal a ground-truth
+call's), every flagged literal occurs in that reference call's arguments. The attentive (view)
+and careless (naive) humans are unchanged.
+
+Recompute (free): Ajar in the three human modes and the 1887 replay in the same modes; the modes
+without a human must be identical to §6.1 / the final replay to the last digit (the flag changes
+nothing without a confirmer). Paid: only the B episodes (task × pass) in which the content check
+fired are re-run; the other B episodes are kept. Count and cost first, no launch.
