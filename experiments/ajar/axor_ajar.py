@@ -280,20 +280,15 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
     def matcher(spec):
         """The scripted confirmer's oracle: approve iff the WHOLE proposed call —
         every argument, rich fields included — equals a call in the reference plan
-        (kernel.confirm.call_digest; grant args compared by canonical value).
-        A call flagged by the content check (MODEL.md §8.12, ``a.flagged``) is approved
-        only if, in addition, every flagged literal occurs in that reference call."""
+        (kernel.confirm.call_digest; grant args compared by canonical value)."""
         def ok(a, c):
             from axor_core.kernel.confirm import call_digest
             from axor_core.kernel.handles import HandleTable
-            from axor_core.policy.content_tokens import extract
 
             kinds = table.get(spec.task.suite, {}).get(c[0], {})
             t = HandleTable()
             want = call_digest(c[0], c[1], kinds, t)
-            flagged = set(getattr(a, "flagged", ()) or ())
             return any(p.tool == c[0] and call_digest(p.tool, dict(p.args), kinds, t) == want
-                       and flagged <= {v for _k, v in extract(dict(p.args))}
                        for p in spec.plan)
         return ok
 

@@ -7,6 +7,8 @@
         --m1 --content -> config_m1_content/ (+ content projection, §8.4)
         --m1 --content --content-confirm -> config_m1_c812/ (+ content_to_confirmation, §8.12)
         --m1 --content --content-confirm --own-orders -> config_m1_c813/ (+ own standing orders, §8.13)
+        --m1 --content [--own-orders] [--own-names] [--travel-addresses] [--received-emails] --out=DIR
+                (§8.14 steps; config_m1_c814 = all four, without --content-confirm)
 
 The content role (MODEL.md §5) is not compiled: it needs sub-field extraction the gate does not
 do (paper §5.6); its cost is measured offline (content_role_cost.py). Run in the Ajar venv.
@@ -35,6 +37,9 @@ TOKEN = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+|\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}
 
 
 OWN_ORDERS = "--own-orders" in sys.argv  # §8.13
+OWN_NAMES = "--own-names" in sys.argv  # §8.14.2: own file names are never domains
+TRAVEL_ADDR = "--travel-addresses" in sys.argv  # §8.14.3: travel own addresses
+RECV_EMAILS = "--received-emails" in sys.argv  # §8.14.3: every e-mail in the user's inbox is own
 
 
 def role(arg, prop, override):
@@ -79,18 +84,33 @@ def entities(name, env):
                                    for p in e.participants})
         own["file"] = sorted((f.id_ for f in env.cloud_drive.files.values() if f.owner == me), key=int)
         own["event"] = sorted((e.id_ for e in env.calendar.events.values() if me in e.participants), key=int)
-        own["email"] = sorted((m.id_ for m in env.inbox.emails.values() if m.sender == me), key=int)
+        own["email"] = sorted((m.id_ for m in env.inbox.emails.values() if RECV_EMAILS or m.sender == me),
+                              key=int)
         ids = [me]
         viewers["file_id"] = {f.id_: list(f.shared_with) for f in env.cloud_drive.files.values() if f.shared_with}
         viewers["event_id"] = {e.id_: [p for p in e.participants if p != me]
                                for e in env.calendar.events.values() if len(e.participants) > 1}
     elif name == "travel":
         ids = [env.user.email]
+        if TRAVEL_ADDR:  # §8.14.3: the user's address and the participants of the user's events
+            own["address"] = sorted({env.user.email} | {p for e in env.calendar.events.values()
+                                                         if env.user.email in e.participants
+                                                         for p in e.participants})
         own["event"] = sorted((e.id_ for e in env.calendar.events.values()
                                if env.user.email in e.participants), key=int)
         viewers["event_id"] = {e.id_: [p for p in e.participants if p != env.user.email]
                                for e in env.calendar.events.values() if len(e.participants) > 1}
     return own, ids, viewers
+
+
+def own_names(name, env):
+    """§8.14.2: the names of the user's own files (never a domain in the content check)."""
+    if name == "workspace":
+        me = env.inbox.account_email
+        return sorted(f.filename for f in env.cloud_drive.files.values() if f.owner == me)
+    if name == "banking":
+        return sorted(env.filesystem.files)
+    return []
 
 
 def entity_class(suite, tool, arg, rl):
@@ -103,7 +123,7 @@ def entity_class(suite, tool, arg, rl):
         return "slack_user"   # inviting creates a new member: not an own entity
     if suite == "slack" and arg == "channel":
         return "channel"
-    if suite == "workspace" and arg in EMAIL_ARGS:
+    if (suite == "workspace" or (TRAVEL_ADDR and suite == "travel")) and arg in EMAIL_ARGS:
         return "address"
     if suite == "workspace" and arg == "file_id":
         return "file"
@@ -131,7 +151,8 @@ def main():
     m1 = "--m1" in sys.argv
     content_opt = m1 and "--content" in sys.argv
     content_confirm = content_opt and "--content-confirm" in sys.argv
-    out_dir = os.path.join(HERE, "config_m1_c813" if content_confirm and OWN_ORDERS else
+    out_named = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--out=")), None)
+    out_dir = os.path.join(HERE, out_named) if out_named else os.path.join(HERE, "config_m1_c813" if content_confirm and OWN_ORDERS else
                            "config_m1_c812" if content_confirm else "config_m1_content" if content_opt
                            else "config_m1" if m1 else "config_model")
     os.makedirs(out_dir, exist_ok=True)
@@ -199,6 +220,7 @@ def main():
             "floor_scope": "all_mutating",
             "floor_mode": "audience",
             "audience": audience,
+            **({"own_names": own_names(s, env)} if OWN_NAMES else {}),
             "destination_args": {t: sorted(a for a, r in roles[t].items() if r == "destination")
                                  for t in sorted(effects) if any(r == "destination" for r in roles[t].values())},
             "content_args": {t: sorted(a for a, r in roles[t].items() if r == "content") for t in sorted(effects)},
