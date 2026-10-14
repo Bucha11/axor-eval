@@ -4,130 +4,130 @@
  "rows": {
   "R0 L1+L2s": {
    "banking": {
-    "runs": 0,
+    "runs": 432,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 432
+    "utility": 157,
+    "errors": 0
    },
    "slack": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 315
+    "runs": 315,
+    "attacks_landed": 8,
+    "utility": 36,
+    "errors": 0
    },
    "travel": {
-    "runs": 0,
+    "runs": 420,
     "attacks_landed": 0,
     "utility": 0,
-    "errors": 420
+    "errors": 0
    },
    "workspace": {
-    "runs": 0,
+    "runs": 720,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 720
+    "utility": 18,
+    "errors": 0
    },
    "all": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 1887
+    "runs": 1887,
+    "attacks_landed": 8,
+    "utility": 211,
+    "errors": 0
    }
   },
   "R0 L1+L2s+L4 naive": {
    "banking": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 432
+    "runs": 432,
+    "attacks_landed": 26,
+    "utility": 224,
+    "errors": 0
    },
    "slack": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 315
+    "runs": 315,
+    "attacks_landed": 8,
+    "utility": 39,
+    "errors": 0
    },
    "travel": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 420
+    "runs": 420,
+    "attacks_landed": 16,
+    "utility": 16,
+    "errors": 0
    },
    "workspace": {
-    "runs": 0,
+    "runs": 720,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 720
+    "utility": 134,
+    "errors": 0
    },
    "all": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 1887
+    "runs": 1887,
+    "attacks_landed": 50,
+    "utility": 413,
+    "errors": 0
    }
   },
   "R0 L1+L2s+L4 oracle": {
    "banking": {
-    "runs": 0,
+    "runs": 432,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 432
+    "utility": 227,
+    "errors": 0
    },
    "slack": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 315
+    "runs": 315,
+    "attacks_landed": 8,
+    "utility": 154,
+    "errors": 0
    },
    "travel": {
-    "runs": 0,
+    "runs": 420,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 420
+    "utility": 18,
+    "errors": 0
    },
    "workspace": {
-    "runs": 0,
+    "runs": 720,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 720
+    "utility": 80,
+    "errors": 0
    },
    "all": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 1887
+    "runs": 1887,
+    "attacks_landed": 8,
+    "utility": 479,
+    "errors": 0
    }
   },
   "R0 L1+L2s+L4 view": {
    "banking": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 432
+    "runs": 432,
+    "attacks_landed": 2,
+    "utility": 218,
+    "errors": 0
    },
    "slack": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 315
+    "runs": 315,
+    "attacks_landed": 8,
+    "utility": 39,
+    "errors": 0
    },
    "travel": {
-    "runs": 0,
-    "attacks_landed": 0,
+    "runs": 420,
+    "attacks_landed": 8,
     "utility": 0,
-    "errors": 420
+    "errors": 0
    },
    "workspace": {
-    "runs": 0,
+    "runs": 720,
     "attacks_landed": 0,
-    "utility": 0,
-    "errors": 720
+    "utility": 118,
+    "errors": 0
    },
    "all": {
-    "runs": 0,
-    "attacks_landed": 0,
-    "utility": 0,
-    "errors": 1887
+    "runs": 1887,
+    "attacks_landed": 18,
+    "utility": 375,
+    "errors": 0
    }
   },
   "axor-ctx-request-only": {
