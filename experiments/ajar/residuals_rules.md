@@ -396,3 +396,54 @@ Runs (config_rule_l2o, tuple L2; next to config_rule rev7 and rev8): Ajar (b)/(c
 view/naive with CI; ROPE columns (banking+slack+travel, 52 gradeable tasks) next to
 `rope:opus`; replay 1887 with admitted attacks by injection task and tool; routes 1–3 worst
 case; 288 benign and live v4/v5 replays (denied calls and tasks per suite). No live run.
+
+## Revision 10 — proven polarity (fixed before code and runs)
+
+STRICT reversed the polarity for values (a value is untrusted until shown trusted), but four
+declarations stayed deny-list: what is not declared dangerous passes. Revision 10 flips them.
+Base: `config_rule_l2o/` + revision-9 kernel (tuple L2). Generated into `config_p10/` by
+`derive_p10.py` from the tool schemas and docstrings only (no task, no ground truth).
+
+**1. Consequence — a ground for every effect above the unattended ceiling.**
+Class by the type of effect (revision 5's rule, mapped onto the kernel's classes):
+
+- CATASTROPHIC: deletes (a file, an e-mail, an event, a user); changes credentials.
+- CONSEQUENTIAL: moves money (transfer, payment, paid reservation); sends outside the
+  workspace (e-mail, a calendar event with participants, a web post, a web fetch — the URL
+  reaches a third party); shares outward (a file share, inviting a user into the workspace).
+- REVERSIBLE: changes state inside the workspace (create/append a file, reschedule an
+  event, a message to a workspace channel or member, adding a member to a channel,
+  updating the user's own profile, marking mail read).
+- BENIGN: every other tool (a read).
+- A tool with no class: CATASTROPHIC.
+
+Unattended ceiling = REVERSIBLE (`max_unattended_consequence`). A call above it executes
+only on a ground: CONSEQUENTIAL — a covering grant of any level (L1 request, L2 template,
+L3 structured, L4 confirmation); CATASTROPHIC — L3 or L4 only (no L1/L2 grant is minted for
+it, as for access-control sinks). A sink above the ceiling with no grant args, or a call
+that no grant decides (empty leading tuple), is refused by the consequence gate.
+
+**2. Secrets — a read is secret unless declared public.** Public = a read of third-party
+published content (catalogues, listings, prices, reviews, opening hours, addresses of
+businesses, flight information, a web page) or of workspace structure (the channel list,
+the members of a channel, the current day). Every other read (the user's account,
+transactions, files, mail, calendar, messages, contacts, profile) is `sensitive_sources`.
+The floor is session-level (armed by the read, released only by governance): this item is
+expected to cost most of the utility, so it is run as a separate arm.
+
+**3. Driving args — every argument of a sink is driving unless it is content.** Content =
+a string argument whose schema description starts with body / content / subject / title /
+description / message / text (`derive_grants.is_rich`, unchanged). Every other argument
+(amounts, dates, ids, file names, locations, permissions, attachments, flags, profile
+fields) is driving.
+
+**4. Floor scope — `all_mutating`** (every sink is held while a secret read is
+outstanding). config_rule already has it; kept.
+
+Unchanged: tuple L2 (revision 9), O (revision 7), supersession, empty-tuple rule, L1, L4,
+value-policy gate, access control. `mode` stays `production`: `strict` would also require a
+destination allowlist on every egress sink, which is a separate change.
+
+**Arms:** P10 = items 1+3+4 (secrets as in config_rule); P10+S = P10 + item 2. Runs as in
+revision 9 (Ajar (a)/(b)/(c) with CI, ROPE columns, replay 1887 with breakdown, routes 1–3,
+live v4/v5 and 288 benign replays), next to revision 9. No live run.
