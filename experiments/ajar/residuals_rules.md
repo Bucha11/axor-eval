@@ -529,3 +529,11 @@ enum allowlist on every egress) is not met by `operator_sets`; invariant 2 would
 
 Runs: as revision 11 (Ajar (a)/(b)/(c) with CI, ROPE columns, replay 1887 with breakdown,
 routes 1–3, live v4/v5 and 288 benign), next to config_rule, revision 9, P10, P11. No live run.
+
+### Measurement addendum (revisions 11a/12) — route 1 with the config's own floor
+
+Route 1 replaces the config's `floor_scope` and `shared_stores` by its three scopes. For the
+addressed floor that hides what the config declares (its shared stores are those with someone
+outside the audience). Added: `AXOR_ROUTES_KEEP_FLOOR=1` keeps the config's floor settings
+(every scope row is then the config as is); `AXOR_ROUTES_ONLY_R1=1` runs route 1 only. Run for
+P11 and P12; nothing else changes.

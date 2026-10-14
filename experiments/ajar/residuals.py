@@ -121,7 +121,9 @@ def base_cfg(suite, secrets=False, scope=None):
     cfg = axor_ajar.load_config(suite, "context", "request-only")
     if secrets:
         cfg = dataclasses.replace(cfg, sensitive_sources=frozenset(cfg.sensitive_sources) | SECRETS[suite])
-    if scope:
+    # AXOR_ROUTES_KEEP_FLOOR=1: the config's own floor_scope / shared_stores (revision 11a's
+    # addressed floor reads its own shared stores); every scope row is then the config as is
+    if scope and os.environ.get("AXOR_ROUTES_KEEP_FLOOR") != "1":
         cfg = dataclasses.replace(cfg, floor_scope=scope,
                                   shared_stores=SHARED[suite] if scope == "shared_stores" else {})
     return cfg
@@ -464,6 +466,13 @@ def main_routes():
     data = run_ajar.load(None)
     r1 = route1(data)
     print("route1 rows", len(r1), flush=True)
+    if os.environ.get("AXOR_ROUTES_ONLY_R1") == "1":
+        r2s, r2, r3 = [], [], []
+        summ = summarize_routes(r1, r2s, r2, r3)
+        tag = os.environ.get("TAG", "")
+        json.dump({"summary": summ, "route1": r1},
+                  open(os.path.join(RESULTS, f"residuals_routes{('_' + tag) if tag else ''}.json"), "w"), indent=1)
+        return
     r2s, r2 = route2(data)
     print("route2 rows", len(r2), flush=True)
     r3 = route3(data)
