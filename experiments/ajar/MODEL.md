@@ -220,3 +220,13 @@ human, +14 benign trajectories with no refusal — came from calls with no targe
 which travel injection 2 (an event with the attacker's text in the user's calendar) went from 1 to
 21 admitted Ajar attacks. The fallback (no declared driving argument passed → check every
 argument) stays on. Final config: `config_m1_content` without that key; routes computed on it.
+
+**8.10 The fallback asks a human** (amends §8.9, fixed before code and runs). Checked in the code:
+in §8.7 a call that passes no driving argument (an empty leading tuple) is not covered by a grant,
+so provenance falls back to every argument (step 6), and a failure there is returned at once —
+the confirmation (step 7) is never asked. Now, as for any unproven destination/object (§8.5), an
+*integrity* failure of the fallback makes the call need an L4 ground (a confirmation of the exact
+call): it runs if the human confirms, and is refused without a human or when declined. A
+confidentiality (floor) failure is not deferred. Kernel flag `fallback_to_confirmation`. Final =
+§8.7 + this. Recompute: Ajar all modes with CI, replay 1887, 288 benign, routes. Expected: no human
+as §8.7; perfect human ≈ 92.
