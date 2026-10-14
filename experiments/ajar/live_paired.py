@@ -67,7 +67,7 @@ def passes() -> tuple[list[dict], list[dict]]:
     und = [{s: count(glob.glob(os.path.join(R, "live_o4mini", f"benign_{s}_undefended_*.log")), s) for s in SUITES}]
     for d in ("undef2", "undef3"):
         und.append({s: count(glob.glob(os.path.join(R, "live_grants", d, f"{s}_*.log")), s) for s in SUITES})
-    gov = [{s: count(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s) for s in SUITES}
+    gov = [{s: count(glob.glob(os.path.join(GOV_ROOT, d, f"{s}*.log")), s) for s in SUITES}
            for d in ("pass1", "pass2", "pass3")]
     return und, gov
 
@@ -79,9 +79,9 @@ def pct(c):
 def main() -> dict:
     und, gov = passes()
     out = {"undefended": und, "governed": gov, "rows": {}}
-    conf = {s: statistics.mean(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s) / N[s]
+    conf = {s: statistics.mean(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}*.log")), s) / N[s]
                                for d in ("pass1", "pass2", "pass3")) for s in SUITES}
-    conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")), s)
+    conf_all = statistics.mean(sum(confirmations(glob.glob(os.path.join(GOV_ROOT, d, f"{s}*.log")), s)
                                    for s in SUITES) / sum(N.values()) for d in ("pass1", "pass2", "pass3"))
     hdr = (f"{'suite':10s} {'undefended (3)':>18s} {os.environ.get('LABEL', 'grants+L4') + ' (3)':>18s} {'paired cost':>15s} "
            f"{'vs paper':>10s} {'conf/task':>10s}")
@@ -121,7 +121,7 @@ def main() -> dict:
     for d in ("pass1", "pass2", "pass3"):
         for s in SUITES:
             seen = {}
-            for path in glob.glob(os.path.join(GOV_ROOT, d, f"{s}_*.log")):
+            for path in glob.glob(os.path.join(GOV_ROOT, d, f"{s}*.log")):
                 text = open(path).read()
                 m = CONF.search(text)
                 if m:
