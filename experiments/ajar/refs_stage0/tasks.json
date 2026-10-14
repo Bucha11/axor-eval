@@ -1,0 +1,90 @@
+{
+ "banking": [
+  {
+   "task": "user_task_9",
+   "tier": 1
+  },
+  {
+   "task": "user_task_12",
+   "tier": 1
+  },
+  {
+   "task": "user_task_15",
+   "tier": 1
+  },
+  {
+   "task": "user_task_4",
+   "tier": 2
+  },
+  {
+   "task": "user_task_5",
+   "tier": 3
+  }
+ ],
+ "slack": [
+  {
+   "task": "user_task_1",
+   "tier": 1
+  },
+  {
+   "task": "user_task_2",
+   "tier": 1
+  },
+  {
+   "task": "user_task_6",
+   "tier": 1
+  },
+  {
+   "task": "user_task_11",
+   "tier": 1
+  },
+  {
+   "task": "user_task_15",
+   "tier": 1
+  }
+ ],
+ "travel": [
+  {
+   "task": "user_task_0",
+   "tier": 3
+  },
+  {
+   "task": "user_task_1",
+   "tier": 3
+  },
+  {
+   "task": "user_task_2",
+   "tier": 3
+  },
+  {
+   "task": "user_task_5",
+   "tier": 3
+  },
+  {
+   "task": "user_task_6",
+   "tier": 3
+  }
+ ],
+ "workspace": [
+  {
+   "task": "user_task_9",
+   "tier": 1
+  },
+  {
+   "task": "user_task_13",
+   "tier": 1
+  },
+  {
+   "task": "user_task_19",
+   "tier": 1
+  },
+  {
+   "task": "user_task_21",
+   "tier": 1
+  },
+  {
+   "task": "user_task_25",
+   "tier": 1
+  }
+ ]
+}
