@@ -1,0 +1,114 @@
+{
+ "banking/trace=False/allow egress (L1 grant)": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 56.0,
+  "p99_us": 124.2
+ },
+ "banking/trace=False/deny egress (injected recipient)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 49.5,
+  "p99_us": 110.5
+ },
+ "banking/trace=False/benign read": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 17.6,
+  "p99_us": 48.4
+ },
+ "banking/trace=False/integrity sink (injected password)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 16.5,
+  "p99_us": 43.1
+ },
+ "banking/trace=False/worst_p99_us": 124.2,
+ "banking/trace=True/allow egress (L1 grant)": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 146.3,
+  "p99_us": 560.1
+ },
+ "banking/trace=True/deny egress (injected recipient)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 170.6,
+  "p99_us": 447.8
+ },
+ "banking/trace=True/benign read": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 34.4,
+  "p99_us": 96.9
+ },
+ "banking/trace=True/integrity sink (injected password)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 61.9,
+  "p99_us": 151.8
+ },
+ "banking/trace=True/worst_p99_us": 560.1,
+ "workspace/trace=False/allow egress (L1 grant)": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 66.3,
+  "p99_us": 148.8
+ },
+ "workspace/trace=False/deny egress (injected recipient)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 53.5,
+  "p99_us": 116.4
+ },
+ "workspace/trace=False/deny (content carries a URL)": {
+  "allowed": false,
+  "category": "content_projection",
+  "p50_us": 157.3,
+  "p99_us": 388.5
+ },
+ "workspace/trace=False/benign read": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 20.1,
+  "p99_us": 71.8
+ },
+ "workspace/trace=False/own-store write": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 31.9,
+  "p99_us": 91.9
+ },
+ "workspace/trace=False/worst_p99_us": 388.5,
+ "workspace/trace=True/allow egress (L1 grant)": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 154.9,
+  "p99_us": 349.0
+ },
+ "workspace/trace=True/deny egress (injected recipient)": {
+  "allowed": false,
+  "category": "operator_set",
+  "p50_us": 149.9,
+  "p99_us": 390.1
+ },
+ "workspace/trace=True/deny (content carries a URL)": {
+  "allowed": false,
+  "category": "content_projection",
+  "p50_us": 250.7,
+  "p99_us": 651.7
+ },
+ "workspace/trace=True/benign read": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 53.5,
+  "p99_us": 261.9
+ },
+ "workspace/trace=True/own-store write": {
+  "allowed": true,
+  "category": "approved",
+  "p50_us": 96.7,
+  "p99_us": 259.0
+ },
+ "workspace/trace=True/worst_p99_us": 651.7
+}
