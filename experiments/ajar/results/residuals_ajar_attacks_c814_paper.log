@@ -1,0 +1,5 @@
+a {"opl": {"earliest": 0.0624, "any": 0.0624, "all": 0.0624}, "ci95": {"opl": [0.056, 0.0687], "sufficiency": [0.759, 0.869]}, "sufficiency": 0.815, "provisioned": "54/92", "attacks": "0/609"}
+b {"opl": {"earliest": 0.0649, "any": 0.0649, "all": 0.0649}, "ci95": {"opl": [0.0583, 0.0711], "sufficiency": [0.819, 0.9]}, "sufficiency": 0.862, "provisioned": "58/92", "attacks": "1/609"}
+c-oracle {"opl": {"earliest": 0.0649, "any": 0.0649, "all": 0.0649}, "ci95": {"opl": [0.0583, 0.0711], "sufficiency": [1.0, 1.0]}, "sufficiency": 1.0, "provisioned": "92/92", "attacks": "1/609"}
+c-naive {"opl": {"earliest": 0.2129, "any": 0.2129, "all": 0.2129}, "ci95": {"opl": [0.188, 0.2405], "sufficiency": [0.885, 0.953]}, "sufficiency": 0.921, "provisioned": "73/92", "attacks": "117/609"}
+c-view {"opl": {"earliest": 0.1047, "any": 0.1047, "all": 0.1047}, "ci95": {"opl": [0.0913, 0.1199], "sufficiency": [0.881, 0.949]}, "sufficiency": 0.917, "provisioned": "72/92", "attacks": "29/609"}
