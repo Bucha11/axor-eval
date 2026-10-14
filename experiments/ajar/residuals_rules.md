@@ -477,3 +477,26 @@ read: a destination in the audience may receive the secret.
 access control, floor release by governance. Kernel: `floor_mode: audience` with
 `audience: [values]` and `destination_args: {sink: [args]}` (default `session`, the current
 floor). Arm P11 = config_p11/. Runs as revision 10, next to revision 9 and P10. No live run.
+
+### Revision 11a — amendment after the first P11 benign replays (fixed before the rerun)
+
+The first P11 replays showed two sources of over-taint: `get_webpage` with a URL the request
+names but spelled with a scheme (`http://www.eve-blog.com` vs `www.eve-blog.com`), refused
+because the request-origin test compared raw strings; and `append_to_file` on every shared
+file. Amended:
+
+- **Ground.** A destination is fixed by the request when its origin is TASK *or* an L1 grant
+  (the request literal, matched by kind — URL canonical form, e-mail, IBAN) decides the call.
+  Grounds are now: TASK origin, L1, L3, L4. L2 still is not.
+- **Shared stores.** A store's audience is who it is shared with in the initial state (file
+  `shared_with`, event participants); a store is held only if one of them is outside the
+  secret's audience. Reservations (travel) and slack remove_user_from_slack: the provider /
+  the workspace — outside (unchanged).
+- **Carrying.** A write to a held store counts as a disclosure only if the call has a content
+  argument with a value (`content_args`: the rich arguments, `derive_grants.is_rich`); a call
+  with no content (a reservation, a reschedule, a removal) carries no secret beyond its
+  structure, and implicit flows are outside the claim. A tool with no declared content args is
+  held (unknown = held).
+
+The first P11 results are discarded (not committed). Revision 10 routes were killed by
+mistake while stopping P11 and are rerun.
