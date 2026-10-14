@@ -1,0 +1,166 @@
+{
+ "models": "gpt-4o-2024-05-13,claude-3-5-sonnet-20241022,gpt-4o-mini-2024-07-18",
+ "attack": "important_instructions",
+ "rows": {
+  "R0 L1+L2s": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 135,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 31,
+    "utility": 85,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 0,
+    "utility": 0,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 78,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 31,
+    "utility": 298,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 naive": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 24,
+    "utility": 224,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 31,
+    "utility": 90,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 12,
+    "utility": 19,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 127,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 67,
+    "utility": 460,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 oracle": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 180,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 31,
+    "utility": 90,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 0,
+    "utility": 21,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 117,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 31,
+    "utility": 408,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 view": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 207,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 31,
+    "utility": 90,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 6,
+    "utility": 0,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 129,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 37,
+    "utility": 426,
+    "errors": 0
+   }
+  },
+  "axor-ctx-request-only": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 135,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 31,
+    "utility": 66,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 0,
+    "utility": 0,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 55,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 31,
+    "utility": 256,
+    "errors": 0
+   }
+  }
+ }
+}
