@@ -350,3 +350,49 @@ CI; replay 1887; routes 1–3 worst case; 288 benign and live v4/v5 replays (den
 tasks per suite). Breakdown for (a)+O (revision 7, operator_trusted) and (b)+O (this
 revision): admitted Ajar attacks and landed replay attacks by injection task and tool.
 No live run.
+
+## Revision 9 — L2 = tuple templates over the driving args (fixed before code and runs)
+
+Replaces revision 8's compilation (an enum allowlist as a one-set L2 entry).
+
+**Template.** A sink plus, for each driving arg that is a grant arg, a source ∈ {O-set,
+request literal (R, as L1: typed literal, string by request fragment, optional arg may be
+absent), O∩R}. A component without an O-set must be a request literal.
+
+**Generation (mechanical).** For each grant sink (R0 grant args), not access-control: for
+each driving arg (config_rule) that is a grant arg — the O-set if `value_policies` declares
+an enum on that (sink, arg), else R. O = the revision-8 value_policies of
+`config_rule_l2o/` (organisation entities from the initial state, revision 7). A template
+whose components are all R is plain L1 and is not a template. O∩R is not generated.
+
+**Issuance.** All-O template: one grant at session start (construction), uses =
+`grant_quotas[sink]`, default 1 (no config here sets `grant_quotas`). Mixed template: at
+request parsing (with L1), one grant per tuple of the R components' literals (an optional R
+component with no literal contributes "absent"; a required one with no literal: no grant),
+the O components as the O-set, uses as L1. A grant arg that is not a driving arg is not part
+of the template and is unconstrained by a template grant (as in L2 entries today).
+
+**Unchanged:** supersession (`_integrity_superseded_by_grant`), the floor, access control
+(L3/L4 only), the empty-tuple rule, L1, L4, the value-policy gate (an enum still refuses a
+non-member). In the experiment harness the operator file templates (`templates_L2s.json`)
+are replaced by the tuple templates for `config_rule_l2o` (`AXOR_AJAR_L2=tuple`): (b) = L1 +
+tuple L2, (c) = (b) + L4.
+
+**Templates generated** (component sources; non-driving grant args in brackets — free
+under a template grant):
+
+| suite | all-O (session start) | mixed (request parsing) |
+|---|---|---|
+| banking | send_money{recipient:O4} [amount,date]; schedule_transaction{recipient:O4} [amount,date,recurring]; update_scheduled_transaction{recipient:O4} [amount,date,id,recurring] | — |
+| slack | send_direct_message{recipient:O4}; send_channel_message{channel:O3}; add_user_to_channel{channel:O3,user:O4}; remove_user_from_slack{user:O4} | — |
+| travel | — | — |
+| workspace | append_to_file{file_id:O13}; delete_file{file_id:O13} | send_email{recipients:O35,cc:O35,bcc:O35,attachments:R?}; share_file{email:O35,file_id:O13,permission:R}; create_calendar_event{participants:O35,location:R?} [start_time,end_time]; add_calendar_event_participants{participants:O35,event_id:R} |
+
+Plain L1 (all R): banking update_user_info; slack get_webpage, invite_user_to_slack,
+post_webpage; travel all grant sinks; workspace cancel/reschedule_calendar_event,
+create_file, delete_email. Access-control: banking update_password.
+
+Runs (config_rule_l2o, tuple L2; next to config_rule rev7 and rev8): Ajar (b)/(c)-oracle/
+view/naive with CI; ROPE columns (banking+slack+travel, 52 gradeable tasks) next to
+`rope:opus`; replay 1887 with admitted attacks by injection task and tool; routes 1–3 worst
+case; 288 benign and live v4/v5 replays (denied calls and tasks per suite). No live run.
