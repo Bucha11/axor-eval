@@ -1,7 +1,10 @@
 """Config from two models (MODEL.md): the tool model (model/tools.yaml) and the entity model
 (the suite's initial state), compiled by fixed rules into the kernel's current config format.
 
-    python derive_model.py   -> config_model/<suite>.yaml, results/model_report.json
+    python derive_model.py [--m1 [--content]]
+        default -> config_model/   (M0)
+        --m1    -> config_m1/      (MODEL.md §8: consequence per call, magnitude limits)
+        --m1 --content -> config_m1_content/ (+ content projection, §8.4)
 
 The content role (MODEL.md §5) is not compiled: it needs sub-field extraction the gate does not
 do (paper §5.6); its cost is measured offline (content_role_cost.py). Run in the Ajar venv.
@@ -116,7 +119,9 @@ def leaves(x):
 def main():
     from agentdojo.task_suite.load_suites import get_suite
     model = yaml.safe_load(open(os.path.join(HERE, "model", "tools.yaml")))
-    out_dir = os.path.join(HERE, "config_model")
+    m1 = "--m1" in sys.argv
+    content_opt = m1 and "--content" in sys.argv
+    out_dir = os.path.join(HERE, "config_m1_content" if content_opt else "config_m1" if m1 else "config_model")
     os.makedirs(out_dir, exist_ok=True)
     report = {}
     for s in SUITES:
@@ -131,6 +136,11 @@ def main():
             props = tools[t].parameters.model_json_schema().get("properties", {})
             roles[t] = {a: role(a, p, over.get(t, {})) for a, p in props.items()}
         own, ids, viewers = entities(s, env)
+        bound = None
+        if s == "banking":  # §8.1: the largest amount the user has sent
+            ba = env.bank_account
+            bound = max([t.amount for t in ba.transactions if t.sender in ("me", ba.iban)]
+                        + [t.amount for t in ba.scheduled_transactions])
         audience = sorted({v for vs in own.values() for v in vs} | set(ids))
         aud = {a.casefold() for a in audience}
 
@@ -198,6 +208,25 @@ def main():
                                    if any(p.casefold() not in aud for p in ppl)), key=lambda x: int(x))
                     if held:
                         cfg["shared_stores"].setdefault(t, {})[a] = held
+        if m1:
+            # §8.1 κ = effect × target × magnitude: overrides carry the external class, rules
+            # lower it for an own-targeted call or raise it above the magnitude bound
+            ext = {"write_own": "consequential"}
+            for t, e in effects.items():
+                cfg["consequence_overrides"][t] = ext.get(e, CLASS[e])
+            rules = {}
+            for t, e in sorted(effects.items()):
+                if e in ("write_own", "send", "share", "fetch"):
+                    rules[t] = {"own": "reversible"}
+                if e == "pay" and bound is not None:
+                    rules[t] = {"magnitude": {"arg": "amount", "above": bound, "class": "catastrophic"}}
+            cfg["consequence_rules"] = rules
+            # §8.3: amount <= bound as a template component on the payment sinks
+            if bound is not None:
+                cfg["template_limits"] = {t: {"amount": bound} for t, e in effects.items()
+                                          if e == "pay" and "amount" in roles[t]}
+            if content_opt:
+                cfg["content_projection"] = True
         for k in ("access_control_sinks", "operator_sets", "shared_stores"):
             if not cfg[k]:
                 cfg.pop(k)
@@ -207,7 +236,8 @@ def main():
             yaml.safe_dump(cfg, fh, sort_keys=False)
         report[s] = {"roles": roles, "own": own, "user_ids": ids, "attacker_hits": hits}
         print(f"== {s}: own {{{', '.join(f'{k}:{len(v)}' for k, v in own.items())}}}  attacker ∩ own/audience: {hits or 'empty'}")
-    json.dump(report, open(os.path.join(HERE, "results", "model_report.json"), "w"), indent=1)
+    if not m1:
+        json.dump(report, open(os.path.join(HERE, "results", "model_report.json"), "w"), indent=1)
 
 
 if __name__ == "__main__":
