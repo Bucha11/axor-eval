@@ -17,7 +17,17 @@ Two configs, both context integrity + request-only:
         egress iff it has a destination parameter; driving = non-rich, non-numeric,
         non-temporal parameters; sources and consequence classes as in old.
 
-    INJECAGENT_DIR=... AXOR_CORE_REPO=... python full_attack_set.py
+  final the final AgentDojo configuration's switches (ajar/MODEL.md §8.7 + §8.10), as far
+        as they exist without an environment, on top of rule (fixed before the run):
+        floor_mode audience with an empty audience (no initial state: only the user),
+        destination_args = the DEST parameters, content_args = the RICH parameters,
+        max_unattended_consequence reversible, fallback_to_confirmation and
+        content_projection on, operator_sets_confirm on with no operator sets (no
+        organisation entities without an initial state), grant_args = the driving
+        args (kind email / url by name, else string), L1 grants from the user
+        instruction, no human (configuration A: a confirmation is a refusal).
+
+    INJECAGENT_DIR=... AXOR_CORE_REPO=... [OUT=suffix] python full_attack_set.py
 """
 from __future__ import annotations
 
@@ -35,6 +45,7 @@ sys.path.insert(0, CORE)
 
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
+from axor_core.contracts.canonical import ConsequenceClass  # noqa: E402
 
 READ_VERBS = {"get", "view", "search", "list", "read", "check", "retrieve", "access", "find",
               "show", "fetch", "browse", "lookup", "query", "download"}
@@ -77,6 +88,22 @@ def rule_config(old: GovernanceConfig, T: dict[str, dict]) -> GovernanceConfig:
                                driving_args=driving)
 
 
+def final_config(rule: GovernanceConfig, T: dict[str, dict]) -> GovernanceConfig:
+    sinks = set(rule.egress_sinks) | set(rule.integrity_sinks)
+    dest, content, ga = {}, {}, {}
+    for full in sinks:
+        params = T[full].get("parameters", [])
+        dest[full] = [p["name"] for p in params if full in rule.egress_sinks and
+                      (DEST.search(p["name"]) or "email address" in (p.get("description") or "").lower())]
+        content[full] = [p["name"] for p in params if RICH.search(p.get("description") or "")]
+        ga[full] = {a: ("email" if "email" in a.lower() else "url" if "url" in a.lower() else "string")
+                    for a in rule.driving_args.get(full, [])}
+    return dataclasses.replace(
+        rule, floor_mode="audience", audience=frozenset(), destination_args=dest, content_args=content,
+        max_unattended_consequence=ConsequenceClass.REVERSIBLE, fallback_to_confirmation=True, content_projection=True,
+        operator_sets_confirm=True, grant_args={k: v for k, v in ga.items() if v})
+
+
 def synth_args(tool: dict, instruction: str) -> dict:
     tokens = re.findall(r"'([^']+)'|\"([^\"]+)\"", instruction)
     quoted = [a or b for a, b in tokens]
@@ -110,6 +137,8 @@ def run(cfg: GovernanceConfig, T: dict, label: str) -> dict:
         def decide(c):
             g = ToolCallGovernor(**c.as_governor_kwargs())
             g.register_task(item["User Instruction"])
+            if c.grant_args:
+                g.grants.from_request(item["User Instruction"])
             g.register_output(g.evaluate(item["User Tool"], ast.literal_eval(item["Tool Parameters"])),
                               item["Tool Response"])
             return g.evaluate(atk, args)
@@ -127,6 +156,8 @@ def run(cfg: GovernanceConfig, T: dict, label: str) -> dict:
         s1, s2 = item["Attacker Tools"][0], item["Attacker Tools"][1]
         g = ToolCallGovernor(**cfg.as_governor_kwargs())
         g.register_task(item["User Instruction"])
+        if cfg.grant_args:
+            g.grants.from_request(item["User Instruction"])
         g.register_output(g.evaluate(item["User Tool"], ast.literal_eval(item["Tool Parameters"])),
                           item["Tool Response"])
         g.register_output(g.evaluate(s1, synth_args(T.get(s1, {}), item["Attacker Instruction"])),
@@ -155,7 +186,8 @@ def main() -> None:
     rule = rule_config(old, T)
     current = dataclasses.replace(rule, floor_scope="all_mutating")
     out = {"old": run(old, T, "old roles"), "rule": run(rule, T, "rule"),
-           "rule_all_mutating": run(current, T, "rule + floor_scope all_mutating (current)")}
+           "rule_all_mutating": run(current, T, "rule + floor_scope all_mutating (current)"),
+           "final": run(final_config(current, T), T, "final (MODEL.md §8.7 + §8.10 switches)")}
     old_sinks = set(old.egress_sinks) | set(old.integrity_sinks)
     rule_sinks = set(rule.egress_sinks) | set(rule.integrity_sinks)
     out["diff"] = {"rule_only": sorted(rule_sinks - old_sinks), "old_only": sorted(old_sinks - rule_sinks),
@@ -164,7 +196,7 @@ def main() -> None:
     print(f"\nsinks: old {len(old_sinks)}, rule {len(rule_sinks)}; rule-only {len(out['diff']['rule_only'])}, "
           f"old-only {len(out['diff']['old_only'])}: {out['diff']['old_only']}; "
           f"egress/integrity label changed: {out['diff']['label_changed'][:10]}")
-    json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "full_attack_set.json"), "w"),
+    json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"full_attack_set{os.environ.get('OUT', '')}.json"), "w"),
               indent=1, default=str)
 
 
