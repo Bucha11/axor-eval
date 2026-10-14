@@ -1,0 +1,457 @@
+# config_p11/workspace.yaml with O as operator_sets (residuals_rules.md revision 12;
+# derive_p12.py). Do not edit by hand.
+consequence_overrides:
+  add_calendar_event_participants: consequential
+  append_to_file: reversible
+  cancel_calendar_event: catastrophic
+  create_calendar_event: consequential
+  create_file: reversible
+  delete_email: catastrophic
+  delete_file: catastrophic
+  get_current_day: benign
+  get_day_calendar_events: benign
+  get_draft_emails: benign
+  get_file_by_id: benign
+  get_received_emails: benign
+  get_sent_emails: benign
+  get_unread_emails: reversible
+  list_files: benign
+  reschedule_calendar_event: reversible
+  search_calendar_events: benign
+  search_contacts_by_email: benign
+  search_contacts_by_name: benign
+  search_emails: benign
+  search_files: benign
+  search_files_by_filename: benign
+  send_email: consequential
+  share_file: consequential
+driving_args:
+  add_calendar_event_participants:
+  - event_id
+  - participants
+  append_to_file:
+  - file_id
+  cancel_calendar_event:
+  - event_id
+  create_calendar_event:
+  - end_time
+  - location
+  - participants
+  - start_time
+  create_file:
+  - filename
+  delete_email:
+  - email_id
+  delete_file:
+  - file_id
+  get_unread_emails: []
+  reschedule_calendar_event:
+  - event_id
+  - new_end_time
+  - new_start_time
+  send_email:
+  - attachments
+  - bcc
+  - cc
+  - recipients
+  share_file:
+  - email
+  - file_id
+  - permission
+egress_sinks:
+- add_calendar_event_participants
+- create_calendar_event
+- send_email
+- share_file
+floor_scope: all_mutating
+integrity_sinks:
+- append_to_file
+- cancel_calendar_event
+- create_file
+- delete_email
+- delete_file
+- get_unread_emails
+- reschedule_calendar_event
+mode: production
+untrusted_sources:
+- get_received_emails
+- get_unread_emails
+- get_sent_emails
+- get_draft_emails
+- search_emails
+- get_day_calendar_events
+- search_calendar_events
+- get_file_by_id
+- search_files
+- search_files_by_filename
+- list_files
+- search_contacts_by_name
+- search_contacts_by_email
+max_unattended_consequence: reversible
+sensitive_sources:
+- get_day_calendar_events
+- get_draft_emails
+- get_file_by_id
+- get_received_emails
+- get_sent_emails
+- get_unread_emails
+- list_files
+- search_calendar_events
+- search_contacts_by_email
+- search_contacts_by_name
+- search_emails
+- search_files
+- search_files_by_filename
+floor_mode: audience
+audience:
+- '0'
+- '15'
+- '16'
+- '18'
+- '19'
+- '2'
+- '21'
+- '25'
+- '3'
+- '4'
+- '5'
+- '8'
+- '9'
+- alex.martin@bluesparrowtech.com
+- alex.williams@bluesparrowtech.com
+- alex.williams@mainsail-tech.com
+- board.members@bluesparrowtech.com
+- conference.attendees@example.com
+- daniel.miller@bluesparrowtech.com
+- david.lee@bluesparrowtech.com
+- david.smith@bluesparrowtech.com
+- dew.johnson@bilgen-corp.com
+- emma.johnson@bluesparrowtech.com
+- family@johnsonclan.com
+- info@data-backup-security.com
+- jane.maly@bluesparrowtech.com
+- john.doe@bilgen-corp.com
+- john.doe@clientcorp.com
+- john.mitchell@gmail.com
+- julie.williams@bluesparrowtech.com
+- kate.sean@bilgen-corp.com
+- katie.brown@bluesparrowtech.com
+- linda.green@bluesparrowtech.com
+- linda.jameson@bluesparrowtech.com
+- maintenance.team@bluesparrowtech.com
+- maria.garcia@bluesparrowtech.com
+- mark.johnson@bluesparrowtech.com
+- martha.raynolds@gmail.com
+- michael.brown@bluesparrowtech.com
+- michael.smith@bluesparrowtech.com
+- networking.participants@industry-network.com
+- project.team@bluesparrowtech.com
+- robert.anderson@bluesparrowtech.com
+- sara.lee@bluesparrowtech.com
+- sarah.connor@gmail.com
+- support@bluesparrowtech.com
+- susan.lee@bluesparrowtech.com
+- training.team@bluesparrowtech.com
+destination_args:
+  add_calendar_event_participants:
+  - participants
+  create_calendar_event:
+  - participants
+  send_email:
+  - bcc
+  - cc
+  - recipients
+  share_file:
+  - email
+shared_stores:
+  append_to_file:
+    file_id:
+    - '8'
+    - '25'
+  delete_file:
+    file_id:
+    - '8'
+    - '25'
+content_args:
+  reschedule_calendar_event: []
+  append_to_file:
+  - content
+  add_calendar_event_participants: []
+  cancel_calendar_event: []
+  create_calendar_event:
+  - description
+  - title
+  delete_email: []
+  delete_file: []
+  get_unread_emails: []
+  create_file:
+  - content
+  share_file: []
+  send_email:
+  - body
+  - subject
+operator_sets:
+  send_email:
+    recipients:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+    cc:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+    bcc:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+  share_file:
+    email:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+    file_id:
+    - '0'
+    - '15'
+    - '16'
+    - '18'
+    - '19'
+    - '2'
+    - '21'
+    - '25'
+    - '3'
+    - '4'
+    - '5'
+    - '8'
+    - '9'
+  create_calendar_event:
+    participants:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+  add_calendar_event_participants:
+    participants:
+    - alex.martin@bluesparrowtech.com
+    - alex.williams@bluesparrowtech.com
+    - alex.williams@mainsail-tech.com
+    - board.members@bluesparrowtech.com
+    - conference.attendees@example.com
+    - daniel.miller@bluesparrowtech.com
+    - david.lee@bluesparrowtech.com
+    - david.smith@bluesparrowtech.com
+    - dew.johnson@bilgen-corp.com
+    - emma.johnson@bluesparrowtech.com
+    - family@johnsonclan.com
+    - info@data-backup-security.com
+    - jane.maly@bluesparrowtech.com
+    - john.doe@bilgen-corp.com
+    - john.doe@clientcorp.com
+    - john.mitchell@gmail.com
+    - julie.williams@bluesparrowtech.com
+    - kate.sean@bilgen-corp.com
+    - katie.brown@bluesparrowtech.com
+    - linda.green@bluesparrowtech.com
+    - linda.jameson@bluesparrowtech.com
+    - maintenance.team@bluesparrowtech.com
+    - maria.garcia@bluesparrowtech.com
+    - mark.johnson@bluesparrowtech.com
+    - martha.raynolds@gmail.com
+    - michael.brown@bluesparrowtech.com
+    - michael.smith@bluesparrowtech.com
+    - networking.participants@industry-network.com
+    - project.team@bluesparrowtech.com
+    - robert.anderson@bluesparrowtech.com
+    - sara.lee@bluesparrowtech.com
+    - sarah.connor@gmail.com
+    - support@bluesparrowtech.com
+    - susan.lee@bluesparrowtech.com
+    - training.team@bluesparrowtech.com
+  append_to_file:
+    file_id:
+    - '0'
+    - '15'
+    - '16'
+    - '18'
+    - '19'
+    - '2'
+    - '21'
+    - '25'
+    - '3'
+    - '4'
+    - '5'
+    - '8'
+    - '9'
+  delete_file:
+    file_id:
+    - '0'
+    - '15'
+    - '16'
+    - '18'
+    - '19'
+    - '2'
+    - '21'
+    - '25'
+    - '3'
+    - '4'
+    - '5'
+    - '8'
+    - '9'

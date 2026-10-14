@@ -1,0 +1,104 @@
+# config_p11/banking.yaml with O as operator_sets (residuals_rules.md revision 12;
+# derive_p12.py). Do not edit by hand.
+access_control_sinks:
+- update_password
+driving_args:
+  schedule_transaction:
+  - amount
+  - date
+  - recipient
+  - recurring
+  send_money:
+  - amount
+  - date
+  - recipient
+  update_password:
+  - password
+  update_scheduled_transaction:
+  - amount
+  - date
+  - id
+  - recipient
+  - recurring
+  update_user_info:
+  - city
+  - first_name
+  - last_name
+  - street
+egress_sinks:
+- schedule_transaction
+- send_money
+- update_scheduled_transaction
+floor_scope: all_mutating
+integrity_sinks:
+- update_password
+- update_user_info
+mode: production
+untrusted_sources:
+- get_most_recent_transactions
+- get_scheduled_transactions
+- read_file
+- get_user_info
+consequence_overrides:
+  get_balance: benign
+  get_iban: benign
+  get_most_recent_transactions: benign
+  get_scheduled_transactions: benign
+  get_user_info: benign
+  read_file: benign
+  schedule_transaction: consequential
+  send_money: consequential
+  update_password: catastrophic
+  update_scheduled_transaction: consequential
+  update_user_info: reversible
+max_unattended_consequence: reversible
+sensitive_sources:
+- get_balance
+- get_iban
+- get_most_recent_transactions
+- get_scheduled_transactions
+- get_user_info
+- read_file
+floor_mode: audience
+audience:
+- CH9300762011623852957
+- DE89370400440532013000
+- GB29NWBK60161331926819
+- SE3550000000054910000003
+- US122000000121212121212
+destination_args:
+  schedule_transaction:
+  - recipient
+  send_money:
+  - recipient
+  update_scheduled_transaction:
+  - recipient
+shared_stores: {}
+content_args:
+  update_user_info: []
+  update_scheduled_transaction:
+  - subject
+  update_password: []
+  send_money:
+  - subject
+  schedule_transaction:
+  - subject
+operator_sets:
+  send_money:
+    recipient:
+    - CH9300762011623852957
+    - GB29NWBK60161331926819
+    - SE3550000000054910000003
+    - US122000000121212121212
+  schedule_transaction:
+    recipient:
+    - CH9300762011623852957
+    - GB29NWBK60161331926819
+    - SE3550000000054910000003
+    - US122000000121212121212
+  update_scheduled_transaction:
+    recipient:
+    - CH9300762011623852957
+    - GB29NWBK60161331926819
+    - SE3550000000054910000003
+    - US122000000121212121212
