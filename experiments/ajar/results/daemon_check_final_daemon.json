@@ -1,0 +1,120 @@
+{
+ "b": {
+  "spec": "grants:L1+L2s:R0",
+  "tests": 10471,
+  "divergent": 0,
+  "divergences": [],
+  "inprocess": {
+   "opl": {
+    "earliest": 0.0641,
+    "any": 0.0641,
+    "all": 0.0641
+   },
+   "ci95": {
+    "opl": [
+     0.0574,
+     0.0704
+    ],
+    "sufficiency": [
+     0.819,
+     0.9
+    ]
+   },
+   "sufficiency": 0.862,
+   "provisioned": "58/92",
+   "attacks": "1/609"
+  },
+  "daemon": {
+   "opl": {
+    "earliest": 0.0641,
+    "any": 0.0641,
+    "all": 0.0641
+   },
+   "ci95": {
+    "opl": [
+     0.0574,
+     0.0704
+    ],
+    "sufficiency": [
+     0.819,
+     0.9
+    ]
+   },
+   "sufficiency": 0.862,
+   "provisioned": "58/92",
+   "attacks": "1/609"
+  },
+  "operator_confirmations": {
+   "banking": 0,
+   "slack": 0,
+   "travel": 0,
+   "workspace": 0
+  },
+  "daemon_ms_per_test": {
+   "p50": 4.897,
+   "p99": 21.251,
+   "mean": 6.024,
+   "n": 10471
+  },
+  "wall_s": 229.6
+ },
+ "c": {
+  "spec": "grants:L1+L2s+L4:R0",
+  "tests": 10471,
+  "divergent": 0,
+  "divergences": [],
+  "inprocess": {
+   "opl": {
+    "earliest": 0.0641,
+    "any": 0.0641,
+    "all": 0.0641
+   },
+   "ci95": {
+    "opl": [
+     0.0574,
+     0.0704
+    ],
+    "sufficiency": [
+     1.0,
+     1.0
+    ]
+   },
+   "sufficiency": 1.0,
+   "provisioned": "92/92",
+   "attacks": "1/609"
+  },
+  "daemon": {
+   "opl": {
+    "earliest": 0.0641,
+    "any": 0.0641,
+    "all": 0.0641
+   },
+   "ci95": {
+    "opl": [
+     0.0574,
+     0.0704
+    ],
+    "sufficiency": [
+     1.0,
+     1.0
+    ]
+   },
+   "sufficiency": 1.0,
+   "provisioned": "92/92",
+   "attacks": "1/609"
+  },
+  "operator_confirmations": {
+   "banking": 833,
+   "slack": 2970,
+   "travel": 1562,
+   "workspace": 1942
+  },
+  "daemon_ms_per_test": {
+   "p50": 6.679,
+   "p99": 28.593,
+   "mean": 8.231,
+   "n": 10471
+  },
+  "wall_s": 197.3
+ }
+}

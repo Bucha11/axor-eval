@@ -26,6 +26,9 @@ SPEC = {"a": "e0-ctx", "b": "grants:L1+L2s:R0", "c": "grants:L1+L2s+L4:R0"}
 
 
 def r0():
+    if os.environ.get("AXOR_AJAR_FINAL") == "1":  # the final config's own grant args
+        return {s: dict(axor_ajar.load_config(s, "context", "request-only").grant_args)
+                for s in ("banking", "slack", "travel", "workspace")}
     import derive_grants as D
     from ajar import io, paths
     return D.derive(io.load_specs(paths.benchmark_data_dir("agentdojo", None) / "tasks.jsonl"),

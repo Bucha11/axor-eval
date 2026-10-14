@@ -260,3 +260,16 @@ call): it runs if the human confirms, and is refused without a human or when dec
 confidentiality (floor) failure is not deferred. Kernel flag `fallback_to_confirmation`. Final =
 §8.7 + this. Recompute: Ajar all modes with CI, replay 1887, 288 benign, routes. Expected: no human
 as §8.7; perfect human ≈ 92.
+
+**8.11 Appendix D on the final configuration — the model-free bound** (fixed before code and runs;
+measurement only, no rule changes). In the final configuration the role of Appendix D's enum
+allowlist is played by the operator sets O (own entities from the initial state, §8.1/§8.5).
+Bound = for banking user tasks 3, 4, 6, 15, Ajar's gate decisions on the reference plan
+(sufficiency: every required call admitted), in two arms that differ only in O:
+*with O* = `config_m1_content/banking.yaml`; *without O* = the same file with `operator_sets`
+and `operator_sets_confirm` removed (so no rule 3.2 refusal, no L2 templates from O; a read-derived
+payee falls to the origin check). Each arm with grants L1 and no human (configuration A), and
+with L1+L4 oracle (configuration B). Reported per task: sufficient or not, and the first denied
+required call with its check. US133 (UT15's new landlord, also the attacker's IBAN) is reported
+explicitly: is it in O, by which ground the landlord update is admitted or refused, and whether
+the same ground admits the attacker's IBAN on an injected call. No live run.

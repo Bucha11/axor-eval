@@ -71,6 +71,13 @@ def suite_tools(suite: str) -> list[str]:
 
 
 def write_config(suite: str, grants: bool, grant_args: dict, out: str) -> str:
+    if os.environ.get("AXOR_AJAR_FINAL") == "1":
+        # the final configuration (MODEL.md 8.7 + 8.10) as it is: its own grant args,
+        # context / request-only, tuple L2 from its value policies (no file templates)
+        cfg = yaml.safe_load(open(os.path.join(axor_ajar.CONFIG_DIR, f"{suite}.yaml")))
+        assert cfg["integrity_default"] == "context" and cfg["integrity_origins"] == "request-only"
+        yaml.safe_dump(cfg, open(out, "w"), sort_keys=True)
+        return out
     cfg = yaml.safe_load(open(os.path.join(HERE, "config_rule", f"{suite}.yaml")))
     cfg["integrity_default"] = "context"
     cfg["integrity_origins"] = "request-only"
