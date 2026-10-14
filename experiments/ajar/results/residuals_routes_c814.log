@@ -1,0 +1,173 @@
+route1 rows 7487
+route2 rows 11427
+route3 rows 55
+{
+ "route1|addressee": {
+  "T3 other mutating": {
+   "candidates": 436,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "all": {
+   "candidates": 828,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "T2 event+attacker": {
+   "candidates": 268,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "T1 shared file": {
+   "candidates": 124,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  }
+ },
+ "route1|shared_stores": {
+  "T3 other mutating": {
+   "candidates": 436,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "all": {
+   "candidates": 828,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "T2 event+attacker": {
+   "candidates": 268,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "T1 shared file": {
+   "candidates": 124,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  }
+ },
+ "route1|all_mutating": {
+  "T3 other mutating": {
+   "candidates": 436,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "all": {
+   "candidates": 828,
+   "a": 173,
+   "b": 173,
+   "c-oracle": 173,
+   "c-naive": 317,
+   "c-view": 173
+  },
+  "T2 event+attacker": {
+   "candidates": 268,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  },
+  "T1 shared file": {
+   "candidates": 124,
+   "a": 0,
+   "b": 0,
+   "c-oracle": 0,
+   "c-naive": 0,
+   "c-view": 0
+  }
+ },
+ "route2_fragments_per_string_arg": {
+  "n": 144,
+  "median": 730.0,
+  "p90": 5113,
+  "max": 7680
+ },
+ "route2": {
+  "task_sinks_with_L1": 201,
+  "C_median": 271,
+  "C_p90": 7680,
+  "C_max": 7086244,
+  "tasks_with_L1": 65,
+  "tasks_k_gt_1": 43,
+  "share_tasks_k_gt_1": 0.662,
+  "redirectable_tuples": 10793832,
+  "candidates": 11427,
+  "a": 68,
+  "b": 9929,
+  "c-oracle": 9931,
+  "c-naive": 9940,
+  "c-view": 9938
+ },
+ "route3": {
+  "rich_plan_calls": 55,
+  "tasks_with_rich_call": 44,
+  "a": {
+   "admitted": 37,
+   "admitted_from_read": 37,
+   "tasks": 30,
+   "via_confirmation": 0,
+   "via_request_or_template": 33,
+   "non_grant_sink": 4
+  },
+  "b": {
+   "admitted": 40,
+   "admitted_from_read": 40,
+   "tasks": 31,
+   "via_confirmation": 0,
+   "via_request_or_template": 36,
+   "non_grant_sink": 4
+  },
+  "c-oracle": {
+   "admitted": 55,
+   "admitted_from_read": 55,
+   "tasks": 44,
+   "via_confirmation": 15,
+   "via_request_or_template": 36,
+   "non_grant_sink": 4
+  },
+  "c-naive": {
+   "admitted": 49,
+   "admitted_from_read": 49,
+   "tasks": 40,
+   "via_confirmation": 9,
+   "via_request_or_template": 36,
+   "non_grant_sink": 4
+  },
+  "c-view": {
+   "admitted": 49,
+   "admitted_from_read": 49,
+   "tasks": 40,
+   "via_confirmation": 9,
+   "via_request_or_template": 36,
+   "non_grant_sink": 4
+  }
+ }
+}
