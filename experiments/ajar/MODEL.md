@@ -193,3 +193,15 @@ the run). Driving = destination, object and magnitude, where magnitude is the am
 and times are role *other*). Dates, times, permissions, locations, flags and a new file's name are
 not driving: they do not choose to whom, what or how much. Stated cost: an attacker who changes
 only such a value (a date, a permission) is not caught by provenance.
+
+**8.7 Grants follow the model** (fixed before the run).
+- *Grant arguments = driving arguments* (§8.6: destination, object, amount), with their kinds;
+  a request grant (L1) no longer needs a literal for a date or a time. The harness takes the
+  grant arguments from the config, not from the schema-wide table R0.
+- *Quota*: an L1/L2 grant on a tool whose own-targeted class is REVERSIBLE (write_own, send,
+  share) is unlimited within the session; on every other tool it is one use (default).
+- *No driving argument* (an explicit empty list, e.g. `create_file`, `update_user_info`): there
+  is nothing for provenance to check — the kernel no longer falls back to checking every
+  argument. The floor and the content projection still apply.
+- *Credentials*: the new password is the object of `update_password` (it is what the call sets),
+  so it is a driving and grant argument and the call can be confirmed (L4).
