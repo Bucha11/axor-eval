@@ -122,6 +122,7 @@ consequence_rules:
   send_direct_message:
     own: reversible
 operator_sets_confirm: true
+fallback_to_confirmation: true
 grant_args:
   add_user_to_channel:
     channel: string

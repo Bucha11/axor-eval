@@ -116,6 +116,7 @@ template_limits:
   update_scheduled_transaction:
     amount: 1100.0
 operator_sets_confirm: true
+fallback_to_confirmation: true
 grant_args:
   schedule_transaction:
     amount: money

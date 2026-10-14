@@ -230,6 +230,7 @@ def main():
                                           if e == "pay" and "amount" in roles[t]}
             cfg["operator_sets_confirm"] = True  # §8.5
             # §8.8 (absent_driving_is_empty) measured and NOT adopted — see MODEL.md §8.9
+            cfg["fallback_to_confirmation"] = True  # §8.10
             # §8.7: grant arguments = driving arguments (kinds from the schema table R0);
             # unlimited quota on tools whose own-targeted class is REVERSIBLE
             r0 = json.load(open(os.path.join(HERE, "live", "grant_args_R0.json")))[s]
