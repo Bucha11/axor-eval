@@ -140,4 +140,22 @@ consequence_rules:
   send_email:
     own: reversible
 operator_sets_confirm: true
+grant_args:
+  cancel_calendar_event:
+    event_id: id
+  create_calendar_event:
+    participants: email?
+  reserve_car_rental:
+    company: string
+  reserve_hotel:
+    hotel: string
+  reserve_restaurant:
+    restaurant: string
+  send_email:
+    bcc: email?
+    cc: email?
+    recipients: email
+grant_quotas:
+  send_email: null
+  create_calendar_event: null
 content_projection: true

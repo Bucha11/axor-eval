@@ -53,10 +53,12 @@ driving_args:
   - event_id
   create_calendar_event:
   - participants
+  create_file: []
   delete_email:
   - email_id
   delete_file:
   - file_id
+  get_unread_emails: []
   reschedule_calendar_event:
   - event_id
   send_email:
@@ -325,4 +327,34 @@ consequence_rules:
   share_file:
     own: reversible
 operator_sets_confirm: true
+grant_args:
+  add_calendar_event_participants:
+    event_id: id
+    participants: email
+  append_to_file:
+    file_id: id
+  cancel_calendar_event:
+    event_id: id
+  create_calendar_event:
+    participants: email?
+  delete_email:
+    email_id: id
+  delete_file:
+    file_id: id
+  reschedule_calendar_event:
+    event_id: id
+  send_email:
+    bcc: email?
+    cc: email?
+    recipients: email
+  share_file:
+    email: email
+    file_id: id
+grant_quotas:
+  send_email: null
+  create_calendar_event: null
+  add_calendar_event_participants: null
+  share_file: null
+  append_to_file: null
+  reschedule_calendar_event: null
 content_projection: true

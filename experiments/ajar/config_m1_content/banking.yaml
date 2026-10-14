@@ -31,10 +31,13 @@ driving_args:
   send_money:
   - amount
   - recipient
+  update_password:
+  - password
   update_scheduled_transaction:
   - amount
   - id
   - recipient
+  update_user_info: []
 consequence_overrides:
   get_balance: benign
   get_iban: benign
@@ -57,6 +60,8 @@ operator_sets:
     - US122000000121212121212
   send_money:
     recipient: *id001
+  update_password:
+    password: []
   update_scheduled_transaction:
     id: []
     recipient: *id001
@@ -111,4 +116,18 @@ template_limits:
   update_scheduled_transaction:
     amount: 1100.0
 operator_sets_confirm: true
+grant_args:
+  schedule_transaction:
+    amount: money
+    recipient: iban
+  send_money:
+    amount: money
+    recipient: iban
+  update_password:
+    password: string
+  update_scheduled_transaction:
+    amount: money?
+    id: number
+    recipient: iban?
+grant_quotas: {}
 content_projection: true

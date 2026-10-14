@@ -57,7 +57,8 @@ def governor(suite, prompt):
     cfg = dataclasses.replace(cfg, integrity_default="context", integrity_origins="request-only")
     kw = cfg.as_governor_kwargs()
     if GRANTS:
-        kw["grant_args"] = R0.get(suite, {})
+        kw["grant_args"] = (dict(cfg.grant_args) if os.environ.get("AXOR_AJAR_GRANT_ARGS_FROM_CONFIG") == "1"
+                            else R0.get(suite, {}))
         if TPL.get(suite) and os.environ.get("AXOR_AJAR_L2") != "tuple":
             kw["grant_templates"] = TPL[suite]
     g = ToolCallGovernor(**kw)

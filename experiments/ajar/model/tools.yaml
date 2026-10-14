@@ -14,6 +14,8 @@ banking:
     update_user_info: write_own
     update_password: credential
   public: []
+  roles:
+    update_password: {password: object}   # the credential the call sets (MODEL.md §8.7)
 slack:
   effects:
     send_direct_message: write_own

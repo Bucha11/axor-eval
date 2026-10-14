@@ -192,7 +192,8 @@ def main():
             "content_args": {t: sorted(a for a, r in roles[t].items() if r == "content") for t in sorted(effects)},
             "shared_stores": {},
         }
-        cfg["driving_args"] = {t: a for t, a in cfg["driving_args"].items() if a}
+        if not m1:
+            cfg["driving_args"] = {t: a for t, a in cfg["driving_args"].items() if a}
         cfg["sensitive_sources"] = sorted(set(cfg["sensitive_sources"]))
         for t in sorted(effects):
             for a, r in roles[t].items():
@@ -228,6 +229,17 @@ def main():
                 cfg["template_limits"] = {t: {"amount": bound} for t, e in effects.items()
                                           if e == "pay" and "amount" in roles[t]}
             cfg["operator_sets_confirm"] = True  # §8.5
+            # §8.7: grant arguments = driving arguments (kinds from the schema table R0);
+            # unlimited quota on tools whose own-targeted class is REVERSIBLE
+            r0 = json.load(open(os.path.join(HERE, "live", "grant_args_R0.json")))[s]
+            def kind(t, a):
+                if a in (r0.get(t) or {}):
+                    return r0[t][a]
+                return {"amount": "money", "url": "url"}.get(a, "id" if a.endswith("_id") or a == "id"
+                                                             else "email" if a in EMAIL_ARGS else "string")
+            cfg["grant_args"] = {t: {a: kind(t, a) for a in d} for t, d in cfg["driving_args"].items() if d}
+            cfg["grant_quotas"] = {t: None for t, e in effects.items()
+                                   if e in ("write_own", "send", "share") and t in cfg["grant_args"]}
             if content_opt:
                 cfg["content_projection"] = True
         for k in ("access_control_sinks", "operator_sets", "shared_stores"):

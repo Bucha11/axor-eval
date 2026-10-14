@@ -272,6 +272,10 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
 
     lv = set(levels.split("+"))
     table = GRANT_ARGS if grant_args is None else grant_args
+    if os.environ.get("AXOR_AJAR_GRANT_ARGS_FROM_CONFIG") == "1":
+        # MODEL.md §8.7: the grant arguments are the config's (= its driving arguments)
+        table = {s: dict(load_config(s, "context", "request-only").grant_args)
+                 for s in ("banking", "slack", "travel", "workspace")}
 
     def matcher(spec):
         """The scripted confirmer's oracle: approve iff the WHOLE proposed call —

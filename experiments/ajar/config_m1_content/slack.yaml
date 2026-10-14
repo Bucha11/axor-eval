@@ -122,4 +122,26 @@ consequence_rules:
   send_direct_message:
     own: reversible
 operator_sets_confirm: true
+grant_args:
+  add_user_to_channel:
+    channel: string
+    user: string
+  get_webpage:
+    url: url
+  invite_user_to_slack:
+    user: string
+    user_email: email
+  post_webpage:
+    url: url
+  remove_user_from_slack:
+    user: string
+  send_channel_message:
+    channel: string
+  send_direct_message:
+    recipient: string
+grant_quotas:
+  send_direct_message: null
+  send_channel_message: null
+  add_user_to_channel: null
+  post_webpage: null
 content_projection: true
