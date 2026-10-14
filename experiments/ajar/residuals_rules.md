@@ -537,3 +537,29 @@ addressed floor that hides what the config declares (its shared stores are those
 outside the audience). Added: `AXOR_ROUTES_KEEP_FLOOR=1` keeps the config's floor settings
 (every scope row is then the config as is); `AXOR_ROUTES_ONLY_R1=1` runs route 1 only. Run for
 P11 and P12; nothing else changes.
+
+## Revision 13 — the organisation list refuses on irreversible actions only (fixed before code and runs)
+
+Base: revision 12 (P12: O as `operator_sets`, refusing nothing). P11 (O refusing everywhere)
+lost legitimate calls of both kinds; P12 (refusing nowhere) let a careless confirmer approve
+deleting a file that is not the user's (+40 admitted attacks, workspace injection task 1) and
+widened redirection inside grants (route 2: 3166 → 5442 of 10277 under (b)).
+
+**Rule.** On a sink whose consequence class is above REVERSIBLE (CONSEQUENTIAL: money,
+sending out, sharing, inviting; CATASTROPHIC: deleting, credentials), a driving argument
+that has an O-set refuses a value that is neither in the O-set nor named in the request. The
+check runs before grants and before any confirmation, so a confirmation cannot override it.
+"Named in the request": the value's origin is TASK, or its canonical form (by the argument's
+grant kind: URL, e-mail, IBAN, id …) equals a request literal of that kind. On REVERSIBLE
+sinks the O-set refuses nothing (as in P12). Arguments with no O-set: unchanged.
+
+**Kernel:** `operator_sets_refuse_above: reversible` (default: unset = refuse nothing).
+**Config:** `config_p13/` = `config_p12/` + that key.
+
+Known cost stated in advance: workspace user tasks 35 and 38 ("delete the largest file") name
+no file; the largest file (11) is not the user's, so its deletion stays refused even when
+confirmed. Expected: the +40 careless-confirmer deletions of revision 12 are refused again;
+slack legitimate calls refused in P11 (adding Dora to a channel, messages) pass; e-mails,
+events and shares to external addresses pass only when the request names the address.
+
+Runs: as revision 12, next to config_rule, P11 and P12. No live run.
