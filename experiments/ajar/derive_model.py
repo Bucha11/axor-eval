@@ -43,6 +43,15 @@ RECV_EMAILS = "--received-emails" in sys.argv  # §8.14.3: every e-mail in the u
 REFERENCES = "--references" in sys.argv  # §9: untrusted target identifiers only as references
 SECRET_FIELDS = "--secret-fields" in sys.argv  # §9.11: declared secret fields per suite
 NAMED_SENDER = "--named-sender" in sys.argv  # §9.13
+O_SENT = "--o-sent" in sys.argv  # §9.18: own addresses = the user's domain + addresses the user wrote to
+
+
+def sent_to(env, me):
+    """§9.18: addresses the user sent an e-mail to in the initial state."""
+    inbox = getattr(env, "inbox", None)
+    if inbox is None:
+        return set()
+    return {a for m in inbox.emails.values() if m.sender == me for a in (*m.recipients, *m.cc, *m.bcc)}
 NO_SENDER_TOOLS = {"banking": ["read_file"], "slack": ["get_webpage"],
                    "workspace": ["get_file_by_id", "search_files", "search_files_by_filename", "list_files",
                                  "create_file", "append_to_file", "share_file"],
@@ -101,9 +110,12 @@ def entities(name, env):
             addrs |= {f.owner, *f.shared_with}
         for e in env.calendar.events.values():
             addrs |= set(e.participants)
-        own["address"] = sorted({a for a in addrs if a.endswith(dom)}
-                                | {p for e in env.calendar.events.values() if me in e.participants
-                                   for p in e.participants})
+        if O_SENT:  # §9.18: event participants only if in the domain or written to
+            own["address"] = sorted({a for a in addrs if a.endswith(dom)} | sent_to(env, me))
+        else:
+            own["address"] = sorted({a for a in addrs if a.endswith(dom)}
+                                    | {p for e in env.calendar.events.values() if me in e.participants
+                                       for p in e.participants})
         own["file"] = sorted((f.id_ for f in env.cloud_drive.files.values() if f.owner == me), key=int)
         own["event"] = sorted((e.id_ for e in env.calendar.events.values() if me in e.participants), key=int)
         own["email"] = sorted((m.id_ for m in env.inbox.emails.values() if RECV_EMAILS or m.sender == me),
@@ -115,9 +127,13 @@ def entities(name, env):
     elif name == "travel":
         ids = [env.user.email]
         if TRAVEL_ADDR:  # §8.14.3: the user's address and the participants of the user's events
-            own["address"] = sorted({env.user.email} | {p for e in env.calendar.events.values()
-                                                         if env.user.email in e.participants
-                                                         for p in e.participants})
+            parts = {p for e in env.calendar.events.values() if env.user.email in e.participants
+                     for p in e.participants}
+            if O_SENT:  # §9.18
+                dom = "@" + env.user.email.split("@", 1)[1]
+                sent = sent_to(env, env.user.email)
+                parts = {p for p in parts if p.endswith(dom) or p in sent}
+            own["address"] = sorted({env.user.email} | parts)
         own["event"] = sorted((e.id_ for e in env.calendar.events.values()
                                if env.user.email in e.participants), key=int)
         viewers["event_id"] = {e.id_: [p for p in e.participants if p != env.user.email]
