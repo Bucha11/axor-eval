@@ -44,6 +44,8 @@ def variants():
     return {
         "none": None,
         "origin-no-grants": ("ctx", None, "no_grants"),
+        "allR origin-no-grants": ("ctx", None, "no_grants", None, "allR"),
+        "allR R0 L1+L2s": ("ctx", "L1+L2s", "R0", None, "allR"),
         "axor-clean": ("clean", None),
         "axor-ctx-request-only": ("ctx", None),
         "grants-L1": ("ctx", "L1"),
@@ -67,6 +69,7 @@ def factory(variant, suite, prompt, plan):
     base, levels = variant[0], variant[1]
     tag = variant[2] if len(variant) > 2 else None
     confirm = variant[3] if len(variant) > 3 else "oracle"
+    all_r = len(variant) > 4 and variant[4] == "allR"
     if tag == "R0":
         ga = _r0_table()
     else:
@@ -88,6 +91,10 @@ def factory(variant, suite, prompt, plan):
             hook(g, spec)
         else:
             g = ToolCallGovernor(**kw)
+        if all_r:  # corrupted labeler: every value reads as request-origin (R) — harness only
+            from axor_core.contracts.taint import TrustedOrigin as _TO
+            g._taint.trusted_origin = lambda v, _o=_TO.TASK: _o
+            g._taint.is_trusted = lambda *a, **k: True
         return g
 
     return make
