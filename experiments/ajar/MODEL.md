@@ -718,3 +718,16 @@ if it resolves to exactly one address among the entity model's contacts. A name 
 address builds no named-sender ground (§9.13): the value keeps its untrusted origin and the call goes
 to L4. The address itself, written in the request, is unambiguous. Report: the ambiguous names (list),
 and the changes on benign 288 / Ajar / replay 1887.
+
+### 9.20 A list argument: every element from the clause's literals or O (fixed before code)
+
+For a list-valued argument (recipients, cc, bcc, participants, …), each element must belong to
+(the request literals of its kind in the same clause, 9.14a) ∪ O of that argument; the list passes if
+every element passes. A scalar argument is unchanged. The other arguments of the call keep their
+rules (O-set, or a literal of the same clause; two literals of one kind in the clause for a scalar
+argument → ambiguous, no grant). Quota and class are for the call as a whole, as now (the sink's
+quota; the call's class). Configuration c9v5 = 9.18 + 9.19 + this (flag list_union). Report on c9v5
+with this rule against c9v5 without it: benign 288 (expected back: workspace 4, 6, 8; 9 and 33 stay
+lost), Ajar a / b / c-oracle (which of the lost tasks return, which not and why), replay 1887 (attacks
+must not grow), route 2 L2 substitutions and k (must not grow; if they do, list them). Freeze c9v5 only
+if attacks and route 2 do not grow.
