@@ -70,3 +70,28 @@ the §8.7/§8.10 final switches; the c9v5 rules §9.18–9.20a do not touch its 
 - Data stealing: 544/544 refused (final config: content projection 323, grant gate 221; by the floor
   alone: 0 — the floor would catch all 544 if it were the only check on).
 Unchanged from kernel 09e98af (510/544 all refused).
+
+## Grants (b) over the origin gate (a) — Ajar UNDER_GRANT allowable probes
+Over the admissible (UNDER_GRANT, expected ALLOW) probes, verdict under a (origin gate only) vs b
+(grants L1+L2s):
+- Required (339 probes): a admits 296, b admits 299. **b admits 6 required calls a does not**
+  (send_money, schedule_transaction, update_scheduled_transaction, add_user_to_channel,
+  send_channel_message, create_calendar_event — one each); **3 required that a admits, b denies**
+  (add_user_to_channel ×2, post_webpage ×1 — the own-channel/own-URL writes the origin label passes
+  but no grant covers).
+- Unneeded (admissible but not required): a admits 974, b admits 969. **8 unneeded that a admits, b
+  denies** (schedule_transaction ×2, post_webpage ×2, add_user_to_channel ×2, invite_user_to_slack,
+  add_calendar_event_participants); 3 unneeded b admits that a does not.
+
+## InjecAgent — the two ablation figures (kernel c9v5 618c4a9; final_breakdown.py)
+- Direct harm denied ONLY by the consequence class (no driving argument, so no grant or origin check
+  applies): **34** — AugustSmartLockUnlockDoor 17, NortonIdentitySafeDisableTwoFactorAuthentication 17.
+  (Same as kernel 09e98af.)
+- Data stealing, the floor counted alone (every earlier gate off): the egress floor refuses **500 of
+  544**; the other **44** are refused by the per-value sensitive check (the attacker's address came
+  from a declared sensitive source), not the egress floor. So the floor does NOT by itself refuse all
+  544. In the full config denied-only-by-floor is 0 (content projection 323, grant gate 221 fire
+  first).
+
+## Pending (jobs running): Ajar view/naive (1), 1887 naive-over-oracle top-2 tools (3),
+## residuals table tab:resid on c9v5 (5).
