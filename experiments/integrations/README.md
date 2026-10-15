@@ -1,8 +1,8 @@
 # The four integrations on the current kernel: one compatibility check
 
 axor-claude, axor-openrouter, axor-langchain and axor-wrap, lifted to axor-core
-`claude/model-m1` `fa02df1` (c9v4 frozen, c9v5 flags) and the daemon
-(`claude/daemon-references` + two fixes found by this check, `d7e1b72`): every tool call goes through `ToolCallGovernor` (or
+`claude/model-m1` `1d9549a` (c9v4 frozen; c9v5 = MODEL.md 9.18 + 9.19 + 9.20) and the
+daemon (`claude/daemon-references` + two fixes found by this check, `24a961d`): every tool call goes through `ToolCallGovernor` (or
 the daemon) with grants, references and output registration, by one shared protocol
 (`gate.py`, sha256 `950916b2…`, byte-identical in the four packages; `compat.py` prints
 the four digests). No model is called anywhere here.
@@ -30,11 +30,16 @@ fixed by `references_seed`, so the views compare byte for byte; a view carries
 * **AgentDojo** — the 581 recorded live episodes of the final run (o4-mini; A 290; B 291
   with the live oracle as L4: grant arguments equal to a ground-truth call, budget 5,
   a refused call not re-asked), replayed call by call as `decisions_live.py` replays them,
-  under `config_m1_c9v4` (frozen) and `config_m1_c9v5`. The shim's own verdicts are
-  checked against `ajar/results/live_final_decisions_c9v4_v.json`.
+  under `config_m1_c9v4` (frozen) and `config_m1_c9v5` with 9.20 (`list_union: true`,
+  axor-eval `d6ee331`; no freeze file for c9v5 yet, so these rows are bound to that
+  config and kernel `1d9549a`). The shim's own verdicts are checked against
+  `ajar/results/live_final_decisions_c9v4_v.json`.
+* **Parser ablation** (`--parser both`) — the AgentDojo replay again with no description
+  parser on any path (the shim included), and per call: nothing admitted without the
+  parser may be refused with it.
 
 ```sh
-INJECAGENT_DIR=.../InjecAgent AXOR_CORE_REPO=.../axor-core python compat.py   # ~11 min, no API
+INJECAGENT_DIR=.../InjecAgent AXOR_CORE_REPO=.../axor-core python compat.py --parser both   # ~40 min, no API
 python accounting.py <dir holding the four checkouts>
 ```
 
@@ -64,17 +69,31 @@ consequence 306 / taint 204, ds taint 544 (the floor); final dh grant 459 / cons
 | c9v4: calls run | 2117 | 2117 | 2117 | 2117 | 2117 | 2117 |
 | c9v4: confirmations (B) | 80 | 80 | 80 | 80 | 80 | 80 |
 | c9v4: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
-| c9v5: calls run | 2032 | 2032 | 2032 | 2032 | 2032 | 2032 |
-| c9v5: confirmations (B) | 123 | 123 | 123 | 123 | 123 | 123 |
-| c9v5: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
+| c9v5 + 9.20: calls run | 2035 | 2035 | 2035 | 2035 | 2035 | 2035 |
+| c9v5 + 9.20: confirmations (B) | 120 | 120 | 120 | 120 | 120 | 120 |
+| c9v5 + 9.20: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
 
 The shim reproduces the recorded c9v4 verdicts in **581/581** episodes (and B's 80
-confirmations are `final_live/LIVE_C9V4.md`'s "105 -> 80").
+confirmations are `final_live/LIVE_C9V4.md`'s "105 -> 80"). c9v5 without 9.20 (the
+config before `d6ee331`, kernel `fa02df1`) gave 2032 / 123, also with 0 divergences.
+
+**Parser ablation** — the same replay with no description parser anywhere:
+
+| config | with the parser: run / confirmations | without: run / confirmations | admitted only with | admitted only without | divergences between paths |
+|---|---|---|---|---|---|
+| c9v4 | 2117 / 80 | 2099 / 101 | 18 | **0** | 0 |
+| c9v5 + 9.20 | 2035 / 120 | 2018 / 141 | 17 | **0** | 0 |
+
+Identical in all six paths. The calls lost without the parser are the description-
+granted ones, in the same 15 episodes (slack user tasks 7, 9, 10, 12 and workspace 20 —
+in c9v5 workspace 21 — over three passes); without the parser they are refused in A and
+asked of the oracle in B (+21 confirmations). No call is admitted without the parser that
+is refused with it. Where each path takes the parser and who writes it: `TRACE.md`.
 
 ## Divergences
 
-None: on both sets, both InjecAgent configurations and both AgentDojo configurations,
-every path — the four integrations and the daemon — gives every call the shim's
+None: on both sets, both InjecAgent configurations, both AgentDojo configurations and
+with or without the description parser, every path — the four integrations and the daemon — gives every call the shim's
 verdict, category, confirmations, executed arguments and agent view.
 
 The daemon at `claude/daemon-references` (`a887ab7`) diverged in 40 rows (c9v4) / 39
@@ -98,14 +117,16 @@ stays spent and nothing is registered, as in the shim.
 ## Accounting
 
 `accounting.py` (physical lines; code = not blank, comment or docstring). Lift = `origin/main`
-→ branch head; "other" is CI, changelog and the 151-line c9v4 fixture.
+→ branch head (axor-daemon: `claude/daemon-references` → head); "other" is CI, changelog
+and the 151-line c9v4 fixture.
 
 | package | lift: source | lift: tests | lift: other | integration (code) | rest (code) |
 |---|---|---|---|---|---|
-| axor-claude | +234 / −8 | +172 / −0 | +168 / −1 | 748 (482) | 2023 (1274) |
-| axor-openrouter | +286 / −79 | +173 / −0 | +155 / −1 | 292 (200) | 1901 (1188) |
-| axor-langchain | +362 / −32 | +175 / −32 | +171 / −1 | 485 (332) | 2476 (1717) |
-| axor-wrap | +197 / −22 | +146 / −0 | +152 / −1 | 700 (390) | 3255 (2090) |
+| axor-claude | +242 / −8 | +230 / −0 | +168 / −1 | 756 (484) | 2023 (1274) |
+| axor-openrouter | +289 / −79 | +231 / −0 | +155 / −1 | 295 (200) | 1901 (1188) |
+| axor-langchain | +375 / −32 | +228 / −32 | +171 / −1 | 485 (332) | 2489 (1717) |
+| axor-wrap | +200 / −22 | +193 / −0 | +152 / −1 | 703 (390) | 3255 (2090) |
+| axor-daemon | +42 / −3 | +53 / −0 | +6 / −0 | 468 (313) | 494 (386) |
 
 Integration, by part (physical / code):
 
@@ -122,6 +143,8 @@ Integration, by part (physical / code):
   `ToolGate` 66, middleware hooks 37); output registration 14 / 12; shared gate 128 / 84.
   Rest: compression / tool selection / budget / telemetry 2186 (the gate calls inside the
   two tool-call bodies, ~24 lines, are counted here), quality judge 242.
+* axor-daemon — execution wrapper + output registration 269 / 171 (`enforcer.py`); L4
+  operator channel 199 / 142 (`confirm.py`). Rest: CLI 290, socket server 184, other 20.
 * axor-wrap — execution wrapper 366 / 172 (`runtime.py`); config compilation from
   manifests 206 / 134; shared gate 128 / 84. Rest: control plane 1429, trace 593, scanner
   369, manifests 365, CLI 179, experiments 126, errors 86, other 108.
@@ -132,7 +155,8 @@ tool model (`../ajar/model/tools.yaml`: banking 10 lines, slack 13, travel 18, w
 14) and the entity model derived from the deployment's state: banking 151 lines (33 keys),
 slack 181, travel 237, workspace 533 (c9v5: 155 / 185 / 243 / 560). Of these the
 description sources and targets (9.15) are 0 / 26 / 57 / 65 lines, and they need the
-platform's structure parser (`axor_ajar.structured`, 23 lines) passed as `structured=`.
+platform's structure parser (`axor_ajar.structured`, 23 lines), written by the operator
+and passed as `structured=` (daemon: `--structured`).
 The Python each integration needs on top:
 
 | package | lines | what |
@@ -141,3 +165,18 @@ The Python each integration needs on top:
 | axor-openrouter | 1 (+ the tool handlers and their schemas) | `make_session(api_key=…, handlers=[…], tool_schemas=[…], governance="banking.yaml")` |
 | axor-langchain | 1 | `create_agent(…, middleware=[AxorMiddleware(governance="banking.yaml")])` |
 | axor-wrap | 2 | `WrappedToolset(tools, manifests, governance="banking.yaml")`, then `begin(task)` per request |
+
+## Appendix E table (c9v5 = 9.18 + 9.19 + 9.20)
+
+| path | framework | integration lines (code) | lift: source / tests | InjecAgent dh / ds | AgentDojo run / confirmations (c9v4; c9v5) | divergences from the shim |
+|---|---|---|---|---|---|---|
+| axor-claude | Anthropic SDK + `GovernedSession` | 756 (484) | +242/−8 / +230 | 510/510, 544/544 | 2117 / 80; 2035 / 120 | 0 |
+| axor-openrouter | OpenRouter + `GovernedSession` | 295 (200) | +289/−79 / +231 | 510/510, 544/544 | 2117 / 80; 2035 / 120 | 0 |
+| axor-langchain | LangChain 1.x / LangGraph | 485 (332) | +375/−32 / +228/−32 | 510/510, 544/544 | 2117 / 80; 2035 / 120 | 0 |
+| axor-wrap | any callables | 703 (390) | +200/−22 / +193 | 510/510, 544/544 | 2117 / 80; 2035 / 120 | 0 |
+| axor-daemon | separate process | 468 (313) | +42/−3 / +53 | 510/510, 544/544 | 2117 / 80; 2035 / 120 | 0 |
+| shim | bare `ToolCallGovernor` | — | — | 510/510, 544/544 | 2117 / 80; 2035 / 120 | — |
+
+InjecAgent: both configurations (`old`, `final`). AgentDojo: 581 episodes, 2234 calls,
+with the platform parser. Divergences: every call compared on verdict, category,
+confirmations, executed arguments and agent view, in both sets and without the parser.

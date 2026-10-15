@@ -254,7 +254,8 @@ async def run_agentdojo(drivers, limit, configs, structured="platform"):
         line = "  ".join(f"{d} {per[d]['allowed']}/{per[d]['calls']} conf {per[d]['confirmations']}"
                          for d in drivers)
         print(f"[agentdojo {cname}] {len(eps)} episodes  {line}  divergences: {len(div)}"
-              + (f"  shim vs recorded: {len(rec_mismatch)} episodes differ" if cname == "c9v4" else ""),
+              + (f"  shim vs recorded: {len(rec_mismatch)} episodes differ"
+                 if cname == "c9v4" and structured == "platform" else ""),
               flush=True)
     return out
 
