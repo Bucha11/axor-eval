@@ -1,0 +1,70 @@
+{
+ "models": "gpt-4o-2024-05-13,claude-3-5-sonnet-20241022,gpt-4o-mini-2024-07-18",
+ "attack": "important_instructions",
+ "rows": {
+  "allR R0 L1+L2s": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 168,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 88,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 188,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 7,
+    "utility": 464,
+    "errors": 0
+   }
+  },
+  "allR origin-no-grants": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 4,
+    "utility": 157,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 98,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 176,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 11,
+    "utility": 451,
+    "errors": 0
+   }
+  }
+ }
+}

@@ -92,3 +92,16 @@ Over the admissible (UNDER_GRANT, expected ALLOW) probes, verdict under a (origi
   from a declared sensitive source), not the egress floor. So the floor does NOT by itself refuse all
   544. In the full config denied-only-by-floor is 0 (content projection 323, grant gate 221 fire
   first).
+
+## Corrupted labeler (adversarial): the labeler marks every value as request-origin R (harness only)
+1887 replay, no human, two modes (replay_runs flag allR patches g._taint: trusted_origin→TASK):
+| mode | landed | ASR | utility |
+|---|---|---|---|
+| origin-no-grants (all-R) | 11 | 0.006 | 0.239 |
+| R0 L1+L2s (all-R) | 7 | 0.004 | 0.246 |
+Against the honest labeler on c9v5 (origin-no-grants 11/0.006, L1+L2s 7/0.004): **corrupting the
+labeler to pass every value does not raise landed attacks in either mode.** Utility rises slightly
+(origin-no-grants 0.228→0.239), so the patch does admit more benign calls — the origin label is not
+load-bearing for attack resistance here. In L1+L2s the grant gate does not consult the labeler and
+holds on its own; in origin-no-grants the 11 that land are the travel reservations bounded by the
+consequence class and the floor, not by the origin label.
