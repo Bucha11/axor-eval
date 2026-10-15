@@ -697,3 +697,23 @@ Counted only; enabled by a flag over config_m1_c9v4; never part of the frozen co
 * Variants counted: base (c9v4), H-A, H-A(≤REVERSIBLE), H-B, H-B + H-A(≤REVERSIBLE).
 Rules 9.16 / 9.17 are not changed after the numbers are seen; an implementation bug found later is
 fixed and described separately (what it was, what it is).
+
+### 9.18 O of addresses: the user's domain and the addresses the user wrote to (fixed before code)
+
+The participants of an event are written by whoever sent the invitation; by itself that does not make
+an address an own entity. New rule for addresses in O (workspace; the other suites have no
+address-valued O): an address is own iff it is in the user's domain, or the user sent an e-mail to it
+in the initial state (recipients / cc / bcc of an e-mail whose sender is the user). Event participants
+enter O only if they satisfy this rule. Every other source of O (own files, own events, e-mail ids,
+the user's account) is unchanged. Configuration c9v5 = c9v4 with this rule and 9.19.
+Report: the addresses that leave O and those that stay; that no address of an injection text or an
+injection task (other than the user) is in O; Ajar a / b / c-oracle, replay 1887, benign 288 without a
+human, route 2 L2 (of 60, k); the benign tasks lost and why.
+
+### 9.19 A named sender must be unambiguous (fixed before code)
+
+A name of the request (an entry of sender_aliases: a contact's full or first name) names a sender only
+if it resolves to exactly one address among the entity model's contacts. A name that fits more than one
+address builds no named-sender ground (§9.13): the value keeps its untrusted origin and the call goes
+to L4. The address itself, written in the request, is unambiguous. Report: the ambiguous names (list),
+and the changes on benign 288 / Ajar / replay 1887.
