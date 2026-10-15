@@ -92,6 +92,3 @@ Over the admissible (UNDER_GRANT, expected ALLOW) probes, verdict under a (origi
   from a declared sensitive source), not the egress floor. So the floor does NOT by itself refuse all
   544. In the full config denied-only-by-floor is 0 (content projection 323, grant gate 221 fire
   first).
-
-## Pending (jobs running): Ajar view/naive (1), 1887 naive-over-oracle top-2 tools (3),
-## residuals table tab:resid on c9v5 (5).
