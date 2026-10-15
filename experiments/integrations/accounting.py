@@ -48,6 +48,10 @@ INTEGRATION = {
         "axor_langchain/middleware.py::wrap_tool_call": "execution wrapper (middleware)",
         "axor_langchain/middleware.py::awrap_tool_call": "execution wrapper (middleware)",
     },
+    "axor-daemon": {
+        "axor_daemon/enforcer.py": "execution wrapper + output registration (daemon session)",
+        "axor_daemon/confirm.py": "L4 operator channel",
+    },
     "axor-wrap": {
         "axor_wrap/gate.py": "execution wrapper + output registration (shared gate.py)",
         "axor_wrap/runtime.py": "execution wrapper (WrappedToolset)",
@@ -66,6 +70,7 @@ REST_NAMES = {
                         "security.py": "probe / sentinel wiring"},
     "axor-langchain": {"middleware.py": "compression / tool selection / budget / telemetry",
                        "judge.py": "quality judge"},
+    "axor-daemon": {"server.py": "socket server", "__main__.py": "CLI"},
     "axor-wrap": {"detect.py": "scanner", "manifest.py": "manifests", "roles.py": "manifests",
                   "cli.py": "CLI", "connect.py": "control plane", "plane": "control plane",
                   "trace.py": "trace", "experiment.py": "experiments", "errors.py": "errors"},
@@ -145,8 +150,14 @@ def account(root: str, pkg: str) -> dict:
     return {"parts": parts, "integration": integ, "rest": rest, "lift": lift(repo, mod)}
 
 
+# where each branch started: the packages from main; the daemon from the branch with the
+# gate (daemon-references), so its lift is only what this work changed
+BASE = {"axor-daemon": "origin/claude/daemon-references"}
+
+
 def lift(repo: str, mod: str) -> dict:
-    out = subprocess.run(["git", "-C", repo, "diff", "--numstat", "origin/main...HEAD"],
+    base = BASE.get(os.path.basename(repo), "origin/main")
+    out = subprocess.run(["git", "-C", repo, "diff", "--numstat", f"{base}...HEAD"],
                          capture_output=True, text=True, check=True).stdout
     acc = {"source": [0, 0], "tests": [0, 0], "other": [0, 0]}
     files = {"source": [], "tests": [], "other": []}

@@ -6,8 +6,8 @@
     275
    ],
    "integration: wiring (make_session)": [
-    96,
-    61
+    104,
+    63
    ],
    "rest: other": [
     54,
@@ -47,8 +47,8 @@
    ]
   },
   "integration": [
-   748,
-   482
+   756,
+   484
   ],
   "rest": [
    2023,
@@ -56,7 +56,7 @@
   ],
   "lift": {
    "source": {
-    "added": 234,
+    "added": 242,
     "removed": 8,
     "files": [
      "axor_claude/__init__.py",
@@ -66,7 +66,7 @@
     ]
    },
    "tests": {
-    "added": 172,
+    "added": 230,
     "removed": 0,
     "files": [
      "tests/test_kernel_gate.py"
@@ -95,7 +95,7 @@
     186
    ],
    "integration: wiring (make_session)": [
-    78,
+    81,
     59
    ],
    "rest: other": [
@@ -152,7 +152,7 @@
    ]
   },
   "integration": [
-   292,
+   295,
    200
   ],
   "rest": [
@@ -161,7 +161,7 @@
   ],
   "lift": {
    "source": {
-    "added": 286,
+    "added": 289,
     "removed": 79,
     "files": [
      "axor_openrouter/__init__.py",
@@ -171,7 +171,7 @@
     ]
    },
    "tests": {
-    "added": 173,
+    "added": 231,
     "removed": 0,
     "files": [
      "tests/test_kernel_gate.py"
@@ -215,7 +215,7 @@
     12
    ],
    "rest: compression / tool selection / budget / telemetry": [
-    2186,
+    2199,
     1496
    ],
    "integration: execution wrapper + output registration (shared gate.py)": [
@@ -232,12 +232,12 @@
    332
   ],
   "rest": [
-   2476,
+   2489,
    1717
   ],
   "lift": {
    "source": {
-    "added": 362,
+    "added": 375,
     "removed": 32,
     "files": [
      "axor_langchain/gate.py",
@@ -248,7 +248,7 @@
     ]
    },
    "tests": {
-    "added": 175,
+    "added": 228,
     "removed": 32,
     "files": [
      "tests/test_kernel_gate.py",
@@ -264,6 +264,63 @@
      "CHANGELOG.md",
      "pyproject.toml",
      "tests/fixtures/banking_c9v4.yaml"
+    ]
+   }
+  }
+ },
+ "axor-daemon": {
+  "parts": {
+   "rest: other": [
+    20,
+    15
+   ],
+   "integration: L4 operator channel": [
+    199,
+    142
+   ],
+   "rest: CLI": [
+    290,
+    233
+   ],
+   "rest: socket server": [
+    184,
+    138
+   ],
+   "integration: execution wrapper + output registration (daemon session)": [
+    269,
+    171
+   ]
+  },
+  "integration": [
+   468,
+   313
+  ],
+  "rest": [
+   494,
+   386
+  ],
+  "lift": {
+   "source": {
+    "added": 42,
+    "removed": 3,
+    "files": [
+     "axor_daemon/__main__.py",
+     "axor_daemon/enforcer.py"
+    ]
+   },
+   "tests": {
+    "added": 53,
+    "removed": 0,
+    "files": [
+     "tests/test_governance.py"
+    ]
+   },
+   "other": {
+    "added": 6,
+    "removed": 0,
+    "files": [
+     ".github/workflows/ci.yml",
+     "README.md"
     ]
    }
   }
@@ -287,7 +344,7 @@
     96
    ],
    "integration: execution wrapper (WrappedToolset)": [
-    366,
+    369,
     172
    ],
    "rest: control plane": [
@@ -316,7 +373,7 @@
    ]
   },
   "integration": [
-   700,
+   703,
    390
   ],
   "rest": [
@@ -325,7 +382,7 @@
   ],
   "lift": {
    "source": {
-    "added": 197,
+    "added": 200,
     "removed": 22,
     "files": [
      "axor_wrap/gate.py",
@@ -333,7 +390,7 @@
     ]
    },
    "tests": {
-    "added": 146,
+    "added": 193,
     "removed": 0,
     "files": [
      "tests/test_enforcement_off.py",

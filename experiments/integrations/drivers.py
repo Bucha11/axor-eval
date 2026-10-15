@@ -85,7 +85,10 @@ class Shim(_Base):
             if key is not None:
                 g.grant_store.commit(key)
         # the live executor registers only clean executions (decisions_live.py)
-        view = axor_ajar.present(g, dec, output, tool, run) if output is not None else None
+        # present() parses a description source's output itself (axor_ajar.structured);
+        # without a parser for this session it is given no tool, so it parses nothing
+        view = (axor_ajar.present(g, dec, output, tool if self.structured is not None else None, run)
+                if output is not None else None)
         return Outcome(True, None, run, view, g.confirmations - c0)
 
 

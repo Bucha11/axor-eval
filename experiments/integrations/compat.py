@@ -200,7 +200,10 @@ def agentdojo_episodes():
         yield rel, d["suite"], ut.PROMPT, plan, sorted(t.name for t in suite.tools), calls
 
 
-async def run_agentdojo(drivers, limit, configs):
+async def run_agentdojo(drivers, limit, configs, structured="platform"):
+    """structured: "platform" — every path gets the platform's parser of a description
+    source's output (axor_ajar.structured, the operator's code); "none" — no path gets one."""
+    parser = axor_ajar.structured if structured == "platform" else None
     from axor_core.config import GovernanceConfig
 
     eps = list(agentdojo_episodes())
@@ -222,7 +225,7 @@ async def run_agentdojo(drivers, limit, configs):
             l4 = rel.startswith("B")
             for dname in drivers:
                 s = DRIVERS[dname](cfg, prompt, make_confirmer(cfg, plan) if l4 else None,
-                                   axor_ajar.structured, tools)
+                                   parser, tools)
                 got = []
                 try:
                     for tool, args, output in calls:
@@ -236,7 +239,7 @@ async def run_agentdojo(drivers, limit, configs):
                 per[dname]["calls"] += len(got)
                 per[dname]["allowed"] += sum(r["executed"] for r in got)
                 per[dname]["confirmations"] += sum(r["confirmations"] for r in got)
-            if cname == "c9v4" and "shim" in rows[rel] and rel in recorded:
+            if cname == "c9v4" and structured == "platform" and "shim" in rows[rel] and rel in recorded:
                 ref = [(x[0], x[1], x[2], x[3]) for x in recorded[rel]["decisions"]]
                 mine = [(r["tool"], r["executed"], r["category"] or "approved", r["confirmations"])
                         for r in rows[rel]["shim"]]
@@ -245,7 +248,9 @@ async def run_agentdojo(drivers, limit, configs):
         div = _divergences(rows, drivers)
         out[cname] = {"episodes": len(eps), "per_driver": {d: dict(c) for d, c in per.items()},
                       "shim_vs_recorded_mismatch": rec_mismatch, "divergences": div,
-                      "seconds": round(time.time() - t0, 1)}
+                      "seconds": round(time.time() - t0, 1), "structured": structured,
+                      "_executed": {(case, d, i): r["executed"] for case, by in rows.items()
+                                    for d, got in by.items() for i, r in enumerate(got)}}
         line = "  ".join(f"{d} {per[d]['allowed']}/{per[d]['calls']} conf {per[d]['confirmations']}"
                          for d in drivers)
         print(f"[agentdojo {cname}] {len(eps)} episodes  {line}  divergences: {len(div)}"
@@ -273,12 +278,37 @@ def _divergences(rows, drivers) -> list[dict]:
     return out
 
 
+def ablation(with_p, without_p) -> dict:
+    """Per call: a call admitted without the parser must be admitted with it (no parser =>
+    no description grant => refusal, never an admission)."""
+    out = {}
+    for cname in with_p:
+        a, b = with_p[cname]["_executed"], without_p[cname]["_executed"]
+        drivers = sorted({k[1] for k in a})
+        out[cname] = {}
+        for d in drivers:
+            keys = [k for k in a if k[1] == d]
+            only_without = [k for k in keys if b[k] and not a[k]]
+            only_with = [k for k in keys if a[k] and not b[k]]
+            out[cname][d] = {"executed_with": sum(a[k] for k in keys), "executed_without": sum(b[k] for k in keys),
+                             "admitted_only_with_parser": len(only_with),
+                             "admitted_only_without_parser": len(only_without),
+                             "episodes_changed": sorted({k[0] for k in only_with}),
+                             "violations": [list(k) for k in only_without]}
+            print(f"[parser ablation {cname}] {d}: run with {out[cname][d]['executed_with']}, "
+                  f"without {out[cname][d]['executed_without']}; only with {len(only_with)}, "
+                  f"only without {len(only_without)}", flush=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", nargs="+", default=["injecagent", "agentdojo"])
     ap.add_argument("--drivers", nargs="+", default=["shim", *INTEGRATIONS, "daemon"])
     ap.add_argument("--configs", nargs="+", default=["c9v4", "c9v5"])
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--parser", choices=["platform", "none", "both"], default="platform",
+                    help="the description-source parser every path gets; both = also the ablation")
     ap.add_argument("--out", default=os.path.join(HERE, "results"))
     a = ap.parse_args()
     import axor_core
@@ -288,7 +318,15 @@ def main() -> None:
     if "injecagent" in a.set:
         res["injecagent"] = asyncio.run(run_injecagent(a.drivers, a.limit))
     if "agentdojo" in a.set:
-        res["agentdojo"] = asyncio.run(run_agentdojo(a.drivers, a.limit, a.configs))
+        modes = ["platform", "none"] if a.parser == "both" else [a.parser]
+        runs = {m: asyncio.run(run_agentdojo(a.drivers, a.limit, a.configs, m)) for m in modes}
+        res["agentdojo"] = runs[modes[0]]
+        if a.parser == "both":
+            res["agentdojo_without_parser"] = runs["none"]
+            res["parser_ablation"] = ablation(runs["platform"], runs["none"])
+        for r in runs.values():
+            for v in r.values():
+                v.pop("_executed", None)
     os.makedirs(a.out, exist_ok=True)
     suffix = f"_limit{a.limit}" if a.limit else ""
     path = os.path.join(a.out, f"compat{suffix}.json")
