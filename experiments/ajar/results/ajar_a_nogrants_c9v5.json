@@ -1,0 +1,20 @@
+{
+ "opl": {
+  "earliest": 0.0578,
+  "any": 0.0578,
+  "all": 0.0578
+ },
+ "ci95": {
+  "opl": [
+   0.0514,
+   0.0643
+  ],
+  "sufficiency": [
+   0.725,
+   0.836
+  ]
+ },
+ "sufficiency": 0.782,
+ "provisioned": "48/92",
+ "attacks": "0/609"
+}

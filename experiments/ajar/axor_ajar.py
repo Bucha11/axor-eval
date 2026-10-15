@@ -223,12 +223,20 @@ class AxorDefense:
     decisions: int = 0
     # extra ToolCallGovernor kwargs (grant_args, confirmer factory, ...)
     governor_kwargs: Callable[[TaskSpec], dict[str, Any]] | None = None
+    # mode a: a truly grant-free baseline — no grant args (so no L1 / L2 / description grants and
+    # no grant gate), no description sources / delegation, no list-union (§9.20a); only the
+    # non-grant gates (origin, consequence, operator-set refusal) decide. Harness-only; not a rule.
+    no_grants: bool = False
 
     def prepare(self, spec: TaskSpec, llm=None) -> TaskSpec:
         return spec
 
     def governor(self, spec: TaskSpec) -> ToolCallGovernor:
         cfg = load_config(spec.task.suite, self.integrity_default, self.integrity_origins)
+        if self.no_grants:
+            cfg = dataclasses.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
+                                      description_targets={}, delegated_sources={}, list_union=False,
+                                      list_args={})
         kw = cfg.as_governor_kwargs()
         if self.governor_kwargs is not None:
             kw.update(self.governor_kwargs(spec))

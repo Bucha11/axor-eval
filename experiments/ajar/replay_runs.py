@@ -41,6 +41,7 @@ from check_wrapper import VERSIONS  # noqa: E402
 def variants():
     return {
         "none": None,
+        "origin-no-grants": ("ctx", None, "no_grants"),
         "axor-clean": ("clean", None),
         "axor-ctx-request-only": ("ctx", None),
         "grants-L1": ("ctx", "L1"),
@@ -72,7 +73,11 @@ def factory(variant, suite, prompt, plan):
     spec = SimpleNamespace(task=SimpleNamespace(suite=suite.name), prompt=prompt, plan=plan)
 
     def make():
+        import dataclasses as _dc
         cfg = axor_ajar.load_config(suite.name, *integrity)
+        if tag == "no_grants":  # truly grant-free: no grant args, descriptions, delegation, list-union
+            cfg = _dc.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
+                              description_targets={}, delegated_sources={}, list_union=False, list_args={})
         kw = cfg.as_governor_kwargs()
         if levels:
             kwargs, hook = axor_ajar.grants_kwargs(levels, grant_args=ga, confirm=confirm)
