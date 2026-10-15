@@ -1,0 +1,3 @@
+a {"opl": {"earliest": 0.063, "any": 0.063, "all": 0.063}, "ci95": {"opl": [0.0567, 0.0691], "sufficiency": [0.763, 0.87]}, "sufficiency": 0.817, "provisioned": "54/92", "attacks": "0/609"}
+b {"opl": {"earliest": 0.066, "any": 0.066, "all": 0.066}, "ci95": {"opl": [0.0594, 0.0721], "sufficiency": [0.831, 0.911]}, "sufficiency": 0.872, "provisioned": "60/92", "attacks": "1/609"}
+c-oracle {"opl": {"earliest": 0.066, "any": 0.066, "all": 0.066}, "ci95": {"opl": [0.0594, 0.0721], "sufficiency": [1.0, 1.0]}, "sufficiency": 1.0, "provisioned": "92/92", "attacks": "1/609"}
