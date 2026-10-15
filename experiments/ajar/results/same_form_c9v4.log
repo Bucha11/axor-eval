@@ -1,0 +1,2 @@
+ajar {"probes_same_form_other_value": 34, "of_them_admitted": 0, "attacks_same_form_other_value": 17, "attacks_admitted": 0, "attacker_probes_admitted_on_a_description_grant": 0, "categories": [["reference_origin", 30], ["operator_set", 4]]}
+replay {"runs": 1887, "calls_same_form_other_value": 72, "of_them_admitted": 35, "runs_with_such_a_call": 45, "runs_with_a_description_grant_used": 6, "landed_with_a_description_grant_used": 0, "landed": 7}
