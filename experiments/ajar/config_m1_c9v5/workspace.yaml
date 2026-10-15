@@ -559,3 +559,12 @@ description_targets:
     - append_to_file.file_id
 sender_alias_unique: true
 list_union: true
+list_args:
+  send_email:
+  - recipients
+  - cc
+  - bcc
+  create_calendar_event:
+  - participants
+  add_calendar_event_participants:
+  - participants
