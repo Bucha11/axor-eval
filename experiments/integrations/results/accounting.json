@@ -1,0 +1,355 @@
+{
+ "axor-claude": {
+  "parts": {
+   "rest: model loop / transport": [
+    448,
+    275
+   ],
+   "integration: wiring (make_session)": [
+    96,
+    61
+   ],
+   "rest: other": [
+    54,
+    37
+   ],
+   "integration: normalizer (tool call -> NormalizedIntent)": [
+    172,
+    100
+   ],
+   "integration: execution wrapper + output registration (shared gate.py)": [
+    128,
+    84
+   ],
+   "rest: probe / sentinel wiring": [
+    103,
+    39
+   ],
+   "integration: execution wrapper (session executor + request seeding)": [
+    86,
+    57
+   ],
+   "integration: normalizer (stream events -> tool calls)": [
+    266,
+    180
+   ],
+   "rest: tool schemas": [
+    220,
+    173
+   ],
+   "rest: skills / plugins": [
+    281,
+    180
+   ],
+   "rest: tool handlers": [
+    917,
+    570
+   ]
+  },
+  "integration": [
+   748,
+   482
+  ],
+  "rest": [
+   2023,
+   1274
+  ],
+  "lift": {
+   "source": {
+    "added": 234,
+    "removed": 8,
+    "files": [
+     "axor_claude/__init__.py",
+     "axor_claude/capability_gate.py",
+     "axor_claude/gate.py",
+     "axor_claude/normalizer.py"
+    ]
+   },
+   "tests": {
+    "added": 172,
+    "removed": 0,
+    "files": [
+     "tests/test_kernel_gate.py"
+    ]
+   },
+   "other": {
+    "added": 168,
+    "removed": 1,
+    "files": [
+     ".github/workflows/ci.yml",
+     "CHANGELOG.md",
+     "pyproject.toml",
+     "tests/fixtures/banking_c9v4.yaml"
+    ]
+   }
+  }
+ },
+ "axor-openrouter": {
+  "parts": {
+   "rest: transport": [
+    199,
+    135
+   ],
+   "rest: model loop": [
+    276,
+    186
+   ],
+   "integration: wiring (make_session)": [
+    78,
+    59
+   ],
+   "rest: other": [
+    53,
+    20
+   ],
+   "rest: CLI": [
+    72,
+    61
+   ],
+   "rest: skills": [
+    39,
+    20
+   ],
+   "rest: codecs": [
+    210,
+    133
+   ],
+   "integration: execution wrapper + output registration (shared gate.py)": [
+    128,
+    84
+   ],
+   "rest: probe / sentinel wiring": [
+    103,
+    39
+   ],
+   "integration: execution wrapper (session executor + request seeding)": [
+    86,
+    57
+   ],
+   "rest: tool schemas": [
+    144,
+    113
+   ],
+   "rest: routing": [
+    159,
+    101
+   ],
+   "rest: budget routing": [
+    146,
+    83
+   ],
+   "rest: rates": [
+    118,
+    79
+   ],
+   "rest: caching": [
+    155,
+    79
+   ],
+   "rest: cascade": [
+    227,
+    139
+   ]
+  },
+  "integration": [
+   292,
+   200
+  ],
+  "rest": [
+   1901,
+   1188
+  ],
+  "lift": {
+   "source": {
+    "added": 286,
+    "removed": 79,
+    "files": [
+     "axor_openrouter/__init__.py",
+     "axor_openrouter/capability_gate.py",
+     "axor_openrouter/executor.py",
+     "axor_openrouter/gate.py"
+    ]
+   },
+   "tests": {
+    "added": 173,
+    "removed": 0,
+    "files": [
+     "tests/test_kernel_gate.py"
+    ]
+   },
+   "other": {
+    "added": 155,
+    "removed": 1,
+    "files": [
+     ".github/workflows/ci.yml",
+     "pyproject.toml",
+     "tests/fixtures/banking_c9v4.yaml"
+    ]
+   }
+  }
+ },
+ "axor-langchain": {
+  "parts": {
+   "integration: execution wrapper (AxorToolWrapper)": [
+    172,
+    118
+   ],
+   "integration: execution wrapper (ToolGate, request seeding)": [
+    66,
+    38
+   ],
+   "rest: other": [
+    48,
+    41
+   ],
+   "integration: normalizer": [
+    68,
+    46
+   ],
+   "integration: execution wrapper (middleware)": [
+    37,
+    34
+   ],
+   "integration: output registration (middleware)": [
+    14,
+    12
+   ],
+   "rest: compression / tool selection / budget / telemetry": [
+    2186,
+    1496
+   ],
+   "integration: execution wrapper + output registration (shared gate.py)": [
+    128,
+    84
+   ],
+   "rest: quality judge": [
+    242,
+    180
+   ]
+  },
+  "integration": [
+   485,
+   332
+  ],
+  "rest": [
+   2476,
+   1717
+  ],
+  "lift": {
+   "source": {
+    "added": 362,
+    "removed": 32,
+    "files": [
+     "axor_langchain/gate.py",
+     "axor_langchain/governed.py",
+     "axor_langchain/middleware.py",
+     "axor_langchain/normalizer.py",
+     "axor_langchain/wrapper.py"
+    ]
+   },
+   "tests": {
+    "added": 175,
+    "removed": 32,
+    "files": [
+     "tests/test_kernel_gate.py",
+     "tests/test_wrap_tools.py",
+     "tests/test_wrapper.py"
+    ]
+   },
+   "other": {
+    "added": 171,
+    "removed": 1,
+    "files": [
+     ".github/workflows/ci.yml",
+     "CHANGELOG.md",
+     "pyproject.toml",
+     "tests/fixtures/banking_c9v4.yaml"
+    ]
+   }
+  }
+ },
+ "axor-wrap": {
+  "parts": {
+   "rest: CLI": [
+    179,
+    144
+   ],
+   "rest: errors": [
+    86,
+    39
+   ],
+   "rest: trace": [
+    593,
+    340
+   ],
+   "rest: other": [
+    108,
+    96
+   ],
+   "integration: execution wrapper (WrappedToolset)": [
+    366,
+    172
+   ],
+   "rest: control plane": [
+    1429,
+    883
+   ],
+   "rest: experiments": [
+    126,
+    64
+   ],
+   "integration: execution wrapper + output registration (shared gate.py)": [
+    128,
+    84
+   ],
+   "rest: scanner": [
+    369,
+    279
+   ],
+   "rest: manifests": [
+    365,
+    245
+   ],
+   "integration: config compilation (manifests -> governor)": [
+    206,
+    134
+   ]
+  },
+  "integration": [
+   700,
+   390
+  ],
+  "rest": [
+   3255,
+   2090
+  ],
+  "lift": {
+   "source": {
+    "added": 197,
+    "removed": 22,
+    "files": [
+     "axor_wrap/gate.py",
+     "axor_wrap/runtime.py"
+    ]
+   },
+   "tests": {
+    "added": 146,
+    "removed": 0,
+    "files": [
+     "tests/test_enforcement_off.py",
+     "tests/test_kernel_gate.py",
+     "tests/test_plane_connect.py",
+     "tests/test_runtime.py"
+    ]
+   },
+   "other": {
+    "added": 152,
+    "removed": 1,
+    "files": [
+     ".github/workflows/ci.yml",
+     "tests/fixtures/banking_c9v4.yaml"
+    ]
+   }
+  }
+ }
+}
