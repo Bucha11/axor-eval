@@ -131,8 +131,33 @@ AXOR_LIVE_CONFIRM=view selects the view-aware confirmer (axor_ajar.VIEW_VERBS: n
 AND the tool's verb in the request), budget 5, refused calls not re-asked. Model-free decision replay
 on the 581 recorded episodes runs end to end: slack 7/12 and workspace 20 pass with 0 confirmations
 (description grants / references active via present); total view-confirmations over the 291 B episodes
-= 120 (oracle was 80). This is the offline shadow; the paid live run (A + B view-aware, 581×3) awaits
-explicit go.
+= 120 (oracle was 80). This is the offline shadow; the paid live run (A + B view-aware) is now done —
+see "Live paid run" below.
+
+## Live paid run (c9v5, A = L1 + B = L1+L4 view-aware) — DONE (results/live_c9v5/, SUMMARY.md)
+Frozen kernel 618c4a9 + config_m1_c9v5; openai/o4-mini via OpenRouter; CaMeL; governed; **benign only**
+(no injections); 3 passes × 4 suites; slack user_task_4 excluded (as in live_v4). Live harness 83dee51
+(references / description grants / view-aware confirmer / per-episode logging / resume). Shared spend
+ledger, cap $12. A = grant level L1, no human (never asks). B = L1 + L4 with the view-aware confirmer
+(verb in request AND every destination value in request), budget 5.
+
+| config | utility (288 ep = 96 tasks × 3) | by pass | L4 asked / approved / refused |
+|---|---|---|---|
+| A (L1) | **158/288 = 0.549** | 0.552 / 0.542 / 0.552 | — (A never asks) |
+| B (L1+L4 view) | **179/288 = 0.622** | 0.625 / 0.646 / 0.594 | **60 / 21 / 39** |
+
+Utility by suite (overall): A banking 0.500, slack 0.467, travel 0.633, workspace 0.567;
+B banking 0.667, slack 0.500, travel 0.633, workspace 0.658.
+
+- B lifts utility over A by **+0.073** (0.549 → 0.622): the view-aware L4 recovers benign calls the pure
+  L1 grant gate refuses (+21 approved of 60 asks), with no attacker present to exploit it.
+- Confirmation load (B): 60 asks over 288 episodes ≈ 0.21 prompts/episode; 39 of them the view
+  confirmer itself refused. budget_exhausted = 0 in both A and B (the budget-5 ceiling never hit).
+- **Landed attacks: 0 — by construction** (benign run, injection_task_id = null everywhere; no attacker
+  call to land). Attack resistance for c9v5 is the 1887 replay / Ajar attacks column above, not here.
+- Spend: ledger **$9.6315 / 2771 calls**, under the $12 cap (per-episode traj cost A $4.8866 + B
+  $4.5606 = $9.4472; the ~$0.18 remainder is ledger calls during resumed episodes across two 2h-limit
+  restarts). Resume skipped completed trajectories, no episode paid twice; all 6 passes completed.
 
 ## Live reuse (free, no model): recorded live_v4 trajectories re-decided through c9v5 (B view-aware)
 Baseline = the live_v4 run (c814 + oracle, re-decided); candidate = c9v5 (B with the view-aware
