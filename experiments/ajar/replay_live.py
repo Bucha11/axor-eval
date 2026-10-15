@@ -100,6 +100,7 @@ def replay(d):
                 if k is not None:
                     g.grant_store.commit(k)
             calls.append({"tool": fn, "args": args, "allowed": bool(dec.allowed), "category": dec.category,
+                          "origins": list(getattr(dec, "reference_origins", ()) or ()),
                           "reason": (dec.reason or "")[:200], "recorded_allowed": recorded_allowed,
                           **({} if dec.allowed else {"reads_before": reads})})
             if executed:
