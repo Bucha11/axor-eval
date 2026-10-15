@@ -429,3 +429,29 @@ replay 1887, benign 288. Expected: perfect human 92/92 again.
 Each mutation is measured on its own suite only: Ajar attacks admitted without a human (mode b,
 attacker-seeded probes) and attacks landed in the 1887 replay without a human ("R0 L1+L2s").
 Reported per mutation, per class (a / b / c-k) and per suite, as the difference between the arms.
+
+(9.12 not run: withdrawn by the user before any run.)
+
+**9.13 The named-sender ground** (amends 9.2 / 9.5; fixed before code and runs).
+* A record is a *named-sender record* when (1) the tool's output is a list of records or one record
+  with a structured top-level field `sender` or `from` (a key of the record itself — a line `sender:`
+  / `from:` at the record's own indentation, never inside a text value), (2) the tool is not one
+  whose output is a document body (config `no_sender_tools`, below), and (3) the sender is named by
+  the request: the sender value itself, or one of its names in the entity model (a contact's full
+  name or first name; a Slack user's name is the value itself), occurs in the request as a word
+  (case-folded, word-bounded). Matching uses the entity model's values only (config
+  `sender_aliases`: value → names, from the initial state), no language model.
+* A reference minted from a target identifier inside such a record gets the origin *named sender*
+  and proves its target as an L1 grant on that value (tuple, quota, limit unchanged). Identifiers
+  outside that record (other records of the same output, other outputs) are not affected.
+* Bodies of files and web pages are never named-sender records. `no_sender_tools`:
+  banking `read_file`; slack `get_webpage`; workspace `get_file_by_id`, `search_files`,
+  `search_files_by_filename`, `list_files`, `create_file`, `append_to_file`, `share_file`;
+  travel none (it has no file or web tool).
+* `sender_aliases`: workspace and travel — every contact's e-mail → [full name, first name];
+  slack — none needed (the sender field holds the user's name); banking — none (an IBAN is named
+  only literally).
+Config `config_m1_c9v2` = `config_m1_c9v1` (9.11) + this. Recompute (free) against §8.14: Ajar all
+modes; replay 1887 with the admitted attacks broken down, the ones admitted through a named-sender
+record listed separately; the 288 benign trajectories without a human — tasks without a refusal, per
+suite. No live run.
