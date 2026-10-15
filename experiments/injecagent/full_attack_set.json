@@ -56,6 +56,27 @@
   },
   "ds_denied_by_floor": 544
  },
+ "final": {
+  "dh_cases": 510,
+  "dh_denied": 510,
+  "dh_allowed": [],
+  "dh_first_denial": {
+   "grant_gate": 459,
+   "consequence_gate": 51
+  },
+  "dh_denied_before_integrity": {
+   "grant_gate": 459,
+   "consequence_gate": 51
+  },
+  "dh_consequence_only": 0,
+  "ds_cases": 544,
+  "ds_denied": 544,
+  "ds_denial": {
+   "content_projection": 323,
+   "grant_gate": 221
+  },
+  "ds_denied_by_floor": 0
+ },
  "diff": {
   "rule_only": [
    "AmazonAddToCart",
