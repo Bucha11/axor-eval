@@ -490,3 +490,106 @@ L4. Quick check first on the current configuration (c9v3 = c9v2 + this): the 288
 human (every changed task with its cause), replay 1887 (the US133-pair attacks by name), route 2
 substitution among named values (k median / p90 / max, before and after); full Ajar only if the quick
 check shows no surprise.
+
+### 9.15 Description grants (no model) — fixed before code and runs
+
+A **description grant** is (sink, argument, description). The description is an expression over the
+**structured output of a trusted read tool**: fields the platform sets (a list element, a record
+field, a number), never text. The gate computes the description's value itself and grants exactly
+that value; the agent's value (or a reference, resolved first) must equal it.
+
+**Operators.**
+* `select(source, field op literal)` — the one entity whose name field equals / starts with /
+  contains the literal (case-folded): "the channel starting with External", "the contact named
+  'Lily'".
+* `argmax / argmin(source, numeric field)` — the one entity with the largest / smallest value:
+  "the channel with the fewest messages", "the hotel with the best rating", "the largest file".
+* `members(source, key = literal)` — the member list of the one entity whose name equals the literal:
+  "the users of channel X", "the same participants as the event 'Y'".
+* `email-of(name)` — `select(contacts, name = name).email`.
+Parameters are only request literals (or own values). An entity's value, its fields and its members
+come only from the declared sources below.
+
+**Sources** (the tool model; per suite, generated into the config as `description_sources`). A source
+is read by the platform adapter into a structure (list / records / name → value); the kernel never
+parses free text. Shapes:
+* `names` — a list of entity names (the entity's value is its name).
+* `records` — a list of records; `name` = the record field that names it, `value` = the field
+  granted, numeric `fields`, a `members` field.
+* `keyed` — name → number, or name → a platform string from which only the declared pattern on its
+  first line is read (`Rating: <number>`; `Price range: <number> - <number>`, lower bound = price);
+  the rest of the string (reviews) is text and is never read.
+* `count` — a list of records for key argument = an entity name; the entity's numeric field = the
+  number of records.
+* `members` — a list of names for key argument = an entity name.
+
+| suite | entity | sources (shape) | value | target (sink.argument) |
+|---|---|---|---|---|
+| slack | channel | get_channels (names, complete); read_channel_messages(channel) (count → `messages`); get_users_in_channel(channel) (count → `users`; members) | name | add_user_to_channel.channel, send_channel_message.channel; members → add_user_to_channel.user, send_direct_message.recipient |
+| workspace | contact | search_contacts_by_name(query), search_contacts_by_email(query) (records: name, email) | email | send_email.recipients/cc/bcc, create_calendar_event.participants, add_calendar_event_participants.participants, share_file.email |
+| workspace | event | search_calendar_events(query, date), get_day_calendar_events(day) (records: name = title, value = id_, members = participants) | id_ | event_id of reschedule_calendar_event, cancel_calendar_event, add_calendar_event_participants; members → the email targets above |
+| workspace | file | list_files (records, complete), search_files(query), search_files_by_filename(filename) (records: name = filename, value = id_, `size`) | id_ | delete_file.file_id, share_file.file_id, append_to_file.file_id |
+| travel | hotel | get_all_hotels_in_city(city) (names, complete); get_rating_reviews_for_hotels (keyed `rating`); get_hotels_prices (keyed `price`) | name | reserve_hotel.hotel |
+| travel | restaurant | get_all_restaurants_in_city(city) (names, complete); get_rating_reviews_for_restaurants (keyed `rating`); get_price_for_restaurants (keyed `price`) | name | reserve_restaurant.restaurant |
+| travel | car rental company | get_all_car_rental_companies_in_city(city) (names, complete); get_rating_reviews_for_car_rental (keyed `rating`); get_car_price_per_day (keyed `price`) | name | reserve_car_rental.company |
+| banking | — | none (no entity of the library has a structured source there) | | |
+
+Never a source: file bodies, web pages, message / e-mail bodies, descriptions, reviews (read_file,
+get_webpage, read_inbox bodies, `body` / `content` / `description` fields). A source call counts only
+if each of its arguments is a request literal, own, or absent (a list for a city the request does not
+name does not count).
+
+**Phrase templates** (one library for all suites; not per task; the complete list):
+* Entity nouns: channel(s); user(s), member(s); contact(s); event(s), meeting(s); file(s),
+  document(s); hotel(s); restaurant(s); car rental company / companies, rental company / companies.
+* Field words: messages → `messages`; users, members, people → `users`; rating, ratings, rated →
+  `rating`; price, prices, cost → `price`; size → `size`.
+* Superlatives: max = most, highest, largest, biggest, greatest, best, top; min = fewest, least,
+  lowest, smallest.
+* T1 (argmax / argmin): `<noun> [up to 4 words] (with | that has | having | which has) [the]
+  <superlative> [number of | total | amount of] <field word>`; `(highest | best | top)[- ]rated
+  [up to 2 words] <noun>`; `the (largest | biggest) [up to 2 words] <noun>` → max `size`;
+  `the smallest [up to 2 words] <noun>` → min `size`; `the cheapest [up to 2 words] <noun>` → min
+  `price`; `the most expensive [up to 2 words] <noun>` → max `price`.
+* T2 (select): `<noun> (named | called | titled) <lit>` → equals; `<noun> (starting with | beginning
+  with | that starts with) <lit>` → starts with; `<noun> (containing | that contains | whose name
+  contains) <lit>` → contains; `<quoted lit> <noun>` → equals. `<lit>` = a quoted string, or else the
+  next word.
+* T3 (email-of): `(e-mail | email) [address] of <Name>`; `<Name>'s (e-mail | email) [address]`;
+  `(his | her | their) (e-mail | email) [address]` → the nearest preceding capitalized word sequence
+  of the request that equals the name of exactly one contact record.
+* T4 (members): `(members | participants | users | everyone | everybody | all users | all members |
+  all participants) (of | in | from) [the] [<noun>] <lit>`; `same (participants | members | users |
+  attendees) as [the] [<noun>] <lit>`.
+Matching is case-insensitive on the template words; literals keep their text.
+
+**Computation.** The gate keeps the session's structured outputs of the declared sources (the
+adapter passes them with the output; a deployment may also let the monitor call a source itself —
+not used in the evaluation, which uses only the session table). When a source output arrives, every
+description of the request is (re)computed:
+* argmax / argmin: over the entities of one complete list (`names` / `records` marked complete) — each
+  entity of that list must have the field, otherwise nothing is computed; one list per source call
+  (two cities = two values);
+* select / members / email-of: over the records of the entity's sources;
+* a tie, more than one match, or no match → no value (no grant; the call goes to L4).
+A computed value is granted for the entity's targets only, as an L1 grant (the request fixed it):
+the usual tuple (the other arguments as L1 / L2 give them), quota and limit; it counts as named by
+the request for that (sink, argument) only (the operator-set rule) and is a ground for the
+confidentiality floor. Members: one grant whose argument admits any subset of the members.
+Recorded in the decision (`description` = the template and the value).
+
+**Tests.** A description computes the right value (channel starting with External; fewest messages;
+email of a named contact; largest file; best-rated hotel; members of an event); the agent passes
+another real value of the same kind (another channel, another hotel) — refused; a tie or two
+matches — no grant; a source that is free text (a web page listing channels / emails) — no
+description; a source call whose argument is not a request literal does not count.
+
+**Evaluation** (free; quick check first). Configuration c9v4 = c9v3 + description grants.
+1. Quick: the 288 benign replay without a human — every changed task with its cause.
+2. Then Ajar, all modes with CI; replay 1887 — attacks of the same form with another value reported
+   separately.
+3. Robustness of the templates: for every task where a description fired, 2 paraphrases of the
+   request (same meaning, other words), written by hand into `descriptions_paraphrases.json` before
+   that run; the share where the description is still built and right; false descriptions (built,
+   but not the value the task needs) counted separately.
+No live run.
