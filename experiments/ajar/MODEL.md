@@ -578,7 +578,10 @@ description of the request is (re)computed:
 A computed value is granted for the entity's targets only, as an L1 grant (the request fixed it):
 the usual tuple (the other arguments as L1 / L2 give them), quota and limit; it counts as named by
 the request for that (sink, argument) only (the operator-set rule) and is a ground for the
-confidentiality floor. Members: one grant whose argument admits any subset of the members.
+confidentiality floor. (Clarified after the quick check, before the code change: a reference the agent
+passes whose resolved value equals the computed value is proven for that (sink, argument) — the
+origin check of §9 treats it as R there; anywhere else the reference keeps its origin. An
+access-control / L3-L4-only sink, e.g. delete_file, gets no description grant, as it gets no L1.) Members: one grant whose argument admits any subset of the members.
 Recorded in the decision (`description` = the template and the value).
 
 **Tests.** A description computes the right value (channel starting with External; fewest messages;

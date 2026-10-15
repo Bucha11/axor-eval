@@ -101,11 +101,12 @@ def replay(d):
                     g.grant_store.commit(k)
             calls.append({"tool": fn, "args": args, "allowed": bool(dec.allowed), "category": dec.category,
                           "origins": list(getattr(dec, "reference_origins", ()) or ()),
+                          "description": getattr(dec, "description", None),
                           "reason": (dec.reason or "")[:200], "recorded_allowed": recorded_allowed,
                           **({} if dec.allowed else {"reads_before": reads})})
             if executed:
                 try:
-                    axor_ajar.present(g, dec, text_of(rec))
+                    axor_ajar.present(g, dec, text_of(rec), fn, axor_ajar.spend_args(dec, dict(args)))
                 except Exception:
                     pass
                 reads += "\n" + text_of(rec)

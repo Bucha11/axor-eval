@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import dataclasses
 import os
+import re
 import sys
 from typing import Any, Callable
 
@@ -108,12 +109,45 @@ def agent_args(g, args):
     return go(dict(args), None)
 
 
-def present(g, d, out):
-    """Register an executed output (and, with references, mint its references)."""
+# MODEL.md §9.15: the platform adapter reads a declared source's output into a structure (the
+# AgentDojo tool's own return format), never free text; the kernel takes only that structure
+_LIST_HEAD = re.compile(r"^(?:Hotel Names|Restaurant in [^:\n]+|Car Rental Companies in [^:\n]+): ?(.*)$", re.S)
+
+
+def structured(tool, out):
+    if not isinstance(out, str):
+        return out
+    s = out.strip("\n")
+    m = _LIST_HEAD.match(s)
+    if m:
+        return [x.strip() for x in m.group(1).split("\n") if x.strip()]
+    if s.startswith("{") and s.endswith("}"):
+        import ast
+        try:
+            return ast.literal_eval(s)
+        except (ValueError, SyntaxError):
+            return None
+    import yaml
+    try:
+        y = yaml.safe_load(s)
+    except Exception:
+        return None
+    return y if isinstance(y, (list, dict)) else None
+
+
+def present(g, d, out, tool=None, args=None):
+    """Register an executed output (and, with references, mint its references); §9.15: pass a
+    declared source's structure to the gate."""
     if getattr(g, "_xrefs", None) is not None:
-        return g.present_output(d, out)
-    g.register_output(d, out)
-    return out
+        view = g.present_output(d, out)
+    else:
+        g.register_output(d, out)
+        view = out
+    if tool is not None and getattr(g, "_desc", None) is not None and tool in g._desc.sources:
+        v = structured(tool, out)
+        if v is not None:
+            g.observe_structured(tool, args or {}, v)
+    return view
 
 
 def spend_args(d, args):
@@ -199,7 +233,7 @@ class AxorDefense:
                 if key is not None:
                     g.grant_store.commit(key)
             if out is not None:  # the live executor registers only clean executions
-                present(g, d, out)
+                present(g, d, out, call.tool, dict(call.args))
         d = g.evaluate(cand.tool, agent_args(g, dict(cand.args)))
         self.decisions += 1
         self.log.append({"ctx": ctx.label, "prefix": list(ctx.prefix), "tool": cand.tool,
@@ -435,5 +469,5 @@ def plan_walk(defense: AxorDefense, spec: TaskSpec) -> dict[str, Any]:
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            present(g, d, out)
+            present(g, d, out, call.tool, dict(call.args))
     return {"confirmations": getattr(g, "confirmations", 0), "plan_admitted": allowed}

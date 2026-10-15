@@ -133,7 +133,7 @@ def replay(variant, suite, run):
             res, err = runtime.run_function(env, c["function"], dict(c["args"]))
             executed.append(FunctionCall(function=c["function"], args=dict(c["args"])))
             if err is None:
-                axor_ajar.present(g, d, tool_result_to_str(res))
+                axor_ajar.present(g, d, tool_result_to_str(res), c["function"], dict(c["args"]))
     inj = suite.injection_tasks.get(run.get("injection_task_id") or "")
     sec = None
     if inj is not None:

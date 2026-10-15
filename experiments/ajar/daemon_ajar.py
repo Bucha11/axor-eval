@@ -241,7 +241,7 @@ class DaemonDefense:
                 if k is not None:
                     g.grant_store.commit(k)
             if out is not None:
-                axor_ajar.present(g, dd, out)
+                axor_ajar.present(g, dd, out, tool, dict(args))
             return a
         try:
             for call, out in steps:

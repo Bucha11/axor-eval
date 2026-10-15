@@ -152,7 +152,7 @@ def step(g, tool, args, out):
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            axor_ajar.present(g, d, out)
+            axor_ajar.present(g, d, out, tool, dict(args))
     return d
 
 
@@ -171,7 +171,7 @@ def run(spec, config, k, attack, secrets=False, scope=None):
             if key is not None:
                 g.grant_store.commit(key)
         if out is not None:
-            axor_ajar.present(g, d, out)
+            axor_ajar.present(g, d, out, call.tool, dict(call.args))
     d = None
     for tool, args, out in attack:
         d = step(g, tool, args, out)
