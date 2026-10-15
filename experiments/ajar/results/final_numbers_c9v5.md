@@ -21,7 +21,7 @@ description grants.
 ## Replay 1887
 | variant | ASR | utility |
 |---|---|---|
-| origin-no-grants (grant-free) | (pending) | (pending) |
+| origin-no-grants (grant-free) | 0.004 (7 landed) | 0.191 |
 | R0 L1+L2s (c9v5+9.20a) | 0.004 | 0.246 |
 | R0 L1+L2s+L4 oracle | 0.004 | 0.318 |
 | R0 L1+L2s+L4 naive | 0.039 | 0.289 |
