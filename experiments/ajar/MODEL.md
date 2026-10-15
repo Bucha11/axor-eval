@@ -599,3 +599,74 @@ description; a source call whose argument is not a request literal does not coun
    that run; the share where the description is still built and right; false descriptions (built,
    but not the value the task needs) counted separately.
 No live run.
+
+### 9.15a Description grants — whole-phrase coverage, no catastrophic sinks, one grammar (fixed before code and runs)
+
+**(a) Whole-phrase coverage.** A description is built only if the grammar covers the whole phrase
+that names the entity; a constraint the grammar does not parse means no description (the call keeps
+the earlier rules: a literal, or L4). The scope that is checked:
+* argmax / argmin: every sentence of the request (split on `.` `?` `!` before whitespace or the end,
+  and on line breaks) that contains a noun form of the entity — a restriction anywhere on the set
+  being ranked changes the answer;
+* select / members / email-of: the clause of the match (the 9.14a clause boundaries).
+An unparsed constraint in the scope is any of (case-folded, whole words), unless it is part of the
+description's own matched phrase:
+* restriction words: under, below, less than, more than, at most, at least, up to, no more than,
+  within, budget, budget-friendly, affordable, cheap, cheaper, break the bank, per person, per day,
+  per night, euro, euros, eur, dollar, dollars, usd, `€`, `$`;
+* filter words: options, serves, serve, serving, offers, offering, open, opens, available, new,
+  different, another, other than, except, without, vegan, vegetarian, gluten-free, cuisine, food,
+  type of, kind of;
+* a number, except a date or a time (2024-05-19, 10:00, 12 pm, 15th, a number next to a month
+  name), a number inside a quoted literal, and a number directly followed by day(s), night(s),
+  hour(s), week(s), people, person(s), meal(s), time(s);
+* (argmax / argmin only) a capitalized word directly before a noun form of the entity that is not
+  the first word of its sentence (a filter adjective: "French restaurant", "Chinese restaurant").
+Tests: travel 5 (budget, new hotel), 8 (vegan options), 18 (open, serves, under 34) build no
+description.
+
+**(b) Sink class.** A description grant is issued only on a sink whose consequence class is
+REVERSIBLE or CONSEQUENTIAL. A CATASTROPHIC sink (delete_file, remove_user_from_slack, …) is never
+granted by a description: a literal of the request (as the earlier rules give it) or L4.
+
+**(c) One grammar** (replaces the template list of 9.15; one for all suites; complete):
+* DET = a | an | the | that | this | which. A literal `<lit>` = a quoted string, `#<name>`, or one word.
+* Nouns: channel(s); user(s), member(s); contact(s); event(s), meeting(s); file(s), document(s);
+  hotel(s); restaurant(s); car rental company / companies, rental company / companies,
+  car rental(s).
+* Field words: messages, message count, posts → `messages`; users, members, people, participants →
+  `users`; rating, ratings, rated, score → `rating`; price, prices, cost, costs → `price`; size,
+  space, storage → `size`.
+* Superlatives: max = most, highest, largest, biggest, greatest, best, top, maximum; min = fewest,
+  least, lowest, smallest, minimum.
+* Superlative adjectives (op, field): largest, biggest → max size; smallest → min size; cheapest →
+  min price; most expensive, priciest → max price; quietest, least active → min messages; most
+  active, busiest → max messages; best-rated, highest-rated, top-rated, best rated, highest rated,
+  top rated → max rating.
+* G1 `<noun> [up to 4 words] (with | that has | that have | which has | which have | having | has |
+  have) [the] <superlative> [number of | total | amount of | count of] <field>`.
+* G2 `[DET] <superlative adjective> [up to 2 words] <noun>`.
+* G3 `<noun> [up to 4 words] (rated | ranked) [the] (best | highest | top)` → max rating.
+* G4 select: `<noun> (named | called | titled) <lit>` → equals; `<noun> [whose name | that | which]
+  (starts | starting | begins | beginning) with <lit>` → starts with; `<noun> [whose name | that |
+  which] (contains | containing) <lit>` → contains; `<quoted lit> <noun>` → equals; `#<name>` →
+  channel equals name; `the <word> <noun>` (one unquoted word, not a determiner or a grammar word) →
+  the entity whose name equals the word, or else the one whose name is the word followed by `_` or a
+  digit ("the External channel" → External_0).
+* G5 email-of: `(e-mail | email) [address] (of | for | belonging to) <Name>`; `<Name>'s (e-mail |
+  email) [address]`; `(his | her | their) (e-mail | email) [address]` → the nearest preceding
+  capitalized word sequence that equals the name of exactly one contact record.
+* G6 members: `(members | participants | users | attendees | invitees | everyone | everybody |
+  people | all users | all members | all participants | all attendees) [who (was | were | is | are)]
+  (of | in | from | at) [the] [<noun>] <lit> [<noun>]`; `(everyone | everybody | those | the people)
+  who (attended | joined | was in | were in) [the] [<noun>] <lit> [<noun>]`; `same (participants |
+  members | users | attendees | people) as [the] [<noun>] <lit> [<noun>]`.
+Everything else of 9.15 (sources, computation, ambiguity, origins) is unchanged. Configuration c9v4 is
+re-derived with this; the first form is kept as c9v4pre.
+
+**Evaluation.** The 42 paraphrases of 9.15 are the development set. A validation set — 2 new
+paraphrases for each of the same 21 tasks — is written and committed after the grammar is coded and
+before any run on it (`descriptions_paraphrases_validation.json`). Report built and right / not built
+/ false, separately for development and validation. Then: benign 288 quick check; full Ajar; replay
+1887 with the same-form-other-value attacks; freeze c9v4; the list of live episodes this changes and
+their cost. No live run.
