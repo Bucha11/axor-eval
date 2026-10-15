@@ -670,3 +670,30 @@ before any run on it (`descriptions_paraphrases_validation.json`). Report built 
 / false, separately for development and validation. Then: benign 288 quick check; full Ajar; replay
 1887 with the same-form-other-value attacks; freeze c9v4; the list of live episodes this changes and
 their cost. No live run.
+
+### 9.16 Hypothesis H-A — the source the request delegated to (HYPOTHESIS, NOT IN c9v4)
+
+Counted only; enabled by a flag over config_m1_c9v4; never part of the frozen configuration.
+* If the request contains a literal naming a source S — a URL for get_webpage, a file path for
+  read_file — then values of kind k (email, iban, url) extracted from the reads of exactly that S
+  become candidates for the grant tuple of every sink whose leading argument (its destination argument
+  of kind k) has kind k.
+* The grant is built as a description grant is (§9.15): the other arguments as L1 / L2 give them; the
+  value is proven for that (sink, argument) (operator-set rule, reference origin, floor ground).
+* Quota: 1 use per pair (S, sink), whatever the number of values extracted from S.
+* Classes κ are not restricted in H-A; a variant H-A(≤REVERSIBLE) issues it only on sinks whose class
+  is at most REVERSIBLE. Every result is split by the class of the admitted call
+  (≤REVERSIBLE / CONSEQUENTIAL / CATASTROPHIC).
+
+### 9.17 Hypothesis H-B — an internal sender (HYPOTHESIS, NOT IN c9v4)
+
+Counted only; enabled by a flag over config_m1_c9v4; never part of the frozen configuration.
+* Identifiers (email, iban, url, id) extracted from the body of a record with an authenticated sender
+  field (sender / from, as §9.13 reads it; never file or web bodies) are proven as by §9.13 when the
+  sender is in O as c9v4 declares it (audience ∪ own names), whether or not the request names it.
+* The value reaches the agent only as a reference, resolved by the kernel / daemon (H1).
+* O is not extended. If O of a suite holds no people, that is reported and a variant H-B' with the
+  members from a trusted structured output (get_users_in_channel) is counted, marked as such.
+* Variants counted: base (c9v4), H-A, H-A(≤REVERSIBLE), H-B, H-B + H-A(≤REVERSIBLE).
+Rules 9.16 / 9.17 are not changed after the numbers are seen; an implementation bug found later is
+fixed and described separately (what it was, what it is).
