@@ -401,3 +401,31 @@ a value never read stays raw. Worst-case routes: substitution (L1 / own / named 
 text in fields; disclosure, separately, with secret references. Replay of the 288 benign
 trajectories: tasks without refusals. Ablation against §8.14 alone: Ajar attacks, replay, routes
 (string substitution, the US133 pair, text in fields).
+
+**9.11 Secret references — variant 1** (replaces 9.2's *secret* origin and amends 9.7; fixed before
+code and runs). A secret reference is minted only for a value of an explicitly declared secret
+field (config `secret_fields`; the field's value wherever it appears in that output too), kind
+`secret`, name `secret_from_untrusted_read_hidden_<4 hex>`. Reading a declared sensitive source no
+longer makes an identifier secret: such an identifier gets the origin it would have otherwise
+(named sender / untrusted). The confidentiality floor by source is unchanged. 9.7 now reads: a
+secret reference is resolved only into a sink whose every destination is in the audience; else
+refused, with or without a human.
+Secret fields per suite (from the initial states; a structured field whose value is a credential or
+a personal document / payment number):
+* banking: `password`
+* travel: `passport_number`, `credit_card_number`, `bank_account_number`, `ID_number`
+* slack, workspace: none (security codes there live in message / e-mail text, not in a field)
+Config `config_m1_c9v1` = `config_m1_c9` + `secret_fields`. Recompute (free): Ajar all modes,
+replay 1887, benign 288. Expected: perfect human 92/92 again.
+
+**9.12 Configuration-error injection** (measurement only; fixed before code and runs). Two arms:
+§8.14 (`config_m1_c814`) and §8.14 + references (`config_m1_c9v1`), each mutated identically:
+(a) one sink declaration removed — every tool in `egress_sinks` ∪ `integrity_sinks`, one at a time
+    (removed from those sets only);
+(b) one driving argument removed — every (tool, argument) of `driving_args`, one at a time (removed
+    from `driving_args` only);
+(c) k = 1, 3, 5 declarations removed at once, drawn uniformly from the suite's pool of (a) and (b)
+    declarations, 20 seeds per k.
+Each mutation is measured on its own suite only: Ajar attacks admitted without a human (mode b,
+attacker-seeded probes) and attacks landed in the 1887 replay without a human ("R0 L1+L2s").
+Reported per mutation, per class (a / b / c-k) and per suite, as the difference between the arms.
