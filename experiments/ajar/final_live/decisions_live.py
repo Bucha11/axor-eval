@@ -52,7 +52,7 @@ def proj(kinds, args):
     return tuple(out)
 
 
-def governor(cfg, prompt, plan, l4):
+def governor(cfg, prompt, plan, l4, suite=None, confirm="oracle"):
     g = ToolCallGovernor(**cfg.as_governor_kwargs())
     g.register_task(prompt)
     if cfg.grant_args:
@@ -60,6 +60,9 @@ def governor(cfg, prompt, plan, l4):
     if l4 and cfg.grant_args:
         st = {"asked": 0}
         refused = set()
+        # view-aware policy: the naive destination test AND the tool's verb in the request
+        # (axor_ajar.VIEW_VERBS / grants_kwargs view), budget 5, refused calls not re-asked
+        view_ok = _view_policy(prompt) if confirm == "view" else None
 
         def ok(action, call):
             tool, args = call
@@ -67,13 +70,40 @@ def governor(cfg, prompt, plan, l4):
             if key in refused or st["asked"] >= 5:
                 return False
             st["asked"] += 1
-            kinds = cfg.grant_args.get(tool, {})
-            res = any(c.function == tool and proj(kinds, dict(c.args)) == proj(kinds, args) for c in plan)
+            if confirm == "view":
+                res = view_ok(tool, args)
+            else:  # oracle: the whole call equals a reference-plan call
+                kinds = cfg.grant_args.get(tool, {})
+                res = any(c.function == tool and proj(kinds, dict(c.args)) == proj(kinds, args) for c in plan)
             if not res:
                 refused.add(key)
             return res
         g._confirmer = ScriptedConfirmer(ok)
     return g
+
+
+def _view_policy(prompt):
+    """The view-aware confirmer (residuals_rules.md, the same test axor_ajar's offline 'view' uses):
+    the naive destination test (every destination value named in the request) AND the tool's verb
+    present in the request. A tool with no verb entry is never approved."""
+    import re
+    import axor_ajar
+    dest = re.compile(r"(^|_)(recipients?|participants|channel|url|e-?mail|user_email|cc|bcc|user)$")
+    low = (prompt or "").lower()
+    words = re.findall(r"[a-z]+", low)
+
+    def ok(tool, args):
+        verbs = axor_ajar.VIEW_VERBS.get(tool)
+        if not verbs:
+            return False
+        vals = []
+        for k, v in args.items():
+            if dest.search(k) and v is not None:
+                vals += list(v) if isinstance(v, (list, tuple)) else [v]
+        if not all(str(x).lower() in low for x in vals):
+            return False
+        return any((v in low) if " " in v else any(w.startswith(v) for w in words) for v in verbs)
+    return ok
 
 
 def main(cfg_dir, out_path):
@@ -88,7 +118,8 @@ def main(cfg_dir, out_path):
         ut = suite.user_tasks[d["user_task_id"]]
         env = ut.init_environment(suite.load_and_inject_default_environment({}))
         plan = list(ut.ground_truth(env.model_copy(deep=True)))
-        g = governor(cfgs[d["suite"]], ut.PROMPT, plan, l4=(cfg_name == "B"))
+        g = governor(cfgs[d["suite"]], ut.PROMPT, plan, l4=(cfg_name == "B"),
+                     suite=d["suite"], confirm=os.environ.get("AXOR_LIVE_CONFIRM", "oracle"))
         seq = []
         view_changed = False
         for m in d["messages"]:
