@@ -468,3 +468,25 @@ Config `config_m1_c9v3` = `config_m1_c9v2` + this.
 Checks (free): the pair US133 × 10.00 of banking user task 15 is no longer granted; substitution
 among the named values (route 2, L1, with k); Ajar and replay 1887 attacks by mode; the 288 benign
 trajectories without a human — the tasks lost, listed.
+
+**9.14a L1 binds by clause — final form** (replaces 9.14; fixed before code and runs; the boundary
+list below is complete and is not changed after a run).
+* Clause boundaries, exactly: the characters `.` `;` `?` `!` when followed by whitespace or the end of
+  the request (a period inside a number, an address or a URL is not a boundary); a line break; and
+  before each of the conjunctions `and then`, `then`, `also`, `after that`, `и затем`, `потом`
+  (whole words, case-folded).
+* An L1 tuple grant is built only from the literals of one clause; literals of different clauses
+  never enter one tuple.
+* A clause holding two or more literals of one kind for one driving argument (two recipients, two
+  amounts) gives no grant for that clause — neither an L1 tuple nor a mixed tuple (own × literal) —
+  and the call goes to L4.
+* A component the clause lacks is taken by the earlier rules (own from the entity model via the
+  templates, or L4), never from a literal of another clause.
+* Applies to tuples that combine two or more argument kinds; a sink whose grant args are all of one
+  kind (send_email recipients / cc / bcc) is unchanged. String fragments unchanged.
+Tests: banking with US133 and 10.00 in different clauses — no pair (US133, 10.00); "send 100 EUR to
+Bob" (Bob own) — the pair is granted; "send 50 each to <Bob's IBAN> and <Alice's IBAN>" — ambiguous →
+L4. Quick check first on the current configuration (c9v3 = c9v2 + this): the 288 benign without a
+human (every changed task with its cause), replay 1887 (the US133-pair attacks by name), route 2
+substitution among named values (k median / p90 / max, before and after); full Ajar only if the quick
+check shows no surprise.
