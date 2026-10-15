@@ -66,7 +66,19 @@ def load_config(suite: str, integrity_default: str | None, integrity_origins: st
         cfg = dataclasses.replace(cfg, sensitive_sources=frozenset(cfg.sensitive_sources) | DECLARED_SECRETS[suite])
     elif mode != "paper":
         raise ValueError(f"AXOR_AJAR_SECRETS={mode!r}: expected paper | declared")
-    return cfg
+    return hyp_overlay(cfg)
+
+
+# MODEL.md §9.16 / §9.17: hypotheses, enabled by a flag over the frozen c9v4 (never written into it)
+DELEGATED = {"get_webpage": "url", "read_file": "file_path"}
+HYPS = {"base": {}, "HA": {"delegated_sources": DELEGATED},
+        "HA_rev": {"delegated_sources": DELEGATED, "delegated_max_class": "reversible"},
+        "HB": {"sender_in_own": True},
+        "HB_HArev": {"sender_in_own": True, "delegated_sources": DELEGATED, "delegated_max_class": "reversible"}}
+
+
+def hyp_overlay(cfg):
+    return dataclasses.replace(cfg, **HYPS[os.environ.get("AXOR_HYP", "base")])
 
 
 # ── MODEL.md §9 (references): the agent's side of a call, for offline evaluation ──────────────
@@ -143,6 +155,8 @@ def present(g, d, out, tool=None, args=None):
     else:
         g.register_output(d, out)
         view = out
+    if tool is not None and getattr(g, "_delegated", None):
+        g.observe_delegated(tool, args or {}, out)  # §9.16 hypothesis H-A (off unless flagged)
     if tool is not None and getattr(g, "_desc", None) is not None and tool in g._desc.sources:
         v = structured(tool, out)
         if v is not None:

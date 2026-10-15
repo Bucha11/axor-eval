@@ -532,7 +532,10 @@ def main_ajar_attacks():
         keep = set(os.environ["SUITES"].split(","))
         data = [(s, p) for s, p in data if s.task.suite in keep]
     out = {}
+    keep_cfg = set(os.environ["RES_CONFIGS"].split(",")) if os.environ.get("RES_CONFIGS") else None
     for config, levels, policy in CONFIGS:
+        if keep_cfg is not None and config not in keep_cfg:
+            continue
         if levels:
             d = axor_ajar.grants_defense(config, levels, grant_args=r0(), confirm=policy or "oracle")
         else:

@@ -58,6 +58,7 @@ def parse_call(tc):
 def governor(suite, prompt):
     cfg = GovernanceConfig.from_yaml(os.path.join(CONFIG_DIR, f"{suite}.yaml"))
     cfg = dataclasses.replace(cfg, integrity_default="context", integrity_origins="request-only")
+    cfg = axor_ajar.hyp_overlay(cfg)  # §9.16 / §9.17 hypotheses (off unless AXOR_HYP)
     kw = cfg.as_governor_kwargs()
     if GRANTS:
         kw["grant_args"] = (dict(cfg.grant_args) if os.environ.get("AXOR_AJAR_GRANT_ARGS_FROM_CONFIG") == "1"

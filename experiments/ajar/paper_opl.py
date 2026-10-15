@@ -113,7 +113,7 @@ def summarize(name: str, runs) -> dict:
     return {"opl": {m: round(num[m] / den, 4) for m in num},
             "ci95": bootstrap(per_task, suff),
             "sufficiency": round(sum(suff) / len(suff), 3), "provisioned": f"{prov}/{len(suff)}",
-            "attacks": f"{adm}/{tot}", "admitted_attack_calls": admitted_attacks[:20]}
+            "attacks": f"{adm}/{tot}", "admitted_attack_calls": admitted_attacks}
 
 
 if __name__ == "__main__":

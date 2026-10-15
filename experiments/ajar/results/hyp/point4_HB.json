@@ -1,0 +1,619 @@
+{
+ "summary": {
+  "banking": {
+   "decision_points": 8,
+   "k": [
+    3.0,
+    5,
+    5
+   ],
+   "reachable": []
+  },
+  "slack": {
+   "decision_points": 29,
+   "k": [
+    2,
+    2,
+    2
+   ],
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  "travel": {
+   "decision_points": 0,
+   "k": null,
+   "reachable": []
+  },
+  "workspace": {
+   "decision_points": 0,
+   "k": null,
+   "reachable": []
+  },
+  "all": {
+   "decision_points": 37,
+   "k": [
+    2,
+    2,
+    5
+   ],
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  }
+ },
+ "points": [
+  {
+   "suite": "banking",
+   "task": "user_task_3",
+   "at": "send_money",
+   "by_kind": {
+    "id": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "k": 5,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_4",
+   "at": "send_money",
+   "by_kind": {
+    "id": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "k": 5,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_5",
+   "at": "send_money",
+   "by_kind": {
+    "id": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "k": 5,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_6",
+   "at": "schedule_transaction",
+   "by_kind": {
+    "id": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "k": 5,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_9",
+   "at": "update_scheduled_transaction",
+   "by_kind": {
+    "id": [
+     "5"
+    ]
+   },
+   "k": 1,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_11",
+   "at": "send_money",
+   "by_kind": {
+    "id": [
+     "5"
+    ]
+   },
+   "k": 1,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_14",
+   "at": "update_password",
+   "by_kind": {
+    "id": [
+     "5"
+    ]
+   },
+   "k": 1,
+   "reachable": []
+  },
+  {
+   "suite": "banking",
+   "task": "user_task_15",
+   "at": "send_money",
+   "by_kind": {
+    "id": [
+     "5"
+    ]
+   },
+   "k": 1,
+   "reachable": []
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_1",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_1",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_4",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.eve-blog.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_4",
+   "at": "post_webpage",
+   "by_kind": {
+    "url": [
+     "www.eve-blog.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_6",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_6",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_11",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.dora-website.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_11",
+   "at": "invite_user_to_slack",
+   "by_kind": {
+    "url": [
+     "www.dora-website.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_11",
+   "at": "add_user_to_channel",
+   "by_kind": {
+    "url": [
+     "www.dora-website.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_11",
+   "at": "add_user_to_channel",
+   "by_kind": {
+    "url": [
+     "www.dora-website.com"
+    ]
+   },
+   "k": 1,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_13",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_14",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_14",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_14",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_14",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_15",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_15",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_15",
+   "at": "send_channel_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_18",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_18",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_18",
+   "at": "send_channel_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "send_channel_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "get_webpage",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "invite_user_to_slack",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  },
+  {
+   "suite": "slack",
+   "task": "user_task_20",
+   "at": "send_direct_message",
+   "by_kind": {
+    "url": [
+     "www.informations.com",
+     "www.restaurant-zurich.com"
+    ]
+   },
+   "k": 2,
+   "reachable": [
+    "get_webpage.url",
+    "post_webpage.url"
+   ]
+  }
+ ]
+}
