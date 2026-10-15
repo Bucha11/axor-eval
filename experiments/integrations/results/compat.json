@@ -7,7 +7,19 @@
    "axor_openrouter": "950916b2d32e364e55c9aaeacab822e6f60e4306db5464bdfd8458347c098502"
   },
   "axor_core": "/home/user/axor-core/axor_core/__init__.py",
-  "references_seed": 20261015
+  "references_seed": 20261015,
+  "axor_ajar": "/tmp/claude-0/-home-user/c3d594d5-8e1a-5d3d-aa9d-2c75b13a8fee/scratchpad/frozen_ajar/axor_ajar.py",
+  "axor_ajar_sha256": "ab0444ed02cebedd6789b5c5726878f913e2d27f3bd08bb7b8be327400f68f6a",
+  "configs_sha256": {
+   "c9v4/banking": "cff14928339a4fc88104da25b32bf01733f438a076f63a75b8db3d3a7f5e3872",
+   "c9v4/slack": "097098c2b2a7e6501e629c270a6267fbed6aaccf364bf279c2de848c786ad234",
+   "c9v4/travel": "54045e4908992bc49577a0bc9d54061392bc2c503e455346eb3e9221eee889aa",
+   "c9v4/workspace": "878862188e7a7695dcf17e1a0fc7c6887e583085104588444a05fc21755f8c4e",
+   "c9v5/banking": "4ed005685fbc68281d8ad2f733b96e03b1769c492682b5d9b6bea7f4061e99e0",
+   "c9v5/slack": "45564b9f656b1e4746d3c7dd8fd86f30914595bfec77a9f37ff51656990c8da6",
+   "c9v5/travel": "695459e1dbbb2ec8c25b74939dcf6610cba8a55f77d37fca6601ad703785e3f8",
+   "c9v5/workspace": "23abdaeed0979f359ba1f4ffb12109f2f295b6267a5fc79e11b524596119908f"
+  }
  },
  "injecagent": {
   "old": {
@@ -244,7 +256,7 @@
    },
    "shim_vs_recorded_mismatch": [],
    "divergences": [],
-   "seconds": 298.1,
+   "seconds": 391.2,
    "structured": "platform"
   },
   "c9v5": {
@@ -283,7 +295,7 @@
    },
    "shim_vs_recorded_mismatch": [],
    "divergences": [],
-   "seconds": 302.9,
+   "seconds": 420.5,
    "structured": "platform"
   }
  },
@@ -324,7 +336,7 @@
    },
    "shim_vs_recorded_mismatch": [],
    "divergences": [],
-   "seconds": 296.4,
+   "seconds": 405.6,
    "structured": "none"
   },
   "c9v5": {
@@ -332,38 +344,38 @@
    "per_driver": {
     "shim": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     },
     "wrap": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     },
     "langchain": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     },
     "claude": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     },
     "openrouter": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     },
     "daemon": {
      "calls": 2234,
-     "allowed": 2018,
-     "confirmations": 141
+     "allowed": 2015,
+     "confirmations": 144
     }
    },
    "shim_vs_recorded_mismatch": [],
    "divergences": [],
-   "seconds": 313.3,
+   "seconds": 389.0,
    "structured": "none"
   }
  },
@@ -517,8 +529,8 @@
   "c9v5": {
    "claude": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -526,23 +538,26 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    },
    "daemon": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -550,23 +565,26 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    },
    "langchain": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -574,23 +592,26 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    },
    "openrouter": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -598,23 +619,26 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    },
    "shim": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -622,23 +646,26 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    },
    "wrap": {
     "executed_with": 2035,
-    "executed_without": 2018,
-    "admitted_only_with_parser": 17,
+    "executed_without": 2015,
+    "admitted_only_with_parser": 20,
     "admitted_only_without_parser": 0,
     "episodes_changed": [
      "A/pass1/traj/slack/user_task_10.json",
@@ -646,16 +673,19 @@
      "A/pass1/traj/slack/user_task_7.json",
      "A/pass1/traj/slack/user_task_9.json",
      "A/pass1/traj/workspace/user_task_21.json",
+     "A/pass1/traj/workspace/user_task_8.json",
      "A/pass2/traj/slack/user_task_10.json",
      "A/pass2/traj/slack/user_task_12.json",
      "A/pass2/traj/slack/user_task_7.json",
      "A/pass2/traj/slack/user_task_9.json",
      "A/pass2/traj/workspace/user_task_21.json",
+     "A/pass2/traj/workspace/user_task_8.json",
      "A/pass3/traj/slack/user_task_10.json",
      "A/pass3/traj/slack/user_task_12.json",
      "A/pass3/traj/slack/user_task_7.json",
      "A/pass3/traj/slack/user_task_9.json",
-     "A/pass3/traj/workspace/user_task_21.json"
+     "A/pass3/traj/workspace/user_task_21.json",
+     "A/pass3/traj/workspace/user_task_8.json"
     ],
     "violations": []
    }

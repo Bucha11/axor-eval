@@ -1,8 +1,8 @@
 # The four integrations on the current kernel: one compatibility check
 
 axor-claude, axor-openrouter, axor-langchain and axor-wrap, lifted to axor-core
-`claude/model-m1` `1d9549a` (c9v4 frozen; c9v5 = MODEL.md 9.18 + 9.19 + 9.20) and the
-daemon (`claude/daemon-references` + two fixes found by this check, `24a961d`): every tool call goes through `ToolCallGovernor` (or
+`claude/model-m1` `618c4a9` (c9v4 and c9v5 frozen: `../ajar/FREEZE_C9V4.md`, `../ajar/FREEZE_C9V5.md`)
+and the daemon (`claude/daemon-references` + two fixes found by this check, `7192d67`): every tool call goes through `ToolCallGovernor` (or
 the daemon) with grants, references and output registration, by one shared protocol
 (`gate.py`, sha256 `950916b2…`, byte-identical in the four packages; `compat.py` prints
 the four digests). No model is called anywhere here.
@@ -30,16 +30,20 @@ fixed by `references_seed`, so the views compare byte for byte; a view carries
 * **AgentDojo** — the 581 recorded live episodes of the final run (o4-mini; A 290; B 291
   with the live oracle as L4: grant arguments equal to a ground-truth call, budget 5,
   a refused call not re-asked), replayed call by call as `decisions_live.py` replays them,
-  under `config_m1_c9v4` (frozen) and `config_m1_c9v5` with 9.20 (`list_union: true`,
-  axor-eval `d6ee331`; no freeze file for c9v5 yet, so these rows are bound to that
-  config and kernel `1d9549a`). The shim's own verdicts are checked against
+  under `config_m1_c9v4` and `config_m1_c9v5`, both frozen (c9v5 = c9v4 + MODEL.md 9.18 +
+  9.19 + 9.20/9.20a, axor-eval `a22077b`; the four config sha256 match `FREEZE_C9V5.md`).
+  The shim runs the frozen harness: `axor_ajar.py` from `a22077b` (sha256 `ab0444ed…`, as
+  frozen; the working copy changed after the freeze, in Ajar's `no_grants` mode only),
+  loaded with `AXOR_AJAR_DIR`. `compat.json` records both hashes. The shim's own verdicts are checked against
   `ajar/results/live_final_decisions_c9v4_v.json`.
 * **Parser ablation** (`--parser both`) — the AgentDojo replay again with no description
   parser on any path (the shim included), and per call: nothing admitted without the
   parser may be refused with it.
 
 ```sh
-INJECAGENT_DIR=.../InjecAgent AXOR_CORE_REPO=.../axor-core python compat.py --parser both   # ~40 min, no API
+git show a22077b:experiments/ajar/axor_ajar.py > frozen/axor_ajar.py
+AXOR_AJAR_DIR=frozen INJECAGENT_DIR=.../InjecAgent AXOR_CORE_REPO=.../axor-core \
+    python compat.py --parser both   # ~40 min, no API
 python accounting.py <dir holding the four checkouts>
 ```
 
@@ -69,25 +73,28 @@ consequence 306 / taint 204, ds taint 544 (the floor); final dh grant 459 / cons
 | c9v4: calls run | 2117 | 2117 | 2117 | 2117 | 2117 | 2117 |
 | c9v4: confirmations (B) | 80 | 80 | 80 | 80 | 80 | 80 |
 | c9v4: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
-| c9v5 + 9.20: calls run | 2035 | 2035 | 2035 | 2035 | 2035 | 2035 |
-| c9v5 + 9.20: confirmations (B) | 120 | 120 | 120 | 120 | 120 | 120 |
-| c9v5 + 9.20: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
+| c9v5 (frozen): calls run | 2035 | 2035 | 2035 | 2035 | 2035 | 2035 |
+| c9v5 (frozen): confirmations (B) | 120 | 120 | 120 | 120 | 120 | 120 |
+| c9v5 (frozen): rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
 
 The shim reproduces the recorded c9v4 verdicts in **581/581** episodes (and B's 80
-confirmations are `final_live/LIVE_C9V4.md`'s "105 -> 80"). c9v5 without 9.20 (the
-config before `d6ee331`, kernel `fa02df1`) gave 2032 / 123, also with 0 divergences.
+confirmations are `final_live/LIVE_C9V4.md`'s "105 -> 80"). Earlier c9v5 states, all with
+0 divergences: without 9.20 (kernel `fa02df1`) 2032 / 123; with 9.20 before 9.20a
+(kernel `1d9549a`) 2035 / 120 — the same as the frozen c9v5 with the parser.
 
 **Parser ablation** — the same replay with no description parser anywhere:
 
 | config | with the parser: run / confirmations | without: run / confirmations | admitted only with | admitted only without | divergences between paths |
 |---|---|---|---|---|---|
 | c9v4 | 2117 / 80 | 2099 / 101 | 18 | **0** | 0 |
-| c9v5 + 9.20 | 2035 / 120 | 2018 / 141 | 17 | **0** | 0 |
+| c9v5 (frozen) | 2035 / 120 | 2015 / 144 | 20 | **0** | 0 |
 
-Identical in all six paths. The calls lost without the parser are the description-
-granted ones, in the same 15 episodes (slack user tasks 7, 9, 10, 12 and workspace 20 —
-in c9v5 workspace 21 — over three passes); without the parser they are refused in A and
-asked of the oracle in B (+21 confirmations). No call is admitted without the parser that
+Identical in all six paths. The calls lost without the parser are the ones a description
+grounds, over three passes: c9v4 — slack user tasks 7, 9, 10, 12 and workspace 20 (15
+episodes); frozen c9v5 — the same slack tasks, workspace 21, and workspace 8 (18
+episodes; 9.20a relaxes the list argument of a grant with a description ground, so with
+the parser workspace 8 runs and without it does not). Without the parser they are refused
+in A and asked of the oracle in B (+21 / +24 confirmations). No call is admitted without the parser that
 is refused with it. Where each path takes the parser and who writes it: `TRACE.md`.
 
 ## Divergences
@@ -166,7 +173,7 @@ The Python each integration needs on top:
 | axor-langchain | 1 | `create_agent(…, middleware=[AxorMiddleware(governance="banking.yaml")])` |
 | axor-wrap | 2 | `WrappedToolset(tools, manifests, governance="banking.yaml")`, then `begin(task)` per request |
 
-## Appendix E table (c9v5 = 9.18 + 9.19 + 9.20)
+## Appendix E table (frozen c9v5 = c9v4 + 9.18 + 9.19 + 9.20/9.20a; kernel `618c4a9`)
 
 | path | framework | integration lines (code) | lift: source / tests | InjecAgent dh / ds | AgentDojo run / confirmations (c9v4; c9v5) | divergences from the shim |
 |---|---|---|---|---|---|---|
@@ -178,5 +185,6 @@ The Python each integration needs on top:
 | shim | bare `ToolCallGovernor` | — | — | 510/510, 544/544 | 2117 / 80; 2035 / 120 | — |
 
 InjecAgent: both configurations (`old`, `final`). AgentDojo: 581 episodes, 2234 calls,
-with the platform parser. Divergences: every call compared on verdict, category,
+with the platform parser (without it: c9v4 2099 / 101, c9v5 2015 / 144, identical on all
+six paths). Divergences: every call compared on verdict, category,
 confirmations, executed arguments and agent view, in both sets and without the parser.
