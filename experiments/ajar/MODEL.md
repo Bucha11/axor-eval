@@ -701,11 +701,12 @@ fixed and described separately (what it was, what it is).
 ### 9.18 O of addresses: the user's domain and the addresses the user wrote to (fixed before code)
 
 The participants of an event are written by whoever sent the invitation; by itself that does not make
-an address an own entity. New rule for addresses in O (workspace; the other suites have no
-address-valued O): an address is own iff it is in the user's domain, or the user sent an e-mail to it
+an address an own entity. New rule for addresses in O (workspace and travel — travel's O took the participants of the
+user's events, §8.14.3; banking and slack have no address-valued O): an address is own iff it is in the user's domain, or the user sent an e-mail to it
 in the initial state (recipients / cc / bcc of an e-mail whose sender is the user). Event participants
 enter O only if they satisfy this rule. Every other source of O (own files, own events, e-mail ids,
-the user's account) is unchanged. Configuration c9v5 = c9v4 with this rule and 9.19.
+the user's account) is unchanged. (Clarified before code: as first written the rule said only
+workspace has address-valued O; travel has one too.) Configuration c9v5 = c9v4 with this rule and 9.19.
 Report: the addresses that leave O and those that stay; that no address of an injection text or an
 injection task (other than the user) is in O; Ajar a / b / c-oracle, replay 1887, benign 288 without a
 human, route 2 L2 (of 60, k); the benign tasks lost and why.
