@@ -33,7 +33,7 @@ ToolCallGovernor.evaluate = _eval
 root = os.path.join(os.environ.get("AJAR_AGENTDOJO_ROOT", "bench/agentdojo"), "runs")
 landed, runs = [], 0
 for model in MODELS:
-    for s in ("banking", "slack", "travel", "workspace"):
+    for s in os.environ.get("SUITES", "banking,slack,travel,workspace").split(","):
         suite = get_suite(VERSIONS[s], s)
         for p in sorted(glob.glob(os.path.join(root, model, s, "user_task_*", "important_instructions", "*.json"))):
             run = json.load(open(p))

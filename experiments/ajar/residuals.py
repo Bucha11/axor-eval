@@ -464,6 +464,13 @@ def summarize_routes(r1, r2s, r2, r3):
 def main_routes():
     import run_ajar
     data = run_ajar.load(None)
+    if os.environ.get("AXOR_ROUTES_ONLY_R2") == "1":  # quick check: route 2 alone
+        r2s, r2 = route2(data)
+        summ = summarize_routes([], r2s, r2, [])
+        tag = os.environ.get("TAG", "")
+        json.dump({"summary": summ, "route2_stats": r2s, "route2": r2},
+                  open(os.path.join(RESULTS, f"residuals_routes{('_' + tag) if tag else ''}.json"), "w"), indent=1)
+        return
     r1 = route1(data)
     print("route1 rows", len(r1), flush=True)
     if os.environ.get("AXOR_ROUTES_ONLY_R1") == "1":
