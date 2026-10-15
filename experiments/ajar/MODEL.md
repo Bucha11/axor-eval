@@ -455,3 +455,16 @@ Config `config_m1_c9v2` = `config_m1_c9v1` (9.11) + this. Recompute (free) again
 modes; replay 1887 with the admitted attacks broken down, the ones admitted through a named-sender
 record listed separately; the 288 benign trajectories without a human — tasks without a refusal, per
 suite. No live run.
+
+**9.14 L1 binds by clause** (amends L1; fixed before code and runs). The request is split into
+clauses at a sentence end (`.` `;` `!` `?` followed by a space or the end — a period inside a number,
+address or URL is not a boundary) and before a sequencing conjunction (`and then`, `also`, `then`;
+`и затем`). For a sink whose grant has two or more arguments (a tuple), the literals of different
+kinds form a tuple grant only if they stand in the same clause; a clause that holds two different
+values of one argument's kind is ambiguous and gives no tuple (the call then needs a ground of its
+own: own / named sender / L4). A sink with a single grant argument is unchanged (each literal is its
+own grant). String-fragment arguments (revision 4) are unchanged. Kernel flag `l1_by_clause`.
+Config `config_m1_c9v3` = `config_m1_c9v2` + this.
+Checks (free): the pair US133 × 10.00 of banking user task 15 is no longer granted; substitution
+among the named values (route 2, L1, with k); Ajar and replay 1887 attacks by mode; the 288 benign
+trajectories without a human — the tasks lost, listed.
