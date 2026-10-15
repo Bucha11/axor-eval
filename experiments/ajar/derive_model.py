@@ -41,6 +41,10 @@ OWN_NAMES = "--own-names" in sys.argv  # §8.14.2: own file names are never doma
 TRAVEL_ADDR = "--travel-addresses" in sys.argv  # §8.14.3: travel own addresses
 RECV_EMAILS = "--received-emails" in sys.argv  # §8.14.3: every e-mail in the user's inbox is own
 REFERENCES = "--references" in sys.argv  # §9: untrusted target identifiers only as references
+SECRET_FIELDS = "--secret-fields" in sys.argv  # §9.11: declared secret fields per suite
+SECRETS_BY_SUITE = {"banking": ["password"],
+                    "travel": ["passport_number", "credit_card_number", "bank_account_number", "ID_number"],
+                    "slack": [], "workspace": []}
 
 
 def role(arg, prop, override):
@@ -270,6 +274,8 @@ def main():
                 cfg["content_to_confirmation"] = True  # §8.12
             if REFERENCES:
                 cfg["references"] = True  # §9
+            if SECRET_FIELDS:
+                cfg["secret_fields"] = SECRETS_BY_SUITE[s]  # §9.11
             # the live runner takes the integrity mode from the config (offline harnesses set
             # the same two values explicitly): context default, request-only origins
             cfg["integrity_default"] = "context"

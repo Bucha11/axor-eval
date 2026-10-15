@@ -81,7 +81,8 @@ def agent_args(g, args):
     hid = {}
     for name, r in t.by_name.items():
         hid.setdefault(str(r.value).casefold(), name)
-    long = sorted((v for v in hid if len(v) >= 6 and not v.isdigit()), key=len, reverse=True)
+    # a hidden value inside text: addresses, and secret values (a digit-only secret of 8+ digits too)
+    long = sorted((v for v in hid if len(v) >= 6 and (not v.isdigit() or len(v) >= 8)), key=len, reverse=True)
 
     def go(x, key):
         if isinstance(x, dict):
