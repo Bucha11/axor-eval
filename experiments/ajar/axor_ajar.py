@@ -38,6 +38,11 @@ if _CORE not in sys.path:
 
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
+from axor_core.contracts.canonical import ConsequenceClass as _CC  # noqa: E402
+
+# origin-gate-only (mode a): consequence class is a ceiling, CONSEQUENTIAL admitted on origin,
+# CATASTROPHIC still blocked (no ground). §9 origin / floor decide.
+_CONSEQ_CEIL = _CC.CONSEQUENTIAL
 
 from ajar.core.ir import TaskSpec  # noqa: E402
 from ajar.core.types import Candidate, ContextRef, Verdict  # noqa: E402
@@ -223,12 +228,21 @@ class AxorDefense:
     decisions: int = 0
     # extra ToolCallGovernor kwargs (grant_args, confirmer factory, ...)
     governor_kwargs: Callable[[TaskSpec], dict[str, Any]] | None = None
+    # mode a: a truly grant-free baseline — no grant args (so no L1 / L2 / description grants and
+    # no grant gate), no description sources / delegation, no list-union (§9.20a); only the
+    # non-grant gates (origin, consequence, operator-set refusal) decide. Harness-only; not a rule.
+    no_grants: bool = False
 
     def prepare(self, spec: TaskSpec, llm=None) -> TaskSpec:
         return spec
 
     def governor(self, spec: TaskSpec) -> ToolCallGovernor:
         cfg = load_config(spec.task.suite, self.integrity_default, self.integrity_origins)
+        if self.no_grants:
+            cfg = dataclasses.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
+                                      description_targets={}, delegated_sources={}, list_union=False,
+                                      list_args={},
+                                      max_unattended_consequence=_CONSEQ_CEIL)
         kw = cfg.as_governor_kwargs()
         if self.governor_kwargs is not None:
             kw.update(self.governor_kwargs(spec))

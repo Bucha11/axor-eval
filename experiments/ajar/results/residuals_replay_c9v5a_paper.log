@@ -1,0 +1,4 @@
+R0 L1+L2s                runs= 1887 ASR=0.004 utility(replay)=0.246 errors=0
+R0 L1+L2s+L4 oracle      runs= 1887 ASR=0.004 utility(replay)=0.318 errors=0
+R0 L1+L2s+L4 naive       runs= 1887 ASR=0.039 utility(replay)=0.289 errors=0
+R0 L1+L2s+L4 view        runs= 1887 ASR=0.009 utility(replay)=0.293 errors=0

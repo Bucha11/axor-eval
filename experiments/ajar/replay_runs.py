@@ -34,6 +34,8 @@ import axor_ajar  # noqa: E402
 from agentdojo.functions_runtime import FunctionCall, FunctionsRuntime  # noqa: E402
 from agentdojo.task_suite.load_suites import get_suite  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
+from axor_core.contracts.canonical import ConsequenceClass as _CC  # noqa: E402
+_CONSEQ_CEIL = _CC.CONSEQUENTIAL
 
 from check_wrapper import VERSIONS  # noqa: E402
 
@@ -41,6 +43,7 @@ from check_wrapper import VERSIONS  # noqa: E402
 def variants():
     return {
         "none": None,
+        "origin-no-grants": ("ctx", None, "no_grants"),
         "axor-clean": ("clean", None),
         "axor-ctx-request-only": ("ctx", None),
         "grants-L1": ("ctx", "L1"),
@@ -72,7 +75,11 @@ def factory(variant, suite, prompt, plan):
     spec = SimpleNamespace(task=SimpleNamespace(suite=suite.name), prompt=prompt, plan=plan)
 
     def make():
+        import dataclasses as _dc
         cfg = axor_ajar.load_config(suite.name, *integrity)
+        if tag == "no_grants":  # truly grant-free: no grant args, descriptions, delegation, list-union
+            cfg = _dc.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
+                              description_targets={}, delegated_sources={}, list_union=False, list_args={}, max_unattended_consequence=_CONSEQ_CEIL)
         kw = cfg.as_governor_kwargs()
         if levels:
             kwargs, hook = axor_ajar.grants_kwargs(levels, grant_args=ga, confirm=confirm)

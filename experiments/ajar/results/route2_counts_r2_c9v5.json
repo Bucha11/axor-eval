@@ -1,0 +1,22 @@
+{
+ "L1": {
+  "admitted": 9878,
+  "admitted_existing": 30,
+  "decision_points": 27,
+  "k": [
+   1,
+   2,
+   2
+  ]
+ },
+ "L2": {
+  "admitted": 56,
+  "admitted_existing": 56,
+  "decision_points": 50,
+  "k": [
+   4.0,
+   27,
+   27
+  ]
+ }
+}

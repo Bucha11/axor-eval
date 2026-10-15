@@ -1,0 +1,96 @@
+{
+ "candidates": 11404,
+ "not_entities": 11292,
+ "entity_candidates": 104,
+ "non_entity_args": {
+  "amount": 8
+ },
+ "L1": {
+  "admitted": 30,
+  "decision_points": 27,
+  "k": [
+   1,
+   2,
+   2
+  ],
+  "share_k_gt_1": 0.19,
+  "by_suite_arg": [
+   [
+    "slack/url",
+    13
+   ],
+   [
+    "workspace/file_id",
+    6
+   ],
+   [
+    "workspace/recipients",
+    5
+   ],
+   [
+    "workspace/participants",
+    3
+   ],
+   [
+    "travel/hotel",
+    2
+   ],
+   [
+    "slack/user",
+    1
+   ]
+  ]
+ },
+ "L2": {
+  "admitted": 56,
+  "decision_points": 50,
+  "k": [
+   4.0,
+   27,
+   27
+  ],
+  "share_k_gt_1": 1.0,
+  "by_suite_arg": [
+   [
+    "slack/recipient",
+    13
+   ],
+   [
+    "slack/channel",
+    11
+   ],
+   [
+    "slack/user",
+    10
+   ],
+   [
+    "workspace/event_id",
+    8
+   ],
+   [
+    "workspace/participants",
+    5
+   ],
+   [
+    "workspace/recipients",
+    3
+   ],
+   [
+    "workspace/bcc",
+    2
+   ],
+   [
+    "workspace/cc",
+    2
+   ],
+   [
+    "workspace/file_id",
+    2
+   ]
+  ]
+ },
+ "non_entity_admitted": {
+  "admitted": 0,
+  "by_source": {}
+ }
+}

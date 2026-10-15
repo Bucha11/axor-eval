@@ -242,3 +242,8 @@ description_targets:
     - reserve_car_rental.company
 sender_alias_unique: true
 list_union: true
+list_args:
+  send_email:
+  - recipients
+  - cc
+  - bcc
