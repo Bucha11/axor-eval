@@ -42,6 +42,23 @@ TRAVEL_ADDR = "--travel-addresses" in sys.argv  # §8.14.3: travel own addresses
 RECV_EMAILS = "--received-emails" in sys.argv  # §8.14.3: every e-mail in the user's inbox is own
 REFERENCES = "--references" in sys.argv  # §9: untrusted target identifiers only as references
 SECRET_FIELDS = "--secret-fields" in sys.argv  # §9.11: declared secret fields per suite
+NAMED_SENDER = "--named-sender" in sys.argv  # §9.13
+NO_SENDER_TOOLS = {"banking": ["read_file"], "slack": ["get_webpage"],
+                   "workspace": ["get_file_by_id", "search_files", "search_files_by_filename", "list_files",
+                                 "create_file", "append_to_file", "share_file"],
+                   "travel": []}
+
+
+def sender_aliases(name, env):
+    """§9.13: contact e-mail -> [full name, first name] (workspace, travel)."""
+    if name not in ("workspace", "travel"):
+        return {}
+    out = {}
+    for c in env.inbox.contact_list:
+        nm = (c.name or "").strip()
+        if nm:
+            out[c.email] = [nm, nm.split()[0]]
+    return out
 SECRETS_BY_SUITE = {"banking": ["password"],
                     "travel": ["passport_number", "credit_card_number", "bank_account_number", "ID_number"],
                     "slack": [], "workspace": []}
@@ -276,6 +293,9 @@ def main():
                 cfg["references"] = True  # §9
             if SECRET_FIELDS:
                 cfg["secret_fields"] = SECRETS_BY_SUITE[s]  # §9.11
+            if NAMED_SENDER:
+                cfg["sender_aliases"] = sender_aliases(s, env)  # §9.13
+                cfg["no_sender_tools"] = NO_SENDER_TOOLS[s]
             # the live runner takes the integrity mode from the config (offline harnesses set
             # the same two values explicitly): context default, request-only origins
             cfg["integrity_default"] = "context"
