@@ -1,9 +1,8 @@
 # Live preflight for c9v5 — GO/NO-GO (no model calls were made)
 
-**Verdict: NO-GO as the harness stands.** Kernel, configs, model, tasks, budget and spend-cap are
-ready; but the live executor does not yet wire the §9 reference view, the structured-output parser
-(description grants), or the view-aware confirmer, and the per-episode logging and resume are
-incomplete. Points 1,2,3,5,8 pass; 4,6,7 need harness work before launch.
+**Verdict: GO (pending the user's launch word).** All eight points pass after the live-harness fixes
+(commit 83dee51, examples/agentdojo only; governance axor_core/ unchanged, c9v5 freeze holds). The
+preflight script now PASSES (governance unchanged vs 618c4a9, live-harness hashes and configs match).
 
 ## 1. Hash check at start, stop on mismatch — YES (script added: preflight_c9v5.py)
 `python final_live/preflight_c9v5.py` hashes the kernel commit, the four c9v5 configs and the harness
@@ -31,37 +30,33 @@ CAMEL_MODE uses every user task of the four suites (banking 16 + slack 21 + trav
 = 97; slack user_task_4 excluded → 96). AgentDojo 0.1.35, v1 suites (run.sh: --with agentdojo==0.1.35;
 get_suite("v1", …)). Same as the reused passes.
 
-## 4. References and the structured-output parser ON — NO (blocker)
-The live executor (agentdojo_adapter.py:516) calls governor.register_output, NOT present_output, and
-never calls observe_structured / observe_delegated or agent_args. So in a live run the model would
-NOT see references (§9) and description grants (§9.15) would never mint — the config declares them,
-but the executor does not exercise them. A faithful c9v5 live run needs the executor to: show the
-model present_output (references in tool results), feed declared structured sources to
-observe_structured/observe_delegated after each read, and keep evaluate (which already resolves
-references). Until then the live run is c9v5-minus-§9, not c9v5.
+## 4. References and the structured-output parser ON — YES (fixed, commit 83dee51)
+The governed executor now returns present_output as the tool result the model sees (references, §9),
+and feeds each read's parsed structure to observe_structured / observe_delegated (description grants,
+§9.15/§9.16) via _parse_structured (the same formats as the offline axor_ajar.structured). Proof —
+the mock dry run (no model, results/mock_dry_run_c9v5.txt): slack user_task_7 add_user_to_channel is
+admitted via an L1 grant with description "channel starting with External" = ['External_0'], i.e. the
+description grant minted from the observed get_channels structure.
 
 ## 5. Confirmation budget 5 per session — YES
 run.sh sets AXOR_BENCH_L4_BUDGET=5; agentdojo_adapter._limited enforces it (asked>=budget →
 over_budget, nothing asked), per task, with dedup of a refused call and an optional refusal cap.
 
-## 6. Per-episode logging — PARTIAL
-Logged today (_save_trajectory): suite, user_task_id, governed, utility, model, full message
-trajectory, confirmations (count), l4 stats {asked, approved, refused, deduped, over_budget,
-terminated} (budget-exhausted = over_budget>0 or terminated). NOT logged as structured fields: each
-call's (tool, verdict, gate category) — a denial appears only as the tool-message error text; each
-confirmer decision WITH the proposed call; per-episode tokens/cost (spend.jsonl is a global per-call
-ledger, not attributed to an episode). Action: add a per-call decision record (tool, allowed,
-category), a confirmer-decision log (proposed call + approved/refused + reason), and per-episode token
-/ cost from the recorder. A mock-model dry run was not executed (no model, and these fields do not yet
-exist to show); it should be run after the logging is added.
+## 6. Per-episode logging — YES (fixed, commit 83dee51)
+_save_trajectory now writes, per episode: suite, user_task_id, governed, utility, model, full
+trajectory, calls [{tool, allowed, category, grant_source, description}] (per-call verdict and gate),
+l4 stats {asked, approved, refused, deduped, over_budget, terminated}, l4_decisions [{call, approved,
+policy}] (each confirmer decision with the proposed call), budget_exhausted (over_budget or
+terminated), and cost_usd (this episode's spend-ledger delta). The mock dry run
+(results/mock_dry_run_c9v5.txt, no model) shows the calls / l4_stats / l4_decisions / confirmations
+fields populated for three episodes.
 
-## 7. Hard $12 stop, checkpoints, resume — PARTIAL
+## 7. Hard $12 stop, checkpoints, resume — YES (fixed, commit 83dee51)
 Hard stop: YES — AXOR_BENCH_SPEND_CAP=12; _spend_guard sums the shared spend.jsonl before each call
 and raises SpendCapReached (overshoot ≤ one call per process). Checkpoint: the shared spend.jsonl
-persists the running total and per-task traj files are written as they finish, so a restart keeps
-counting toward the cap. Resume from the break: NO — run_benign re-runs every USER_TASK
-unconditionally (no skip-existing), so a restart repeats the whole suite/pass and spends again. Action:
-skip a task whose traj file already exists.
+persists the running total and per-task traj files are written as they finish. Resume: run_benign now
+skips a task whose trajectory file already exists (reusing its recorded utility), so a restart
+continues from the break instead of re-running and re-spending.
 
 ## 8. Cost estimate — full A + B (view), the recorded design (3 passes, slack ut4 excluded)
 575 episodes (A 287 + B 288), 2788 model calls at $0.00343/call (live_v4 mean $11.21/3267) ≈ **$9.57**,
