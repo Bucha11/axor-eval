@@ -2,7 +2,7 @@
 
 axor-claude, axor-openrouter, axor-langchain and axor-wrap, lifted to axor-core
 `claude/model-m1` `fa02df1` (c9v4 frozen, c9v5 flags) and the daemon
-`claude/daemon-references` `a887ab7`: every tool call goes through `ToolCallGovernor` (or
+(`claude/daemon-references` + two fixes found by this check, `d7e1b72`): every tool call goes through `ToolCallGovernor` (or
 the daemon) with grants, references and output registration, by one shared protocol
 (`gate.py`, sha256 `950916b2…`, byte-identical in the four packages; `compat.py` prints
 the four digests). No model is called anywhere here.
@@ -61,35 +61,34 @@ consequence 306 / taint 204, ds taint 544 (the floor); final dh grant 459 / cons
 
 | config | shim | wrap | langchain | claude | openrouter | daemon |
 |---|---|---|---|---|---|---|
-| c9v4: calls run | 2117 | 2117 | 2117 | 2117 | 2117 | 2099 |
-| c9v4: confirmations (B) | 80 | 80 | 80 | 80 | 80 | 101 |
-| c9v4: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 40 |
-| c9v5: calls run | 2032 | 2032 | 2032 | 2032 | 2032 | 2015 |
-| c9v5: confirmations (B) | 123 | 123 | 123 | 123 | 123 | 144 |
-| c9v5: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 39 |
+| c9v4: calls run | 2117 | 2117 | 2117 | 2117 | 2117 | 2117 |
+| c9v4: confirmations (B) | 80 | 80 | 80 | 80 | 80 | 80 |
+| c9v4: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
+| c9v5: calls run | 2032 | 2032 | 2032 | 2032 | 2032 | 2032 |
+| c9v5: confirmations (B) | 123 | 123 | 123 | 123 | 123 | 123 |
+| c9v5: rows diverging from the shim | — | 0 | 0 | 0 | 0 | 0 |
 
 The shim reproduces the recorded c9v4 verdicts in **581/581** episodes (and B's 80
 confirmations are `final_live/LIVE_C9V4.md`'s "105 -> 80").
 
 ## Divergences
 
-The four integrations: **none** — on both sets, both InjecAgent configurations and both
-AgentDojo configurations, every call has the shim's verdict, category, confirmations,
-executed arguments and agent view.
+None: on both sets, both InjecAgent configurations and both AgentDojo configurations,
+every path — the four integrations and the daemon — gives every call the shim's
+verdict, category, confirmations, executed arguments and agent view.
 
-The daemon (the out-of-process path axor-claude and axor-openrouter take with
-`daemon_socket`) diverges in two places, both in axor-daemon, not in an integration:
+The daemon at `claude/daemon-references` (`a887ab7`) diverged in 40 rows (c9v4) / 39
+(c9v5); both causes are fixed in axor-daemon `d7e1b72`:
 
-1. **No description grants (MODEL.md 9.15).** The daemon registers outputs but never passes
-   a declared description source's structure to `observe_structured`, so the grants c9v4
-   computes from the request's descriptions are never minted. c9v4: slack user tasks 7,
-   9, 10, 12 and workspace 20 — in A the calls are refused (`operator_set`,
-   `reference_origin`), in B the oracle is asked instead (+21 confirmations); 39 rows.
-   c9v5: the same slack tasks and workspace 21 (38 rows).
-2. **Path normalization.** The daemon normalizes path-like arguments by key
-   (`_PATH_ARG_KEYS`), so `search_files_by_filename(filename="")` runs with `"."`
-   (workspace user task 31, B pass 3; 1 row in each configuration). It decides on the
-   normalized value, so E holds; the executed argument differs from every in-process path.
+1. **No description grants (MODEL.md 9.15).** It registered outputs but never passed a
+   declared description source's structure to `observe_structured`, so those grants were
+   never minted: slack user tasks 7, 9, 10, 12 and workspace 20 (c9v5: 21) were refused in
+   A (`operator_set`, `reference_origin`) and asked of the oracle in B (+21
+   confirmations). Fix: the operator passes the platform's parser,
+   `--structured module:function` (the `structured=` the in-process integrations take).
+2. **An empty path argument rewritten.** `os.path.normpath("")` is `"."`, so
+   `search_files_by_filename(filename="")` ran with `"."` (workspace 31, B pass 3). Fix: an
+   empty value is left as it is.
 
 Not divergences, but recorded: a tool that raised in the recorded episode raises in the
 replay (628 times in the claude and openrouter paths, logged by the session as an

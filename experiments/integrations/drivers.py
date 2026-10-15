@@ -360,7 +360,8 @@ class Daemon(_Base):
         handlers = {t: self.cond.handler(t) for t in tools}
         gov = _FixedGovernance(cfg, confirmer)
         self.enf = DaemonEnforcer(ExecutionPolicy(), handlers, governance=gov,
-                                  operator_allowed=frozenset(tools), confirm=None)
+                                  operator_allowed=frozenset(tools), confirm=None,
+                                  structured=structured)
         self.sess = self.enf.open_session(task)
         self.governor = self.sess.governor
         self.tools = frozenset(tools)
