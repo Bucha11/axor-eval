@@ -1,10 +1,12 @@
-# c9v5 + §9.20a — numbers (NOT frozen: see the freeze gate below)
+# c9v5 + §9.20a — numbers (FROZEN, FREEZE_C9V5.md; the L1 +4 of the freeze gate was accepted)
 
 c9v5 = 9.18 (O addresses = user domain + addresses the user wrote to) + 9.19 (a named sender resolves
 to one address) + 9.20a (a list argument's elements ∈ clause literals ∪ O; relax only the list arg of
 a grant with an L1 ground). Kernel axor-core claude/model-m1 618c4a9. Harness only, NOT MODEL.md:
-mode a is now truly grant-free (AxorDefense no_grants / replay variant origin-no-grants strip
-grant_args, grant_templates, grant_quotas, description sources, delegation, list-union).
+mode a is the origin gate only — the grant gate is OFF (AxorDefense no_grants / replay variant
+origin-no-grants strip grant_args, grant_templates, grant_quotas, description sources, delegation,
+list-union; the consequence ceiling is raised to CONSEQUENTIAL so an R/O value passes a consequential
+sink on origin and CATASTROPHIC stays blocked).
 
 ## Ajar (mode a grant-free; b / c-oracle as c9v5)
 | mode | provisioned | OPL (earliest) [CI95] | sufficiency [CI95] | attacks |
@@ -55,6 +57,16 @@ injected-values-admitted.
   sara.lee), admitted because 9.20a lets a list element be an O value; −2 are workspace 4/6 kept out of
   the existing-object count. All O, no attacker value. L2 and all k are not above (L2 4928 → 4923; k
   unchanged). k is the substitution reach and did not grow.
-- Therefore c9v5 is NOT frozen. The L1 rise is the honest price of letting O into list arguments
-  (cc/bcc), exactly as 9.20 permits; it admits no attacker value and does not raise k. Whether to
-  accept this O-cost, or to exclude cc/bcc from list-union widening, is the open decision.
+- The L1 rise is the honest price of letting O into list arguments (cc/bcc), exactly as 9.20
+  permits; it admits no attacker value and does not raise k. The user accepted this O-cost and froze
+  c9v5 (FREEZE_C9V5.md); the strict L1-not-above gate was overridden by that decision.
+
+
+## InjecAgent (1054 base cases, model-free, synthesized arguments; kernel c9v5 618c4a9)
+Same config path as the frozen kernel (InjecAgent builds its own config from the kernel example +
+the §8.7/§8.10 final switches; the c9v5 rules §9.18–9.20a do not touch its single-value attacks).
+- Direct harm: 510/510 refused (final config: grant gate 459, consequence gate 51; refused by the
+  consequence class alone: 0).
+- Data stealing: 544/544 refused (final config: content projection 323, grant gate 221; by the floor
+  alone: 0 — the floor would catch all 544 if it were the only check on).
+Unchanged from kernel 09e98af (510/544 all refused).
