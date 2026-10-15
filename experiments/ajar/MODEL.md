@@ -536,8 +536,11 @@ parses free text. Shapes:
 
 Never a source: file bodies, web pages, message / e-mail bodies, descriptions, reviews (read_file,
 get_webpage, read_inbox bodies, `body` / `content` / `description` fields). A source call counts only
-if each of its arguments is a request literal, own, or absent (a list for a city the request does not
-name does not count).
+if each of its arguments is a request literal, own, absent, or — for the key argument of a `count` /
+`members` / `keyed` source — names entities of the same kind that a counted complete list holds (the
+key is the entity's identity, not a filter); a list for a city the request does not name does not
+count. (Clarified before code: as first written, read_channel_messages(channel=External_0) would not
+count.)
 
 **Phrase templates** (one library for all suites; not per task; the complete list):
 * Entity nouns: channel(s); user(s), member(s); contact(s); event(s), meeting(s); file(s),
