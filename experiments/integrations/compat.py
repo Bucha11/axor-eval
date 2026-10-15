@@ -44,6 +44,10 @@ os.environ.setdefault("AXOR_CORE_REPO", os.path.join(os.path.dirname(os.path.dir
 for p in (HERE, AJAR, os.path.join(AJAR, "final_live"), os.path.join(EXP, "injecagent")):
     if p not in sys.path:
         sys.path.insert(0, p)
+# AXOR_AJAR_DIR: a directory holding the frozen axor_ajar.py (e.g. extracted from the freeze
+# commit), imported in place of the working copy; its sha256 is recorded in the results
+if os.environ.get("AXOR_AJAR_DIR"):
+    sys.path.insert(0, os.environ["AXOR_AJAR_DIR"])
 
 
 def _stub_ajar() -> None:
@@ -313,7 +317,13 @@ def main() -> None:
     ap.add_argument("--out", default=os.path.join(HERE, "results"))
     a = ap.parse_args()
     import axor_core
-    head = {"gate_sha256": gate_digests(), "axor_core": axor_core.__file__, "references_seed": SEED}
+    head = {"gate_sha256": gate_digests(), "axor_core": axor_core.__file__, "references_seed": SEED,
+            "axor_ajar": axor_ajar.__file__,
+            "axor_ajar_sha256": hashlib.sha256(open(axor_ajar.__file__, "rb").read()).hexdigest(),
+            "configs_sha256": {f"{c}/{s}": hashlib.sha256(open(os.path.join(AJAR, f"config_m1_{c}", f"{s}.yaml"),
+                                                                "rb").read()).hexdigest()
+                               for c in a.configs for s in ("banking", "slack", "travel", "workspace")}}
+    print("axor_ajar", head["axor_ajar_sha256"][:16], head["axor_ajar"])
     print(json.dumps(head["gate_sha256"], indent=1))
     res = {"head": head}
     if "injecagent" in a.set:
