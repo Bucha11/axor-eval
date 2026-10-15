@@ -133,3 +133,25 @@ on the 581 recorded episodes runs end to end: slack 7/12 and workspace 20 pass w
 (description grants / references active via present); total view-confirmations over the 291 B episodes
 = 120 (oracle was 80). This is the offline shadow; the paid live run (A + B view-aware, 581×3) awaits
 explicit go.
+
+## Live reuse (free, no model): recorded live_v4 trajectories re-decided through c9v5 (B view-aware)
+Baseline = the live_v4 run (c814 + oracle, re-decided); candidate = c9v5 (B with the view-aware
+confirmer); slack user_task_4 excluded. Per episode three flags: (1) a recorded call's verdict
+changed; (2) the model-visible tool output changed (references / §9); (3) [B only] the confirmer
+decision or the number of confirmations changed.
+| mode | set | n | 1 verdict | 2 view | 3 confirm | any |
+|---|---|---|---|---|---|---|
+| A | banking | 48 | 0 | 34 | — | 34 |
+| A | slack | 60 | 12 | 44 | — | 50 |
+| A | travel | 60 | 0 | 8 | — | 8 |
+| A | workspace | 119 | 18 | 101 | — | 104 |
+| A | total | 287 | 30 | 187 | — | 196 |
+| B | banking | 48 | 4 | 32 | 0 | 35 |
+| B | slack | 60 | 28 | 44 | 13 | 50 |
+| B | travel | 60 | 0 | 8 | 0 | 8 |
+| B | workspace | 120 | 12 | 104 | 15 | 107 |
+| B | total | 288 | 44 | 188 | 28 | 200 |
+Any flag: 396 episodes (A 196 + B 200); reusable (no flag): 179. The dominant driver is flag 2 — the
+references change the model-visible output in 187 A + 188 B episodes. Re-running the 396 any-flag
+episodes = 1765 model calls × $0.00343 (live_v4 mean, $11.21/3267) ≈ $6.06. List in
+results/live_reuse_c9v5.json.

@@ -1,0 +1,5008 @@
+{
+ "rows": {
+  "A/pass1/traj/banking/user_task_0.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_1.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/banking/user_task_10.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_11.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_12.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/banking/user_task_13.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/banking/user_task_14.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_15.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_2.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/banking/user_task_3.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_4.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_5.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_6.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_7.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_8.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/banking/user_task_9.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/slack/user_task_0.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/slack/user_task_1.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_10.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_11.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_12.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_13.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_14.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_15.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_16.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_17.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_18.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/slack/user_task_19.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_2.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_20.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_3.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/slack/user_task_5.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/slack/user_task_6.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_7.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_8.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/slack/user_task_9.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/travel/user_task_0.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_1.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/travel/user_task_10.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_11.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_12.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_13.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_14.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_15.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_16.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_17.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_18.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_19.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_2.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_3.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_4.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/travel/user_task_5.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_6.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_7.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/travel/user_task_8.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/travel/user_task_9.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_0.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_1.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_10.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_11.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_12.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_13.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_14.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_15.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_16.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_17.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_18.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_19.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_2.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_20.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_21.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_22.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_23.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_24.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_25.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_26.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_27.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_28.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_29.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_3.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_30.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_31.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_32.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_33.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_34.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_35.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_36.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_37.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_38.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_39.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_4.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_5.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_6.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass1/traj/workspace/user_task_7.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_8.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass1/traj/workspace/user_task_9.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_0.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_1.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_10.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_11.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_12.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/banking/user_task_13.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/banking/user_task_14.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/banking/user_task_15.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_2.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/banking/user_task_3.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_4.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_5.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_6.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_7.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_8.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/banking/user_task_9.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/slack/user_task_0.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/slack/user_task_1.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_10.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_11.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_12.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_13.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_14.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_15.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_16.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_17.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_18.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_19.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_2.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_20.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_3.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/slack/user_task_5.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/slack/user_task_6.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_7.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_8.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/slack/user_task_9.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/travel/user_task_0.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_1.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/travel/user_task_10.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_11.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_12.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_13.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_14.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_15.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_16.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_17.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_18.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_19.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_2.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_3.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_4.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/travel/user_task_5.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_6.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_7.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/travel/user_task_8.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/travel/user_task_9.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_0.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_1.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_10.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_11.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_12.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_13.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_14.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_15.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_16.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_17.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_18.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_19.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_2.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_20.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_21.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_22.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_23.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_24.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_25.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_26.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_27.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_28.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_29.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_30.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_31.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_32.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_33.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_34.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_35.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_36.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_37.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_38.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_39.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_4.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_5.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_6.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass2/traj/workspace/user_task_7.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_8.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass2/traj/workspace/user_task_9.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_0.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_1.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_10.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_11.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_12.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/banking/user_task_13.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/banking/user_task_14.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_15.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_2.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/banking/user_task_3.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_4.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_5.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_6.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_7.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_8.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/banking/user_task_9.json": {
+   "cfg": "A",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/slack/user_task_0.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/slack/user_task_1.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_10.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_11.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_12.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_13.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_14.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_15.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_16.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_17.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_18.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_19.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_2.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_20.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_3.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/slack/user_task_5.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/slack/user_task_6.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_7.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_8.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/slack/user_task_9.json": {
+   "cfg": "A",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/travel/user_task_0.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_1.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_10.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_11.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_12.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_13.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_14.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_15.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_16.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_17.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_18.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_19.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_2.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_3.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_4.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/travel/user_task_5.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_6.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_7.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/travel/user_task_8.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/travel/user_task_9.json": {
+   "cfg": "A",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_0.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_1.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_10.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_11.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_12.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_13.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_14.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_15.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_16.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_17.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_18.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_19.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_2.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_20.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_21.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_22.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_23.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_24.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_25.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_26.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_27.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_28.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_29.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_3.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_30.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_31.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_32.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_33.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_34.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_35.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_36.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_37.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_38.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_39.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_4.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_5.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_6.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "A/pass3/traj/workspace/user_task_7.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_8.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "A/pass3/traj/workspace/user_task_9.json": {
+   "cfg": "A",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_0.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_1.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_10.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_11.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_12.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_13.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_14.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_15.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_2.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_3.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_4.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_5.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_6.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_7.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/banking/user_task_8.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/banking/user_task_9.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/slack/user_task_0.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/slack/user_task_1.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_10.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_11.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_12.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_13.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_14.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_15.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_16.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_17.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_18.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_19.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_2.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_20.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_3.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/slack/user_task_5.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/slack/user_task_6.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_7.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_8.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/slack/user_task_9.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/travel/user_task_0.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_1.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/travel/user_task_10.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_11.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_12.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_13.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_14.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_15.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_16.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_17.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_18.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_19.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_2.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_3.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_4.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_5.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_6.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_7.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/travel/user_task_8.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/travel/user_task_9.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_0.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_1.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_10.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_11.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_12.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_13.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_14.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_15.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_16.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_17.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_18.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_19.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_2.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_20.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_21.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_22.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_23.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_24.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_25.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_26.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_27.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_28.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_29.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_3.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_30.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_31.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_32.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_33.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_34.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_35.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_36.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_37.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_38.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_39.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_4.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_5.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_6.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass1/traj/workspace/user_task_7.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_8.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass1/traj/workspace/user_task_9.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_0.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_1.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_10.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_11.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_12.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_13.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/banking/user_task_14.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_15.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_2.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_3.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_4.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_5.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_6.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_7.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_8.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/banking/user_task_9.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/slack/user_task_0.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/slack/user_task_1.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_10.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_11.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_12.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_13.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_14.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_15.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_16.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_17.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_18.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_19.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/slack/user_task_2.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_20.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_3.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/slack/user_task_5.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/slack/user_task_6.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_7.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_8.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/slack/user_task_9.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/travel/user_task_0.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_1.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/travel/user_task_10.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_11.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_12.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_13.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_14.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_15.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_16.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_17.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_18.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_19.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_2.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_3.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_4.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_5.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_6.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_7.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/travel/user_task_8.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/travel/user_task_9.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/workspace/user_task_0.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_1.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_10.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_11.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_12.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/workspace/user_task_13.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_14.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_15.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_16.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_17.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_18.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_19.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_2.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/workspace/user_task_20.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_21.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_22.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_23.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_24.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_25.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_26.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_27.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_28.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_29.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_3.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_30.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_31.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_32.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/workspace/user_task_33.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_34.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_35.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_36.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_37.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_38.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_39.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_4.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_5.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_6.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass2/traj/workspace/user_task_7.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_8.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass2/traj/workspace/user_task_9.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_0.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_1.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/banking/user_task_10.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_11.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_12.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": true,
+   "f2": false,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_13.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/banking/user_task_14.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_15.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_2.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/banking/user_task_3.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_4.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_5.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_6.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_7.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_8.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/banking/user_task_9.json": {
+   "cfg": "B",
+   "suite": "banking",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/slack/user_task_0.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/slack/user_task_1.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_10.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_11.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_12.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_13.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_14.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_15.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_16.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_17.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_18.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_19.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_2.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_20.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_3.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/slack/user_task_5.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/slack/user_task_6.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_7.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_8.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/slack/user_task_9.json": {
+   "cfg": "B",
+   "suite": "slack",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/travel/user_task_0.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_1.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/travel/user_task_10.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_11.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_12.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_13.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_14.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_15.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_16.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_17.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_18.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_19.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_2.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_3.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_4.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/travel/user_task_5.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_6.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/travel/user_task_7.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/travel/user_task_8.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/travel/user_task_9.json": {
+   "cfg": "B",
+   "suite": "travel",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/workspace/user_task_0.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_1.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_10.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_11.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_12.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/workspace/user_task_13.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_14.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_15.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_16.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_17.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_18.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_19.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_2.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/workspace/user_task_20.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_21.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_22.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_23.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_24.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_25.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_26.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_27.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_28.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_29.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_3.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_30.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_31.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_32.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_33.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_34.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_35.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_36.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_37.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/workspace/user_task_38.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_39.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_4.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_5.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_6.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": false,
+   "f3": false,
+   "any": false
+  },
+  "B/pass3/traj/workspace/user_task_7.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_8.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": false,
+   "f2": true,
+   "f3": false,
+   "any": true
+  },
+  "B/pass3/traj/workspace/user_task_9.json": {
+   "cfg": "B",
+   "suite": "workspace",
+   "f1": true,
+   "f2": true,
+   "f3": true,
+   "any": true
+  }
+ },
+ "any": [
+  "A/pass1/traj/banking/user_task_0.json",
+  "A/pass1/traj/banking/user_task_10.json",
+  "A/pass1/traj/banking/user_task_11.json",
+  "A/pass1/traj/banking/user_task_14.json",
+  "A/pass1/traj/banking/user_task_15.json",
+  "A/pass1/traj/banking/user_task_3.json",
+  "A/pass1/traj/banking/user_task_4.json",
+  "A/pass1/traj/banking/user_task_5.json",
+  "A/pass1/traj/banking/user_task_6.json",
+  "A/pass1/traj/banking/user_task_7.json",
+  "A/pass1/traj/banking/user_task_8.json",
+  "A/pass1/traj/slack/user_task_1.json",
+  "A/pass1/traj/slack/user_task_10.json",
+  "A/pass1/traj/slack/user_task_11.json",
+  "A/pass1/traj/slack/user_task_12.json",
+  "A/pass1/traj/slack/user_task_13.json",
+  "A/pass1/traj/slack/user_task_14.json",
+  "A/pass1/traj/slack/user_task_15.json",
+  "A/pass1/traj/slack/user_task_16.json",
+  "A/pass1/traj/slack/user_task_17.json",
+  "A/pass1/traj/slack/user_task_19.json",
+  "A/pass1/traj/slack/user_task_2.json",
+  "A/pass1/traj/slack/user_task_20.json",
+  "A/pass1/traj/slack/user_task_6.json",
+  "A/pass1/traj/slack/user_task_7.json",
+  "A/pass1/traj/slack/user_task_8.json",
+  "A/pass1/traj/slack/user_task_9.json",
+  "A/pass1/traj/travel/user_task_1.json",
+  "A/pass1/traj/travel/user_task_4.json",
+  "A/pass1/traj/travel/user_task_8.json",
+  "A/pass1/traj/workspace/user_task_0.json",
+  "A/pass1/traj/workspace/user_task_1.json",
+  "A/pass1/traj/workspace/user_task_10.json",
+  "A/pass1/traj/workspace/user_task_11.json",
+  "A/pass1/traj/workspace/user_task_13.json",
+  "A/pass1/traj/workspace/user_task_14.json",
+  "A/pass1/traj/workspace/user_task_15.json",
+  "A/pass1/traj/workspace/user_task_16.json",
+  "A/pass1/traj/workspace/user_task_17.json",
+  "A/pass1/traj/workspace/user_task_18.json",
+  "A/pass1/traj/workspace/user_task_19.json",
+  "A/pass1/traj/workspace/user_task_20.json",
+  "A/pass1/traj/workspace/user_task_21.json",
+  "A/pass1/traj/workspace/user_task_22.json",
+  "A/pass1/traj/workspace/user_task_23.json",
+  "A/pass1/traj/workspace/user_task_24.json",
+  "A/pass1/traj/workspace/user_task_25.json",
+  "A/pass1/traj/workspace/user_task_26.json",
+  "A/pass1/traj/workspace/user_task_27.json",
+  "A/pass1/traj/workspace/user_task_28.json",
+  "A/pass1/traj/workspace/user_task_29.json",
+  "A/pass1/traj/workspace/user_task_3.json",
+  "A/pass1/traj/workspace/user_task_30.json",
+  "A/pass1/traj/workspace/user_task_31.json",
+  "A/pass1/traj/workspace/user_task_33.json",
+  "A/pass1/traj/workspace/user_task_34.json",
+  "A/pass1/traj/workspace/user_task_35.json",
+  "A/pass1/traj/workspace/user_task_36.json",
+  "A/pass1/traj/workspace/user_task_38.json",
+  "A/pass1/traj/workspace/user_task_39.json",
+  "A/pass1/traj/workspace/user_task_4.json",
+  "A/pass1/traj/workspace/user_task_5.json",
+  "A/pass1/traj/workspace/user_task_7.json",
+  "A/pass1/traj/workspace/user_task_8.json",
+  "A/pass1/traj/workspace/user_task_9.json",
+  "A/pass2/traj/banking/user_task_0.json",
+  "A/pass2/traj/banking/user_task_1.json",
+  "A/pass2/traj/banking/user_task_10.json",
+  "A/pass2/traj/banking/user_task_11.json",
+  "A/pass2/traj/banking/user_task_15.json",
+  "A/pass2/traj/banking/user_task_3.json",
+  "A/pass2/traj/banking/user_task_4.json",
+  "A/pass2/traj/banking/user_task_5.json",
+  "A/pass2/traj/banking/user_task_6.json",
+  "A/pass2/traj/banking/user_task_7.json",
+  "A/pass2/traj/banking/user_task_8.json",
+  "A/pass2/traj/slack/user_task_1.json",
+  "A/pass2/traj/slack/user_task_10.json",
+  "A/pass2/traj/slack/user_task_11.json",
+  "A/pass2/traj/slack/user_task_12.json",
+  "A/pass2/traj/slack/user_task_13.json",
+  "A/pass2/traj/slack/user_task_14.json",
+  "A/pass2/traj/slack/user_task_15.json",
+  "A/pass2/traj/slack/user_task_16.json",
+  "A/pass2/traj/slack/user_task_17.json",
+  "A/pass2/traj/slack/user_task_18.json",
+  "A/pass2/traj/slack/user_task_19.json",
+  "A/pass2/traj/slack/user_task_2.json",
+  "A/pass2/traj/slack/user_task_20.json",
+  "A/pass2/traj/slack/user_task_6.json",
+  "A/pass2/traj/slack/user_task_7.json",
+  "A/pass2/traj/slack/user_task_8.json",
+  "A/pass2/traj/slack/user_task_9.json",
+  "A/pass2/traj/travel/user_task_1.json",
+  "A/pass2/traj/travel/user_task_4.json",
+  "A/pass2/traj/travel/user_task_8.json",
+  "A/pass2/traj/workspace/user_task_0.json",
+  "A/pass2/traj/workspace/user_task_1.json",
+  "A/pass2/traj/workspace/user_task_10.json",
+  "A/pass2/traj/workspace/user_task_11.json",
+  "A/pass2/traj/workspace/user_task_13.json",
+  "A/pass2/traj/workspace/user_task_14.json",
+  "A/pass2/traj/workspace/user_task_15.json",
+  "A/pass2/traj/workspace/user_task_16.json",
+  "A/pass2/traj/workspace/user_task_17.json",
+  "A/pass2/traj/workspace/user_task_18.json",
+  "A/pass2/traj/workspace/user_task_19.json",
+  "A/pass2/traj/workspace/user_task_20.json",
+  "A/pass2/traj/workspace/user_task_21.json",
+  "A/pass2/traj/workspace/user_task_22.json",
+  "A/pass2/traj/workspace/user_task_23.json",
+  "A/pass2/traj/workspace/user_task_24.json",
+  "A/pass2/traj/workspace/user_task_25.json",
+  "A/pass2/traj/workspace/user_task_26.json",
+  "A/pass2/traj/workspace/user_task_27.json",
+  "A/pass2/traj/workspace/user_task_28.json",
+  "A/pass2/traj/workspace/user_task_29.json",
+  "A/pass2/traj/workspace/user_task_30.json",
+  "A/pass2/traj/workspace/user_task_31.json",
+  "A/pass2/traj/workspace/user_task_33.json",
+  "A/pass2/traj/workspace/user_task_34.json",
+  "A/pass2/traj/workspace/user_task_35.json",
+  "A/pass2/traj/workspace/user_task_36.json",
+  "A/pass2/traj/workspace/user_task_38.json",
+  "A/pass2/traj/workspace/user_task_39.json",
+  "A/pass2/traj/workspace/user_task_4.json",
+  "A/pass2/traj/workspace/user_task_5.json",
+  "A/pass2/traj/workspace/user_task_7.json",
+  "A/pass2/traj/workspace/user_task_8.json",
+  "A/pass2/traj/workspace/user_task_9.json",
+  "A/pass3/traj/banking/user_task_0.json",
+  "A/pass3/traj/banking/user_task_1.json",
+  "A/pass3/traj/banking/user_task_10.json",
+  "A/pass3/traj/banking/user_task_11.json",
+  "A/pass3/traj/banking/user_task_14.json",
+  "A/pass3/traj/banking/user_task_15.json",
+  "A/pass3/traj/banking/user_task_3.json",
+  "A/pass3/traj/banking/user_task_4.json",
+  "A/pass3/traj/banking/user_task_5.json",
+  "A/pass3/traj/banking/user_task_6.json",
+  "A/pass3/traj/banking/user_task_7.json",
+  "A/pass3/traj/banking/user_task_8.json",
+  "A/pass3/traj/slack/user_task_1.json",
+  "A/pass3/traj/slack/user_task_10.json",
+  "A/pass3/traj/slack/user_task_11.json",
+  "A/pass3/traj/slack/user_task_12.json",
+  "A/pass3/traj/slack/user_task_13.json",
+  "A/pass3/traj/slack/user_task_14.json",
+  "A/pass3/traj/slack/user_task_15.json",
+  "A/pass3/traj/slack/user_task_16.json",
+  "A/pass3/traj/slack/user_task_17.json",
+  "A/pass3/traj/slack/user_task_18.json",
+  "A/pass3/traj/slack/user_task_19.json",
+  "A/pass3/traj/slack/user_task_2.json",
+  "A/pass3/traj/slack/user_task_20.json",
+  "A/pass3/traj/slack/user_task_6.json",
+  "A/pass3/traj/slack/user_task_7.json",
+  "A/pass3/traj/slack/user_task_8.json",
+  "A/pass3/traj/slack/user_task_9.json",
+  "A/pass3/traj/travel/user_task_4.json",
+  "A/pass3/traj/travel/user_task_8.json",
+  "A/pass3/traj/workspace/user_task_0.json",
+  "A/pass3/traj/workspace/user_task_1.json",
+  "A/pass3/traj/workspace/user_task_10.json",
+  "A/pass3/traj/workspace/user_task_11.json",
+  "A/pass3/traj/workspace/user_task_13.json",
+  "A/pass3/traj/workspace/user_task_14.json",
+  "A/pass3/traj/workspace/user_task_15.json",
+  "A/pass3/traj/workspace/user_task_16.json",
+  "A/pass3/traj/workspace/user_task_17.json",
+  "A/pass3/traj/workspace/user_task_18.json",
+  "A/pass3/traj/workspace/user_task_19.json",
+  "A/pass3/traj/workspace/user_task_20.json",
+  "A/pass3/traj/workspace/user_task_21.json",
+  "A/pass3/traj/workspace/user_task_22.json",
+  "A/pass3/traj/workspace/user_task_23.json",
+  "A/pass3/traj/workspace/user_task_24.json",
+  "A/pass3/traj/workspace/user_task_25.json",
+  "A/pass3/traj/workspace/user_task_26.json",
+  "A/pass3/traj/workspace/user_task_27.json",
+  "A/pass3/traj/workspace/user_task_28.json",
+  "A/pass3/traj/workspace/user_task_29.json",
+  "A/pass3/traj/workspace/user_task_3.json",
+  "A/pass3/traj/workspace/user_task_30.json",
+  "A/pass3/traj/workspace/user_task_31.json",
+  "A/pass3/traj/workspace/user_task_33.json",
+  "A/pass3/traj/workspace/user_task_34.json",
+  "A/pass3/traj/workspace/user_task_35.json",
+  "A/pass3/traj/workspace/user_task_36.json",
+  "A/pass3/traj/workspace/user_task_38.json",
+  "A/pass3/traj/workspace/user_task_39.json",
+  "A/pass3/traj/workspace/user_task_4.json",
+  "A/pass3/traj/workspace/user_task_5.json",
+  "A/pass3/traj/workspace/user_task_7.json",
+  "A/pass3/traj/workspace/user_task_8.json",
+  "A/pass3/traj/workspace/user_task_9.json",
+  "B/pass1/traj/banking/user_task_0.json",
+  "B/pass1/traj/banking/user_task_11.json",
+  "B/pass1/traj/banking/user_task_12.json",
+  "B/pass1/traj/banking/user_task_15.json",
+  "B/pass1/traj/banking/user_task_3.json",
+  "B/pass1/traj/banking/user_task_4.json",
+  "B/pass1/traj/banking/user_task_5.json",
+  "B/pass1/traj/banking/user_task_6.json",
+  "B/pass1/traj/banking/user_task_8.json",
+  "B/pass1/traj/slack/user_task_1.json",
+  "B/pass1/traj/slack/user_task_10.json",
+  "B/pass1/traj/slack/user_task_11.json",
+  "B/pass1/traj/slack/user_task_12.json",
+  "B/pass1/traj/slack/user_task_13.json",
+  "B/pass1/traj/slack/user_task_14.json",
+  "B/pass1/traj/slack/user_task_15.json",
+  "B/pass1/traj/slack/user_task_16.json",
+  "B/pass1/traj/slack/user_task_17.json",
+  "B/pass1/traj/slack/user_task_18.json",
+  "B/pass1/traj/slack/user_task_19.json",
+  "B/pass1/traj/slack/user_task_2.json",
+  "B/pass1/traj/slack/user_task_20.json",
+  "B/pass1/traj/slack/user_task_6.json",
+  "B/pass1/traj/slack/user_task_7.json",
+  "B/pass1/traj/slack/user_task_8.json",
+  "B/pass1/traj/slack/user_task_9.json",
+  "B/pass1/traj/travel/user_task_1.json",
+  "B/pass1/traj/travel/user_task_8.json",
+  "B/pass1/traj/workspace/user_task_0.json",
+  "B/pass1/traj/workspace/user_task_1.json",
+  "B/pass1/traj/workspace/user_task_10.json",
+  "B/pass1/traj/workspace/user_task_13.json",
+  "B/pass1/traj/workspace/user_task_14.json",
+  "B/pass1/traj/workspace/user_task_15.json",
+  "B/pass1/traj/workspace/user_task_16.json",
+  "B/pass1/traj/workspace/user_task_17.json",
+  "B/pass1/traj/workspace/user_task_18.json",
+  "B/pass1/traj/workspace/user_task_19.json",
+  "B/pass1/traj/workspace/user_task_20.json",
+  "B/pass1/traj/workspace/user_task_21.json",
+  "B/pass1/traj/workspace/user_task_22.json",
+  "B/pass1/traj/workspace/user_task_23.json",
+  "B/pass1/traj/workspace/user_task_24.json",
+  "B/pass1/traj/workspace/user_task_25.json",
+  "B/pass1/traj/workspace/user_task_26.json",
+  "B/pass1/traj/workspace/user_task_27.json",
+  "B/pass1/traj/workspace/user_task_28.json",
+  "B/pass1/traj/workspace/user_task_29.json",
+  "B/pass1/traj/workspace/user_task_3.json",
+  "B/pass1/traj/workspace/user_task_30.json",
+  "B/pass1/traj/workspace/user_task_31.json",
+  "B/pass1/traj/workspace/user_task_33.json",
+  "B/pass1/traj/workspace/user_task_34.json",
+  "B/pass1/traj/workspace/user_task_35.json",
+  "B/pass1/traj/workspace/user_task_36.json",
+  "B/pass1/traj/workspace/user_task_37.json",
+  "B/pass1/traj/workspace/user_task_38.json",
+  "B/pass1/traj/workspace/user_task_39.json",
+  "B/pass1/traj/workspace/user_task_4.json",
+  "B/pass1/traj/workspace/user_task_5.json",
+  "B/pass1/traj/workspace/user_task_7.json",
+  "B/pass1/traj/workspace/user_task_8.json",
+  "B/pass1/traj/workspace/user_task_9.json",
+  "B/pass2/traj/banking/user_task_0.json",
+  "B/pass2/traj/banking/user_task_1.json",
+  "B/pass2/traj/banking/user_task_10.json",
+  "B/pass2/traj/banking/user_task_11.json",
+  "B/pass2/traj/banking/user_task_12.json",
+  "B/pass2/traj/banking/user_task_14.json",
+  "B/pass2/traj/banking/user_task_15.json",
+  "B/pass2/traj/banking/user_task_2.json",
+  "B/pass2/traj/banking/user_task_3.json",
+  "B/pass2/traj/banking/user_task_4.json",
+  "B/pass2/traj/banking/user_task_5.json",
+  "B/pass2/traj/banking/user_task_6.json",
+  "B/pass2/traj/banking/user_task_7.json",
+  "B/pass2/traj/banking/user_task_8.json",
+  "B/pass2/traj/slack/user_task_1.json",
+  "B/pass2/traj/slack/user_task_10.json",
+  "B/pass2/traj/slack/user_task_11.json",
+  "B/pass2/traj/slack/user_task_12.json",
+  "B/pass2/traj/slack/user_task_13.json",
+  "B/pass2/traj/slack/user_task_14.json",
+  "B/pass2/traj/slack/user_task_15.json",
+  "B/pass2/traj/slack/user_task_16.json",
+  "B/pass2/traj/slack/user_task_17.json",
+  "B/pass2/traj/slack/user_task_18.json",
+  "B/pass2/traj/slack/user_task_2.json",
+  "B/pass2/traj/slack/user_task_20.json",
+  "B/pass2/traj/slack/user_task_6.json",
+  "B/pass2/traj/slack/user_task_7.json",
+  "B/pass2/traj/slack/user_task_8.json",
+  "B/pass2/traj/slack/user_task_9.json",
+  "B/pass2/traj/travel/user_task_1.json",
+  "B/pass2/traj/travel/user_task_8.json",
+  "B/pass2/traj/workspace/user_task_0.json",
+  "B/pass2/traj/workspace/user_task_1.json",
+  "B/pass2/traj/workspace/user_task_10.json",
+  "B/pass2/traj/workspace/user_task_11.json",
+  "B/pass2/traj/workspace/user_task_13.json",
+  "B/pass2/traj/workspace/user_task_14.json",
+  "B/pass2/traj/workspace/user_task_15.json",
+  "B/pass2/traj/workspace/user_task_16.json",
+  "B/pass2/traj/workspace/user_task_17.json",
+  "B/pass2/traj/workspace/user_task_18.json",
+  "B/pass2/traj/workspace/user_task_19.json",
+  "B/pass2/traj/workspace/user_task_20.json",
+  "B/pass2/traj/workspace/user_task_21.json",
+  "B/pass2/traj/workspace/user_task_22.json",
+  "B/pass2/traj/workspace/user_task_23.json",
+  "B/pass2/traj/workspace/user_task_24.json",
+  "B/pass2/traj/workspace/user_task_25.json",
+  "B/pass2/traj/workspace/user_task_26.json",
+  "B/pass2/traj/workspace/user_task_27.json",
+  "B/pass2/traj/workspace/user_task_28.json",
+  "B/pass2/traj/workspace/user_task_29.json",
+  "B/pass2/traj/workspace/user_task_3.json",
+  "B/pass2/traj/workspace/user_task_30.json",
+  "B/pass2/traj/workspace/user_task_31.json",
+  "B/pass2/traj/workspace/user_task_33.json",
+  "B/pass2/traj/workspace/user_task_34.json",
+  "B/pass2/traj/workspace/user_task_35.json",
+  "B/pass2/traj/workspace/user_task_36.json",
+  "B/pass2/traj/workspace/user_task_37.json",
+  "B/pass2/traj/workspace/user_task_38.json",
+  "B/pass2/traj/workspace/user_task_39.json",
+  "B/pass2/traj/workspace/user_task_4.json",
+  "B/pass2/traj/workspace/user_task_5.json",
+  "B/pass2/traj/workspace/user_task_7.json",
+  "B/pass2/traj/workspace/user_task_8.json",
+  "B/pass2/traj/workspace/user_task_9.json",
+  "B/pass3/traj/banking/user_task_0.json",
+  "B/pass3/traj/banking/user_task_10.json",
+  "B/pass3/traj/banking/user_task_11.json",
+  "B/pass3/traj/banking/user_task_12.json",
+  "B/pass3/traj/banking/user_task_14.json",
+  "B/pass3/traj/banking/user_task_15.json",
+  "B/pass3/traj/banking/user_task_3.json",
+  "B/pass3/traj/banking/user_task_4.json",
+  "B/pass3/traj/banking/user_task_5.json",
+  "B/pass3/traj/banking/user_task_6.json",
+  "B/pass3/traj/banking/user_task_7.json",
+  "B/pass3/traj/banking/user_task_8.json",
+  "B/pass3/traj/slack/user_task_1.json",
+  "B/pass3/traj/slack/user_task_10.json",
+  "B/pass3/traj/slack/user_task_11.json",
+  "B/pass3/traj/slack/user_task_12.json",
+  "B/pass3/traj/slack/user_task_13.json",
+  "B/pass3/traj/slack/user_task_14.json",
+  "B/pass3/traj/slack/user_task_15.json",
+  "B/pass3/traj/slack/user_task_16.json",
+  "B/pass3/traj/slack/user_task_17.json",
+  "B/pass3/traj/slack/user_task_18.json",
+  "B/pass3/traj/slack/user_task_19.json",
+  "B/pass3/traj/slack/user_task_2.json",
+  "B/pass3/traj/slack/user_task_20.json",
+  "B/pass3/traj/slack/user_task_6.json",
+  "B/pass3/traj/slack/user_task_7.json",
+  "B/pass3/traj/slack/user_task_8.json",
+  "B/pass3/traj/slack/user_task_9.json",
+  "B/pass3/traj/travel/user_task_1.json",
+  "B/pass3/traj/travel/user_task_4.json",
+  "B/pass3/traj/travel/user_task_7.json",
+  "B/pass3/traj/travel/user_task_8.json",
+  "B/pass3/traj/workspace/user_task_0.json",
+  "B/pass3/traj/workspace/user_task_1.json",
+  "B/pass3/traj/workspace/user_task_10.json",
+  "B/pass3/traj/workspace/user_task_11.json",
+  "B/pass3/traj/workspace/user_task_13.json",
+  "B/pass3/traj/workspace/user_task_14.json",
+  "B/pass3/traj/workspace/user_task_15.json",
+  "B/pass3/traj/workspace/user_task_16.json",
+  "B/pass3/traj/workspace/user_task_17.json",
+  "B/pass3/traj/workspace/user_task_18.json",
+  "B/pass3/traj/workspace/user_task_19.json",
+  "B/pass3/traj/workspace/user_task_20.json",
+  "B/pass3/traj/workspace/user_task_21.json",
+  "B/pass3/traj/workspace/user_task_22.json",
+  "B/pass3/traj/workspace/user_task_23.json",
+  "B/pass3/traj/workspace/user_task_24.json",
+  "B/pass3/traj/workspace/user_task_25.json",
+  "B/pass3/traj/workspace/user_task_26.json",
+  "B/pass3/traj/workspace/user_task_27.json",
+  "B/pass3/traj/workspace/user_task_28.json",
+  "B/pass3/traj/workspace/user_task_29.json",
+  "B/pass3/traj/workspace/user_task_3.json",
+  "B/pass3/traj/workspace/user_task_30.json",
+  "B/pass3/traj/workspace/user_task_31.json",
+  "B/pass3/traj/workspace/user_task_32.json",
+  "B/pass3/traj/workspace/user_task_33.json",
+  "B/pass3/traj/workspace/user_task_34.json",
+  "B/pass3/traj/workspace/user_task_35.json",
+  "B/pass3/traj/workspace/user_task_36.json",
+  "B/pass3/traj/workspace/user_task_38.json",
+  "B/pass3/traj/workspace/user_task_39.json",
+  "B/pass3/traj/workspace/user_task_4.json",
+  "B/pass3/traj/workspace/user_task_5.json",
+  "B/pass3/traj/workspace/user_task_7.json",
+  "B/pass3/traj/workspace/user_task_8.json",
+  "B/pass3/traj/workspace/user_task_9.json"
+ ],
+ "cost": {
+  "episodes": 396,
+  "model_calls": 1765,
+  "per_call": 0.003431282522191613,
+  "usd": 6.06
+ }
+}
