@@ -28,6 +28,9 @@ from agentdojo.task_suite.load_suites import get_suite  # noqa: E402
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
 from axor_core.kernel.confirm import ScriptedConfirmer  # noqa: E402
+
+sys.path.insert(0, os.path.join(HERE, ".."))
+import axor_ajar  # noqa: E402  (§9 references: the agent's view; §9.15 structured sources)
 from axor_core.kernel.handles import canonicalize, split_kind  # noqa: E402
 
 TEMPORAL = re.compile(r"(date|time|day)", re.I)
@@ -87,24 +90,27 @@ def main(cfg_dir, out_path):
         plan = list(ut.ground_truth(env.model_copy(deep=True)))
         g = governor(cfgs[d["suite"]], ut.PROMPT, plan, l4=(cfg_name == "B"))
         seq = []
+        view_changed = False
         for m in d["messages"]:
             if m["role"] != "tool" or not m.get("tool_call"):
                 continue
             mm = CALL.match(m["tool_call"])
             tool, args = mm.group(1), ast.literal_eval(mm.group(2))
             asked0 = g.confirmations
-            dec = g.evaluate(tool, args)
-            seq.append([tool, dec.allowed, dec.category, g.confirmations - asked0])
+            dec = g.evaluate(tool, axor_ajar.agent_args(g, dict(args)))
+            seq.append([tool, dec.allowed, dec.category, g.confirmations - asked0]
+                       + ([dec.description] if getattr(dec, "description", None) else []))
             if not dec.allowed:
                 continue
             if getattr(dec, "grant_id", None) is not None:
-                key = g.spend(dec, dict(args))
+                key = g.spend(dec, axor_ajar.spend_args(dec, dict(args)))
                 if key is not None:
                     g.grant_store.commit(key)
             if not m.get("error"):
                 text = "".join(b.get("content", "") for b in (m.get("content") or []) if isinstance(b, dict))
-                g.register_output(dec, text)
-        out[rel] = {"utility": d["utility"], "decisions": seq}
+                view = axor_ajar.present(g, dec, text, tool, axor_ajar.spend_args(dec, dict(args)))
+                view_changed |= view != text  # §9: the agent would have read references here
+        out[rel] = {"utility": d["utility"], "decisions": seq, "view_changed": view_changed}
     json.dump(out, open(out_path, "w"), indent=0)
     print(len(out), "episodes")
 
