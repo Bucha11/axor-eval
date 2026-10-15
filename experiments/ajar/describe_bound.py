@@ -55,6 +55,9 @@ def records(out):
         return [(y, None)]
     if isinstance(y, list) and y and all(isinstance(x, dict) for x in y):
         return [(x, y) for x in y]
+    if isinstance(y, list) and y and all(isinstance(x, (str, int)) for x in y):
+        # a structured list of names / ids (channels, users): one pseudo-record per element
+        return [({"__element__": x}, y) for x in y]
     return []
 
 
@@ -77,7 +80,7 @@ def where(value, outs):
                     if isinstance(y, (dict, list)):
                         continue
                     cy = canon(y)
-                    if cy == v and k not in TEXT_FIELDS and k != "__text__":
+                    if cy == v and k not in TEXT_FIELDS and k != "__text__":  # incl. __element__
                         found.append(("structured", {"tool": tool, "args": args, "field": k, "rec": rec, "list": lst}))
                     elif v and v in cy and (k in TEXT_FIELDS or k == "__text__"):
                         snd = next((rec[f] for f in SENDER_FIELDS if f in rec), None)
@@ -85,8 +88,36 @@ def where(value, outs):
     return found
 
 
-def selector(info, prompt, own):
+def element_selector(info, prompt, outs):
+    """For an element of a structured list: chosen by a request fragment, or by the fewest / most
+    records another read returns for it (e.g. read_channel_messages(channel=e))."""
+    lst, tool = info["list"], info["tool"]
+    e = info["rec"]["__element__"]
+    words = [w for w in re.findall(r"[\w'-]{3,}", prompt) if w.casefold() not in {"the", "and", "with", "that", "channel", "user", "users"}]
+    hits = [w for w in words if w.casefold() in str(e).casefold()]
+    if hits and sum(1 for x in lst if any(w.casefold() in str(x).casefold() for w in hits)) == 1:
+        return f"element of {tool}() containing <request fragment '{hits[0]}'>", "request"
+    counts = {}
+    for t, a, o in outs:
+        for x in lst:
+            if x in (a or {}).values():
+                rs = records(o) if o else []
+                counts[x] = len(rs)
+    if len(counts) == len(lst) and len(lst) >= 2:
+        for name, f in (("fewest", min), ("most", max)):
+            m = f(counts.values())
+            if counts.get(e) == m and list(counts.values()).count(m) == 1:
+                return f"element of {tool}() with the {name} records in the read keyed by it", "structured"
+    if len(lst) == 1:
+        return f"the only element of {tool}()", "structured"
+    return None
+
+
+def selector(info, prompt, own, outs=()):
     """A description of the record holding the value, or None."""
+    if "__element__" in info["rec"]:
+        r = element_selector(info, prompt, outs)
+        return r if r else (None, None)
     rec, lst, tool, args = info["rec"], info["list"], info["tool"], info["args"]
     p = prompt.casefold()
     src = "request" if all(canon(a) in canon(prompt) for a in (args or {}).values() if isinstance(a, str) and a) else "own/none"
@@ -135,7 +166,15 @@ def main(out_path):
             outs = [(c.tool, dict(c.args), o) for c, o in steps[:i]]
             args = dict(call.args)
             per_arg = []
-            for a in driving.get(call.tool, []) or list(args):
+            category = d.log[-1]["category"] if d.log else ""
+            targets = [a for a in (driving.get(call.tool) or []) if not re.search(r"amount|date|time|day", a)]
+            passed = [a for a in targets if args.get(a) not in (None, "", [], {})]
+            if not passed:
+                rows.append({"suite": spec.task.suite, "task": str(spec.task), "step": i, "tool": call.tool,
+                             "args": {}, "closed": False, "kind": "no target in the call", "category": category,
+                             "per_arg": []})
+                continue
+            for a in passed:
                 val = args.get(a)
                 vals = val if isinstance(val, list) else [val]
                 for x in vals:
@@ -147,7 +186,7 @@ def main(out_path):
                     locs = where(x, outs)
                     st = [l for l in locs if l[0] == "structured"]
                     if st:
-                        form, src = selector(st[0][1], spec.prompt, own)
+                        form, src = selector(st[0][1], spec.prompt, own, outs)
                         if form:
                             per_arg.append({"arg": a, "value": x, "status": "described", "form": form, "params": src})
                             continue
@@ -159,10 +198,16 @@ def main(out_path):
                               else "only in free text (page / file / body)" if "text" in kinds
                               else "other (not in any read)")
                     per_arg.append({"arg": a, "value": x, "status": "not described", "reason": reason})
-            closed = bool(per_arg) and all(p["status"] in ("described", "R/own") for p in per_arg)
+            if all(p["status"] == "R/own" for p in per_arg):
+                kind = "target proven; refused for another reason"
+            elif all(p["status"] in ("described", "R/own") for p in per_arg):
+                kind = "target closable by a description"
+            else:
+                kind = "target not describable"
+            closed = kind == "target closable by a description"
             rows.append({"suite": spec.task.suite, "task": str(spec.task), "step": i, "tool": call.tool,
-                         "args": {k: args[k] for k in args if k in (driving.get(call.tool) or args)},
-                         "closed": closed, "per_arg": per_arg})
+                         "args": {k: args[k] for k in passed}, "closed": closed, "kind": kind,
+                         "category": category, "per_arg": per_arg})
             print(rows[-1]["task"].split("/")[1], rows[-1]["task"].split("/")[2][:16], call.tool, closed,
                   [(p["arg"], p["status"], p.get("form") or p.get("reason") or "") for p in per_arg], flush=True)
     # summary
@@ -172,8 +217,16 @@ def main(out_path):
         tasks = defaultdict(list)
         for r in rs:
             tasks[r["task"]].append(r["closed"])
-        summ[s] = {"refused_calls": len(rs), "closed_calls": sum(r["closed"] for r in rs),
-                   "tasks_with_refusal": len(tasks), "tasks_closed": sum(all(v) for v in tasks.values())}
+        tgt = [r for r in rs if r["kind"] in ("target closable by a description", "target not describable")]
+        ttasks = defaultdict(list)
+        for r in rs:
+            ttasks[r["task"]].append(r["kind"])
+        summ[s] = {"refused_calls": len(rs),
+                   "by_kind": dict(Counter(r["kind"] for r in rs)),
+                   "target_refusals": len(tgt), "closable": sum(r["closed"] for r in tgt),
+                   "tasks_with_refusal": len(ttasks),
+                   "tasks_all_refusals_closable": sum(all(k == "target closable by a description" for k in v)
+                                                      for v in ttasks.values())}
     forms = Counter(p["form"] for r in rows for p in r["per_arg"] if p["status"] == "described")
     reasons = Counter(p.get("reason") or p["status"] for r in rows for p in r["per_arg"]
                       if p["status"] not in ("described", "R/own"))
