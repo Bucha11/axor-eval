@@ -38,6 +38,11 @@ if _CORE not in sys.path:
 
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
+from axor_core.contracts.canonical import ConsequenceClass as _CC  # noqa: E402
+
+# origin-gate-only (mode a): consequence class is a ceiling, CONSEQUENTIAL admitted on origin,
+# CATASTROPHIC still blocked (no ground). §9 origin / floor decide.
+_CONSEQ_CEIL = _CC.CONSEQUENTIAL
 
 from ajar.core.ir import TaskSpec  # noqa: E402
 from ajar.core.types import Candidate, ContextRef, Verdict  # noqa: E402
@@ -236,7 +241,8 @@ class AxorDefense:
         if self.no_grants:
             cfg = dataclasses.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
                                       description_targets={}, delegated_sources={}, list_union=False,
-                                      list_args={})
+                                      list_args={},
+                                      max_unattended_consequence=_CONSEQ_CEIL)
         kw = cfg.as_governor_kwargs()
         if self.governor_kwargs is not None:
             kw.update(self.governor_kwargs(spec))

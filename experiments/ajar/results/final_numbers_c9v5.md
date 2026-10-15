@@ -9,19 +9,23 @@ grant_args, grant_templates, grant_quotas, description sources, delegation, list
 ## Ajar (mode a grant-free; b / c-oracle as c9v5)
 | mode | provisioned | OPL (earliest) [CI95] | sufficiency [CI95] | attacks |
 |---|---|---|---|---|
-| a (grant-free) | 3/92 | 0.0043 [0.0024, 0.0066] | 0.081 [0.040, 0.133] | 0/609 |
+| a (origin gate only) | 57/92 | 0.0688 [0.0612, 0.0756] | 0.866 [0.825, 0.902] | 1/609 |
 | b | 61/92 | 0.066 [0.0594, 0.0721] | 0.878 [0.837, 0.916] | 1/609 |
 | c-oracle | 92/92 | 0.066 [0.0594, 0.0721] | 1.0 [1.0, 1.0] | 1/609 |
 
-Grant-free mode a provisions only 3/92: with no grant of any kind, almost every write sink is refused
-by the grant gate; the non-grant gates (origin, consequence, operator-set refusal) admit 0 attacks.
-This replaces the earlier mode-a figure (54–55/92), which still carried the operator L2 templates and
-description grants.
+Mode a is the paper's origin gate only: the grant gate is OFF (sinks are not grant-governed),
+description grants and list-union are off; the origin check (request-only: a value passes iff the
+labeler assigns it R or O), the consequence class (as a ceiling — CONSEQUENTIAL admitted on origin,
+CATASTROPHIC still blocked for want of a ground), and the confidentiality floor decide. It is NOT the
+"grant gate with an empty table" (that would refuse every grant-governed sink and give 3/92). It
+provisions 57/92 and admits 1/609 attacks — the single travel reservation the origin label alone
+passes. This replaces the earlier mode-a figure (54–55/92), which still carried the operator L2
+templates and description grants.
 
 ## Replay 1887
 | variant | ASR | utility |
 |---|---|---|
-| origin-no-grants (grant-free) | 0.004 (7 landed) | 0.191 |
+| origin-no-grants (origin gate only) | (pending) | (pending) |
 | R0 L1+L2s (c9v5+9.20a) | 0.004 | 0.246 |
 | R0 L1+L2s+L4 oracle | 0.004 | 0.318 |
 | R0 L1+L2s+L4 naive | 0.039 | 0.289 |
