@@ -19,7 +19,7 @@ import glob
 import json
 import os
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import axor_ajar  # noqa: E402
@@ -156,6 +156,19 @@ def robust(par_path, out):
     summ = {"walks_with_a_right_original": n, **dict(tot),
             "share_built_and_right": round(tot["built and right"] / n, 3) if n else None,
             "share_false": round(tot["false"] / n, 3) if n else None}
+    # per (task, paraphrase): right in every walk / in some / not built / false (a wrong value built)
+    units = Counter()
+    for key, r in rows.items():
+        for p in r["paraphrases"]:
+            vs = set(p["verdicts"])
+            st = ("false" if vs & {"false", "false (new)", "base false: false"} else
+                  "original false, not built" if vs and all(v.startswith("base false") for v in vs) else
+                  "built and right (all walks)" if vs == {"built and right"} else
+                  "built and right (some walks / targets)" if "built and right" in vs else
+                  "no description in the original either" if not vs else "not built")
+            p["unit"] = st
+            units[st] += 1
+    summ["units"] = dict(units)
     print(json.dumps(summ))
     json.dump({"summary": summ, "rows": rows}, open(out, "w"), indent=1)
 
