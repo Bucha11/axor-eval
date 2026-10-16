@@ -1,4 +1,5 @@
 {
+ "NOTE": "SUPERSEDED: recorded attacker \u2014 direct substitution, does NOT build chains; see chains_ii_c9v6.json for the active-attacker designation chains",
  "harness": "conf_mech path (config grants c9v6, L2=tuple, audience, references, counters, typed)",
  "kernel_head": "cad07bc50a197ee58402bd724bd0f494d830749f",
  "config_sha256_16": {

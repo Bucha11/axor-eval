@@ -1,4 +1,9 @@
-"""Chains-with-execution, 28 pointer scenarios, on OUR system (conf_mech path):
+"""NOTE (superseded): RECORDED ATTACKER — DIRECT SUBSTITUTION, DOES NOT BUILD CHAINS.
+This harness replays recorded attacked trajectories; it does not construct an active attacker
+that writes into injection vectors under the task pointer. For the active-attacker designation
+chains see chains_ii_c9v6.py / results/chains_ii_c9v6.json.
+
+Chains-with-execution, 28 pointer scenarios, on OUR system (conf_mech path):
 config_m1_c9v6 grants (config driving args), L2=tuple, floor audience, references,
 counters, typed senders, frozen kernel cad07bc. No API.
 
