@@ -1,0 +1,9 @@
+{
+  "variant": "V3prime",
+  "description": "wrap from/sender = exact scope.named_source[0] from cached ROPE router; b/s/t 1167 tasks; no API; cache miss = not built (counted)",
+  "corpus": "replay b/s/t (banking+slack+travel), 3 models",
+  "kernel": "cad07bc (frozen)",
+  "config": "config_m1_c9v6 (c9v5 + sender_from_typed:true)",
+  "rope":  {"landed": 3, "built": 118, "nonempty_named_source": 144, "miss": 63, "empty_named_source": 960},
+  "axor":  {"landed": 0, "built": 118, "nonempty_named_source": 144, "miss": 63, "empty_named_source": 960}
+}
