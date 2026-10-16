@@ -46,3 +46,9 @@ checkout, or `AXOR_CORE_REPO`.
 * L2 uses the repo's only operator allowlist (`banking_tuned.yaml`). It contains
   `US133000000121212121212`, which AgentDojo uses both as the attacker's IBAN and as a
   legitimate landlord in banking/user_task_15. `L2s` is the same list without it.
+
+## c9v5 / c9v6 (freeze)
+The live paid runs (`results/live_c9v5/`) were on **c9v5** (FREEZE_C9V5.md). **c9v6** = c9v5 +
+`sender_from_typed` (record sender from the tool's typed return field, not parsed from text;
+FREEZE_C9V6.md). On c9v6 `named_sender` matches c9v5 on every tool output — a differential over 7462
+recorded outputs (replay / Ajar / live) shows 0 discrepancies (`results/sender_from_typed_diff_c9v6.json`).
