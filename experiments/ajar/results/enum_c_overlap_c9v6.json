@@ -1,0 +1,12 @@
+{
+ "finite_quota_C_tuples": 153,
+ "covered_by_ge2_grants": 0,
+ "covering_grant_count_hist": {
+  "1": 153
+ },
+ "executions_until_denial_hist": {
+  "1": 153
+ },
+ "tuples_with_more_than_1_execution": 0,
+ "note": "executions counts total admits of the SAME recorded tuple before denial, under grants (first live grant in issue order is spent, kernel/grants.py:288-306); not 'over one grant's quota'."
+}
