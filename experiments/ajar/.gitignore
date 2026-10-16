@@ -1,0 +1,4 @@
+# transient run artifacts — never committed
+results/*.driver.log
+# discarded contaminated #2 partial (origin-only that still carried config grants)
+results/live_origin_c9v5_contaminated/
