@@ -24,6 +24,12 @@ for PASS in 1 2 3; do
   for SUITE in banking slack travel workspace; do
     OUT=$ROOT/pass${PASS}
     mkdir -p $OUT
+    # resumable: skip a (pass,suite) unit already completed in an earlier background slot
+    # (the run is wall-clock-limited, not budget-limited; the shared ledger enforces $7
+    # cumulatively across restarts, so completed units are never re-spent).
+    if [ -f "$OUT/${SUITE}.done" ]; then
+      echo "== origin-v2 pass$PASS $SUITE SKIP (already done) $(date -u +%T)"; continue
+    fi
     env AXOR_BENCH_BACKEND=openrouter AXOR_BENCH_MODEL=openai/o4-mini AXOR_BENCH_MAXTOK=4096 \
         AXOR_BENCH_SUITE=$SUITE \
         AXOR_BENCH_CONFIG=$HERE/../config_m1_c9v5/$SUITE.yaml \
@@ -34,7 +40,9 @@ for PASS in 1 2 3; do
         AXOR_BENCH_TRAJ_DIR=$OUT/traj \
         uv run -q --no-project --with agentdojo==0.1.35 --with pyyaml --with-editable /home/user/core-m1 \
         python run_agentdojo.py > $OUT/${SUITE}.log 2>&1
-    echo "== origin-v2 pass$PASS $SUITE rc=$? spend=$(python3 -c "import json;print(round(sum(json.loads(l).get('cost') or 0 for l in open('$SPEND')),4))" 2>/dev/null) $(date -u +%T)"
+    RC=$?
+    [ $RC -eq 0 ] && touch "$OUT/${SUITE}.done"
+    echo "== origin-v2 pass$PASS $SUITE rc=$RC spend=$(python3 -c "import json;print(round(sum(json.loads(l).get('cost') or 0 for l in open('$SPEND')),4))" 2>/dev/null) $(date -u +%T)"
   done
 done
 touch $ROOT/ALL_DONE
