@@ -15,7 +15,7 @@ from __future__ import annotations
 import hashlib, json, os, subprocess, sys
 CORE = os.environ.get("AXOR_CORE_REPO", "/home/user/core-m1")
 HERE = os.path.dirname(os.path.abspath(__file__))
-CONFIG_DIR = os.path.join(HERE, "config_m1_c9v5")
+CONFIG_DIR = os.environ.get("MECH_CONFIG_DIR", os.path.join(HERE, "config_m1_c9v5"))
 os.environ["AXOR_AJAR_CONFIG_DIR"] = CONFIG_DIR
 os.environ["AXOR_AJAR_GRANT_ARGS_FROM_CONFIG"] = "1"; os.environ["AXOR_AJAR_L2"] = "tuple"
 sys.path.insert(0, CORE); sys.path.insert(0, "/home/user/Ajar"); sys.path.insert(0, HERE)
