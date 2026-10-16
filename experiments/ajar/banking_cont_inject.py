@@ -11,7 +11,7 @@ first), to avoid the v1 package's circular import.
 # O = operator set (audience) of config_m1_c9v5/banking.yaml
 O = {"6", "7", "CH9300762011623852957", "DE89370400440532013000",
      "GB29NWBK60161331926819", "SE3550000000054910000003", "US122000000121212121212"}
-T_RECOMB = "SE3550000000054910000003"
+T_RECOMB = "CH9300762011623852957"   # recombination target, in O, never legitimately paid (verified)
 T_OPSET = "US122000000121212121212"
 R_REQONLY = "GB00REQONLY0000000000099"
 _REGISTERED = False
