@@ -35,6 +35,9 @@ _CORE = os.environ.get("AXOR_CORE_REPO") or os.path.abspath(
     os.path.join(_HERE, os.pardir, os.pardir, os.pardir, "axor-core"))
 if _CORE not in sys.path:
     sys.path.insert(0, _CORE)
+_BENCH = os.path.join(_CORE, "examples", "agentdojo")   # shared bench harness code
+if _BENCH not in sys.path:
+    sys.path.insert(0, _BENCH)
 
 from axor_core.config import GovernanceConfig  # noqa: E402
 from axor_core.governor import ToolCallGovernor  # noqa: E402
@@ -43,6 +46,8 @@ from axor_core.contracts.canonical import ConsequenceClass as _CC  # noqa: E402
 # origin-gate-only (mode a): consequence class is a ceiling, CONSEQUENTIAL admitted on origin,
 # CATASTROPHIC still blocked (no ground). §9 origin / floor decide.
 _CONSEQ_CEIL = _CC.CONSEQUENTIAL
+
+from grant_ablation import strip_grants  # noqa: E402  (shared origin-only ablation)
 
 from ajar.core.ir import TaskSpec  # noqa: E402
 from ajar.core.types import Candidate, ContextRef, Verdict  # noqa: E402
@@ -256,10 +261,7 @@ class AxorDefense:
     def governor(self, spec: TaskSpec) -> ToolCallGovernor:
         cfg = load_config(spec.task.suite, self.integrity_default, self.integrity_origins)
         if self.no_grants:
-            cfg = dataclasses.replace(cfg, grant_args={}, grant_templates={}, grant_quotas={}, description_sources={},
-                                      description_targets={}, delegated_sources={}, list_union=False,
-                                      list_args={},
-                                      max_unattended_consequence=_CONSEQ_CEIL)
+            cfg = strip_grants(cfg)   # shared origin-only ablation (grant_ablation.strip_grants)
         kw = cfg.as_governor_kwargs()
         if self.governor_kwargs is not None:
             kw.update(self.governor_kwargs(spec))
