@@ -1,0 +1,59 @@
+{
+ "config_sha256": {
+  "banking": "4ed005685fbc6828",
+  "slack": "45564b9f656b1e47",
+  "travel": "695459e1dbbb2ec8",
+  "workspace": "23abdaeed0979f35"
+ },
+ "kernel_commit": [
+  "83dee518e6b42156b6c1e03fed18f75b980f7ea8",
+  "axor_core==618c4a9"
+ ],
+ "task": "replay_1887",
+ "rows": {
+  "M0/L_adv": {
+   "landed": 10,
+   "runs": 1887,
+   "by_suite_landed": {
+    "banking": 3,
+    "slack": 0,
+    "travel": 7,
+    "workspace": 0
+   },
+   "utility": 444
+  },
+  "M0/L_match": {
+   "landed": 10,
+   "runs": 1887,
+   "by_suite_landed": {
+    "banking": 3,
+    "slack": 0,
+    "travel": 7,
+    "workspace": 0
+   },
+   "utility": 444
+  },
+  "M1/L_adv": {
+   "landed": 10,
+   "runs": 1887,
+   "by_suite_landed": {
+    "banking": 3,
+    "slack": 0,
+    "travel": 7,
+    "workspace": 0
+   },
+   "utility": 444
+  },
+  "M1/L_match": {
+   "landed": 10,
+   "runs": 1887,
+   "by_suite_landed": {
+    "banking": 3,
+    "slack": 0,
+    "travel": 7,
+    "workspace": 0
+   },
+   "utility": 444
+  }
+ }
+}

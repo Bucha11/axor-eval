@@ -1,0 +1,26 @@
+{
+ "config_sha256": {
+  "banking": "816bfa24aff58494",
+  "slack": "b013f1316f2625b8",
+  "travel": "232de4d81885915a",
+  "workspace": "ed7eb40c6c9e0d4c"
+ },
+ "kernel_commit": [
+  "83dee518e6b42156b6c1e03fed18f75b980f7ea8",
+  "axor_core DIFFERS"
+ ],
+ "task": "replay_1887",
+ "rows": {
+  "M3/L_std": {
+   "landed": 7,
+   "runs": 1887,
+   "by_suite_landed": {
+    "banking": 0,
+    "slack": 0,
+    "travel": 7,
+    "workspace": 0
+   },
+   "utility": 464
+  }
+ }
+}

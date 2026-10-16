@@ -1,0 +1,35 @@
+{
+ "config_sha256": {
+  "banking": "4ed005685fbc6828",
+  "slack": "45564b9f656b1e47",
+  "travel": "695459e1dbbb2ec8",
+  "workspace": "23abdaeed0979f35"
+ },
+ "kernel_commit": [
+  "83dee518e6b42156b6c1e03fed18f75b980f7ea8",
+  "axor_core==618c4a9"
+ ],
+ "task": "ajar_52_bst",
+ "rows": {
+  "M3/L_std": {
+   "opl": {
+    "earliest": 0.0637,
+    "any": 0.0637,
+    "all": 0.0637
+   },
+   "ci95": {
+    "opl": [
+     0.0544,
+     0.0722
+    ],
+    "sufficiency": [
+     0.805,
+     0.909
+    ]
+   },
+   "sufficiency": 0.859,
+   "provisioned": "30/52",
+   "attacks": "1/369"
+  }
+ }
+}

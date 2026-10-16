@@ -152,11 +152,28 @@ def structured(tool, out):
     return y if isinstance(y, (list, dict)) else None
 
 
-def present(g, d, out, tool=None, args=None):
+# sender fields of AgentDojo typed returns (slack.Message / types.Email / banking Transaction)
+_SENDER_FIELD = {"Message": "sender", "Email": "sender", "Transaction": "sender"}
+
+
+def _item_senders(typed):
+    seq = typed if isinstance(typed, list) else [typed]
+    out = []
+    for it in seq:
+        fld = _SENDER_FIELD.get(type(it).__name__)
+        out.append(getattr(it, fld, None) if (fld and hasattr(it, fld)) else None)
+    return out
+
+
+def present(g, d, out, tool=None, args=None, typed=None):
     """Register an executed output (and, with references, mint its references); §9.15: pass a
-    declared source's structure to the gate."""
+    declared source's structure to the gate. With sender_from_typed on, `typed` (the raw tool
+    return object) supplies the per-item sender from its declared field."""
     if getattr(g, "_xrefs", None) is not None:
-        view = g.present_output(d, out)
+        if getattr(g, "_sender_from_typed", False) and typed is not None:
+            view = g.present_output(d, out, item_senders=_item_senders(typed))
+        else:
+            view = g.present_output(d, out)
     else:
         g.register_output(d, out)
         view = out
