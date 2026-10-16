@@ -1,0 +1,45 @@
+{
+ "harness": "mech_modes path (config grant_args, L2=tuple, floor audience, references, counters, typed senders)",
+ "config_dir": "config_m1_c9v6",
+ "config_sha256_16": {
+  "banking.yaml": "816bfa24aff58494",
+  "slack.yaml": "b013f1316f2625b8",
+  "travel.yaml": "232de4d81885915a",
+  "workspace.yaml": "ed7eb40c6c9e0d4c"
+ },
+ "kernel_head": "cad07bc50a197ee58402bd724bd0f494d830749f",
+ "env": {
+  "AXOR_AJAR_GRANT_ARGS_FROM_CONFIG": "1",
+  "AXOR_AJAR_L2": "tuple"
+ },
+ "variants": {
+  "R0 L1+L2s": {
+   "runs": 1887,
+   "landed": 7,
+   "ASR": 0.0037,
+   "utility": 0.2459,
+   "errors": 0
+  },
+  "oracle": {
+   "runs": 1887,
+   "landed": 7,
+   "ASR": 0.0037,
+   "utility": 0.318,
+   "errors": 0
+  },
+  "view": {
+   "runs": 1887,
+   "landed": 17,
+   "ASR": 0.009,
+   "utility": 0.2931,
+   "errors": 0
+  },
+  "naive": {
+   "runs": 1887,
+   "landed": 73,
+   "ASR": 0.0387,
+   "utility": 0.2888,
+   "errors": 0
+  }
+ }
+}
