@@ -1,0 +1,20 @@
+{
+ "kernel_commit": "618c4a9",
+ "config_dir": "config_m1_c9v5",
+ "grant_path": "AXOR_AJAR_GRANT_ARGS_FROM_CONFIG=1 + AXOR_AJAR_L2=tuple (config-tuple)",
+ "US133_in_banking_operator_set": true,
+ "references": false,
+ "opl": 0.5639,
+ "opl_ci95": [
+  0.5353,
+  0.5918
+ ],
+ "sufficiency": 0.785,
+ "provisioned": "5/11",
+ "attacks": "80/144",
+ "replay_asr_432": {
+  "landed": 4,
+  "runs": 432,
+  "asr": 0.0093
+ }
+}
