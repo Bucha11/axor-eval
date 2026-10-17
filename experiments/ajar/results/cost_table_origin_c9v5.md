@@ -2,7 +2,7 @@
 
 Source A/B: `results/live_c9v5/` (SUMMARY.md), kernel 618c4a9 + `config_m1_c9v5`. origin-only: `results/live_origin_c9v5_v2/` (`AXOR_BENCH_NO_GRANTS=1` = strip_grants), kernel cad07bc. The only axor_core diff 618c4a9→cad07bc is the `sender_from_typed` flag (default off, not set by config_m1_c9v5 or the harness), so the two kernels are behaviourally identical here — v2 is a valid c9v5 origin-only arm, comparable to A.
 
-96 tasks (slack user_task_4 excluded), 3 passes. Methods are the paper's: utility % = successes/episodes; Cost (pp) = pass-i governed − pass-i undefended, mean ± population SD over 3 passes (`live_paired.py`); paired origin−A per task = task bootstrap n=2000 seed=0, 95% percentile CI (`paper_opl.py`). undefended arm = benign o4-mini (`live_final_paired_A.json`).
+96 tasks (slack user_task_4 excluded), 3 passes. Methods are the paper's: utility % = successes/episodes (pooled over passes); **Cost (pp) = pass-i origin − pass-i undefended, mean ± population SD of that paired cost over the 3 passes** (`live_paired.py`, `pstdev`) — the ± is the paired-cost SD, not a utility SD; paired origin−A per task = task bootstrap n=2000 seed=0, 95% percentile CI (`paper_opl.py`). undefended arm = benign o4-mini (`live_final_paired_A.json`).
 
 ## Verification (must match the paper exactly)
 
@@ -12,15 +12,28 @@ Source A/B: `results/live_c9v5/` (SUMMARY.md), kernel 618c4a9 + `config_m1_c9v5`
 
 ## 1. origin-only utility and Cost (pp) vs undefended
 
-| suite | undefended | origin-only | Cost (pp) = origin − undefended |
-|---|---|---|---|
-| banking (16) | 77.1% | 43.8% | -33.3 ± 5.9 |
-| slack (20) | 86.7% | 21.7% | -65.0 ± 0.0 |
-| travel (20) | 68.3% | 61.7% | -6.7 ± 6.2 |
-| workspace (40) | 85.0% | 54.2% | -30.8 ± 1.2 |
-| **all (96)** | **80.6%** | **47.2%** | **-33.3 ± 0.9** |
+3 passes; `n` tasks per suite (slack user_task_4 excluded). Utility % = successes / episodes
+(pooled over the 3 passes). **The ± is the population SD of the PAIRED COST over the 3 passes**
+(`pass-i origin% − pass-i undefended%`, `statistics.pstdev`, divide by n) — the SAME formula and the
+SAME quantity the paper's A/B "paired cost" columns carry (`live_paired.py`). It is NOT a SD of the
+utility %. Per-pass k/n is shown so each number is checkable.
 
-Per pass (all): undefended 81.2 / 79.2 / 81.2; origin 49.0 / 44.8 / 47.9.
+| suite | undefended (k/n per pass) | origin-only (k/n per pass) | utility | Cost (pp) = origin − undefended, per pass → mean ± popSD |
+|---|---|---|---|---|
+| banking (16) | 13/16, 11/16, 13/16 = 81.2/68.8/81.2 | 7/16, 7/16, 7/16 = 43.8/43.8/43.8 | 21/48 = 43.8% | −37.5, −25.0, −37.5 → **−33.3 ± 5.9** |
+| slack (20) | 18/20, 17/20, 17/20 = 90.0/85.0/85.0 | 5/20, 4/20, 4/20 = 25.0/20.0/20.0 | 13/60 = 21.7% | −65.0, −65.0, −65.0 → **−65.0 ± 0.0** |
+| travel (20) | 13/20, 14/20, 14/20 = 65.0/70.0/70.0 | 13/20, 11/20, 13/20 = 65.0/55.0/65.0 | 37/60 = 61.7% | 0.0, −15.0, −5.0 → **−6.7 ± 6.2** |
+| workspace (40) | 34/40, 34/40, 34/40 = 85.0/85.0/85.0 | 22/40, 21/40, 22/40 = 55.0/52.5/55.0 | 65/120 = 54.2% | −30.0, −32.5, −30.0 → **−30.8 ± 1.2** |
+| **all (96)** | 81.2 / 79.2 / 81.2 | 49.0 / 44.8 / 47.9 | **136/288 = 47.2%** | −32.2, −34.4, −33.3 → **−33.3 ± 0.9** |
+
+**Why the earlier `43.8 ± 5.9` / `21.7 ± 0.0` looked impossible:** the ± was being read as a SD of the
+utility. It is not — it is the paired-cost SD. Read as a utility SD the two would be *swapped and
+wrong*: banking's origin utility is constant 7/16 every pass (utility SD = 0), yet the paired cost
+carries ±5.9 — all of it from **undefended** dipping to 11/16 on pass 2 while origin stays flat; slack's
+origin utility varies (5/4/4 → SD ≠ 0), yet the paired cost is ±0.0 because origin falls in lock-step
+with undefended (−65 every pass). Recomputing the column with the grants-column formula (population SD
+of the paired cost over passes) leaves every value unchanged — the numbers were already on that formula;
+only the column label and the per-pass breakdown above are added to prevent the misreading.
 
 ## 2. Paired origin−A per task (task bootstrap n=2000 seed=0, 95% CI)
 
