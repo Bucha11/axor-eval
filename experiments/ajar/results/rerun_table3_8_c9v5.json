@@ -1,0 +1,167 @@
+{
+ "kernel_commit": "618c4a9",
+ "config_dir": "config_m1_c9v5",
+ "n_tasks_total": 97,
+ "table3_rope52": {
+  "rerun": {
+   "no grants": {
+    "opl": 0.0632,
+    "opl_any": 0.0632,
+    "opl_all": 0.0632,
+    "ci95_opl": [
+     0.0525,
+     0.0723
+    ],
+    "provisioned": "27/52",
+    "attacks": "1/369",
+    "sufficiency": 0.845
+   },
+   "L1+L2": {
+    "opl": 0.0863,
+    "opl_any": 0.0863,
+    "opl_all": 0.0863,
+    "ci95_opl": [
+     0.0774,
+     0.0963
+    ],
+    "provisioned": "32/52",
+    "attacks": "21/369",
+    "sufficiency": 0.856
+   },
+   "L1+L2+L4 oracle": {
+    "opl": 0.0863,
+    "opl_any": 0.0863,
+    "opl_all": 0.0863,
+    "ci95_opl": [
+     0.0774,
+     0.0963
+    ],
+    "provisioned": "52/52",
+    "attacks": "21/369",
+    "sufficiency": 1.0
+   }
+  },
+  "paper_current": {
+   "no grants": {
+    "opl": 0.0585,
+    "ci95_opl": [
+     0.0493,
+     0.0674
+    ],
+    "provisioned": "23/52",
+    "attacks": "0/369"
+   },
+   "L1+L2": {
+    "opl": 0.0623,
+    "ci95_opl": [
+     0.0526,
+     0.0711
+    ],
+    "provisioned": "27/52",
+    "attacks": "1/369"
+   },
+   "L1+L2+L4 oracle": {
+    "opl": 0.0623,
+    "ci95_opl": [
+     0.0526,
+     0.0711
+    ],
+    "provisioned": "52/52",
+    "attacks": "1/369"
+   }
+  },
+  "discrepancies": [
+   "no grants.opl: rerun=0.0632 vs paper=0.0585",
+   "no grants.provisioned: rerun=27/52 vs paper=23/52",
+   "no grants.attacks: rerun=1/369 vs paper=0/369",
+   "L1+L2.opl: rerun=0.0863 vs paper=0.0623",
+   "L1+L2.provisioned: rerun=32/52 vs paper=27/52",
+   "L1+L2.attacks: rerun=21/369 vs paper=1/369",
+   "L1+L2+L4 oracle.opl: rerun=0.0863 vs paper=0.0623",
+   "L1+L2+L4 oracle.attacks: rerun=21/369 vs paper=1/369"
+  ]
+ },
+ "table8_allowlist_banking": {
+  "rerun": {
+   "L1+L2": {
+    "opl": 0.0612,
+    "opl_any": 0.0612,
+    "opl_all": 0.0612,
+    "ci95_opl": [
+     0.0464,
+     0.0779
+    ],
+    "provisioned": "4/11",
+    "attacks": "0/144",
+    "sufficiency": 0.739
+   },
+   "L1+L2s": {
+    "opl": 0.0612,
+    "opl_any": 0.0612,
+    "opl_all": 0.0612,
+    "ci95_opl": [
+     0.0464,
+     0.0779
+    ],
+    "provisioned": "4/11",
+    "attacks": "0/144",
+    "sufficiency": 0.739
+   },
+   "L1+L2s+L4 oracle": {
+    "opl": 0.0612,
+    "opl_any": 0.0612,
+    "opl_all": 0.0612,
+    "ci95_opl": [
+     0.0464,
+     0.0779
+    ],
+    "provisioned": "11/11",
+    "attacks": "0/144",
+    "sufficiency": 1.0
+   }
+  },
+  "paper_current": {
+   "L1+L2": {
+    "opl": 0.6739,
+    "ci95_opl": [
+     0.6552,
+     0.6922
+    ],
+    "provisioned": "5/11",
+    "attacks": "112/144"
+   },
+   "L1+L2s": {
+    "opl": 0.0519,
+    "ci95_opl": [
+     0.0362,
+     0.071
+    ],
+    "provisioned": "5/11",
+    "attacks": "0/144"
+   },
+   "L1+L2s+L4 oracle": {
+    "opl": 0.0519,
+    "ci95_opl": [
+     0.0362,
+     0.071
+    ],
+    "provisioned": "11/11",
+    "attacks": "0/144"
+   }
+  },
+  "discrepancies": [
+   "L1+L2.opl: rerun=0.0612 vs paper=0.6739",
+   "L1+L2.provisioned: rerun=4/11 vs paper=5/11",
+   "L1+L2.attacks: rerun=0/144 vs paper=112/144",
+   "L1+L2s.opl: rerun=0.0612 vs paper=0.0519",
+   "L1+L2s.provisioned: rerun=4/11 vs paper=5/11",
+   "L1+L2s+L4 oracle.opl: rerun=0.0612 vs paper=0.0519"
+  ]
+ },
+ "notes": {
+  "rerun_setup": "paper_opl.measure + make, kernel 618c4a9, config_m1_c9v5; SUITES banking,slack,travel (rope 52) and banking (allowlist 11); R0 grant args from derive_grants.",
+  "paper_baseline_T3": "final_numbers.md \u00a72 rope table was produced by residuals_ajar_attacks_c814_rope3 on kernel 09e98af + config_m1_c814 (the \u00a78.14 path), NOT paper_opl on c9v5 \u2014 so the T3 discrepancies mix config (c814->c9v5), kernel (09e98af->618c4a9) AND harness path (\u00a78.14 residuals -> paper_opl measure); this is not an isolated c9v5-vs-c814 diff.",
+  "paper_baseline_T8": "results/paper_opl-allowlist-banking.json records no config; its L1+L2 = 112/144 attacks requires an allowlist/operator_set config that CONTAINS the attacker IBAN US133. config_m1_c9v5 operator_sets do NOT contain US133, so on c9v5 L1+L2 admits 0/144 and L1+L2 == L1+L2s (nothing to supersede). The paper Table 8 L1+L2=112 is a property of the allowlist-with-attacker config, not reproducible on c9v5.",
+  "denominators": "rope provisioned /52 and attacks /369 reproduce; allowlist banking provisioned /11 and attacks /144 reproduce."
+ }
+}
