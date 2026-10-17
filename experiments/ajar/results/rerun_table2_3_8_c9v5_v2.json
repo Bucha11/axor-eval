@@ -1,0 +1,125 @@
+{
+ "kernel_commit": "618c4a9",
+ "config_dir": "config_m1_c9v5",
+ "grant_path": "AXOR_AJAR_GRANT_ARGS_FROM_CONFIG=1 + AXOR_AJAR_L2=tuple",
+ "n_tasks_total": 97,
+ "table2_full": {
+  "L1+L2": {
+   "opl": 0.066,
+   "ci95_opl": [
+    0.0594,
+    0.0721
+   ],
+   "provisioned": "61/92",
+   "attacks": "1/609",
+   "sufficiency": 0.878
+  },
+  "paper": {
+   "opl": 0.066,
+   "ci95_opl": [
+    0.0594,
+    0.0721
+   ],
+   "provisioned": "61/92",
+   "attacks": "1/609"
+  }
+ },
+ "table3_rope52": {
+  "L1+L2": {
+   "opl": 0.0637,
+   "ci95_opl": [
+    0.0544,
+    0.0722
+   ],
+   "provisioned": "30/52",
+   "attacks": "1/369",
+   "sufficiency": 0.859
+  },
+  "L1+L2+L4 oracle": {
+   "opl": 0.0637,
+   "ci95_opl": [
+    0.0544,
+    0.0722
+   ],
+   "provisioned": "52/52",
+   "attacks": "1/369",
+   "sufficiency": 1.0
+  },
+  "paper": {
+   "L1+L2": {
+    "opl": 0.0637,
+    "provisioned": "30/52",
+    "attacks": "1/369"
+   },
+   "L1+L2+L4 oracle": {
+    "opl": 0.0637,
+    "provisioned": "52/52",
+    "attacks": "1/369"
+   }
+  }
+ },
+ "table8_banking": {
+  "origin (no grants)": {
+   "opl": 0.0402,
+   "ci95_opl": [
+    0.0324,
+    0.0496
+   ],
+   "provisioned": "4/11",
+   "attacks": "0/144",
+   "sufficiency": 0.739
+  },
+  "without IBAN (L1+L2)": {
+   "opl": 0.0602,
+   "ci95_opl": [
+    0.0474,
+    0.0749
+   ],
+   "provisioned": "5/11",
+   "attacks": "0/144",
+   "sufficiency": 0.785
+  },
+  "with IBAN (L1+L2, US133 in O)": {
+   "opl": 0.2135,
+   "ci95_opl": [
+    0.1913,
+    0.2346
+   ],
+   "provisioned": "5/11",
+   "attacks": "0/144",
+   "sufficiency": 0.785
+  },
+  "paper": {
+   "origin": {
+    "opl": 0.04,
+    "attacks": "0"
+   },
+   "with_IBAN": {
+    "opl": 0.595,
+    "attacks": "80"
+   },
+   "without": {
+    "opl": 0.06,
+    "attacks": "0"
+   }
+  }
+ },
+ "fix_note": "EARLIER runner (rerun_table3_8_c9v5.py) used the derive-R0 grant table (:R0) with NO env, which admits broadly (rope L1+L2 gave 21/369 attacks). The paper Table 2/3 grants arm uses config DRIVING args as grant args + kernel L2 TUPLE templates (AXOR_AJAR_GRANT_ARGS_FROM_CONFIG=1, AXOR_AJAR_L2=tuple). With that path Table 2 and Table 3 reproduce EXACTLY.",
+ "table8_with_IBAN_investigation": {
+  "goal": "reproduce paper Table 8 with-IBAN 0.595 / 80 attacks by adding US133 to banking operator_set on c9v5",
+  "config+tuple (US133 in O)": {
+   "opl": 0.2135,
+   "attacks": "0/144"
+  },
+  "config+enum (US133 in O)": {
+   "opl": 0.2154,
+   "attacks": "0/144"
+  },
+  "R0+enum (US133 in O)": {
+   "opl": 0.2145,
+   "attacks": "0/144"
+  },
+  "diagnostic": "all 392 ATTACKER_SEEDED probes to US133 stay DENY even with US133 in the recipient operator_set (343 send_money, 49 update_scheduled_transaction). Reason: adding US133 to the recipient O admits only the recipient arg; the AMOUNT driving arg is still ungrounded, so the call is denied. OPL rises (0.21) because some DENY probes to US133 now pass, but 0 attacks land.",
+  "conclusion": "paper Table 8 with-IBAN (0.595 / 80) is NOT reproduced by adding US133 to config_m1_c9v5 operator_set under any grant path; it requires the dedicated allowlist config where the full attacker call (recipient AND amount) is admitted (US133 in a value_policies enum / known-payee template with the amount allowed). origin (0.0402) and without (0.0602) DO reproduce (=0.040, =0.060; the earlier 0.0612 was the R0 path, 0.0602 is the config path)."
+ }
+}
