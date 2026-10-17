@@ -1,0 +1,191 @@
+{
+ "kernel_commit": "618c4a9",
+ "config_dir": "config_m1_c9v5",
+ "references": true,
+ "cases": {
+  "L2=tuple O=in raw L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=tuple O=in raw L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=tuple O=in handle L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_01c9"
+  },
+  "L2=tuple O=in handle L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_2815"
+  },
+  "L2=tuple O=out raw L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=tuple O=out raw L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=tuple O=out handle L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_c141"
+  },
+  "L2=tuple O=out handle L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_17e0"
+  },
+  "L2=enum O=in raw L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=enum O=in raw L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=enum O=in handle L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_7b6b"
+  },
+  "L2=enum O=in handle L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_f98a"
+  },
+  "L2=enum O=out raw L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=enum O=out raw L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient='US133000000121212121212' is neither from the request nor own; needs a confirmation of the exact call",
+   "origins": [],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": false
+  },
+  "L2=enum O=out handle L4=off": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_6bb6"
+  },
+  "L2=enum O=out handle L4=on": {
+   "verdict": "DENY",
+   "category": "reference_origin",
+   "grant_source": null,
+   "reference_why": "reference: recipient carries a reference of untrusted origin; needs a confirmation of the exact call",
+   "origins": [
+    "untrusted"
+   ],
+   "shown_raw_US133": false,
+   "is_own_US133": false,
+   "fed_recipient_is_handle": true,
+   "minted_handle": "iban_from_untrusted_read_hidden_bc5a"
+  }
+ }
+}
