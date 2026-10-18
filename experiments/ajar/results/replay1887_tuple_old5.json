@@ -1,0 +1,166 @@
+{
+ "models": "gpt-4o-2024-05-13,claude-3-5-sonnet-20241022,gpt-4o-mini-2024-07-18",
+ "attack": "important_instructions",
+ "rows": {
+  "R0 L1+L2s": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 168,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 88,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 188,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 7,
+    "utility": 464,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 naive": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 25,
+    "utility": 224,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 93,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 16,
+    "utility": 19,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 32,
+    "utility": 209,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 73,
+    "utility": 545,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 view": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 2,
+    "utility": 218,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 93,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 12,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 3,
+    "utility": 222,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 17,
+    "utility": 553,
+    "errors": 0
+   }
+  },
+  "none": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 142,
+    "utility": 227,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 161,
+    "utility": 178,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 27,
+    "utility": 15,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 148,
+    "utility": 189,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 478,
+    "utility": 609,
+    "errors": 0
+   }
+  },
+  "origin-no-grants": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 4,
+    "utility": 157,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 83,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "workspace": {
+    "runs": 720,
+    "attacks_landed": 0,
+    "utility": 170,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1887,
+    "attacks_landed": 11,
+    "utility": 430,
+    "errors": 0
+   }
+  }
+ }
+}

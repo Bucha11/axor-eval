@@ -1,0 +1,347 @@
+{
+ "kernel_old": "618c4a9 (+config_m1_c9v5/c9v6)",
+ "kernel_new": "f227951 c9v5 / 560b180 c9v6",
+ "path": "config-tuple (GRANT_ARGS_FROM_CONFIG=1, L2=tuple), references on",
+ "model_free": true,
+ "Table2_axor": {
+  "a_origin": {
+   "provisioned": [
+    "57/92",
+    "55/92"
+   ],
+   "OPL": [
+    0.0688,
+    0.0675
+   ],
+   "CI": [
+    [
+     0.0612,
+     0.0756
+    ],
+    [
+     0.0599,
+     0.0744
+    ]
+   ],
+   "sufficiency": [
+    0.866,
+    0.849
+   ],
+   "attacks": [
+    "1/609",
+    "1/609"
+   ]
+  },
+  "b_L1+L2s": {
+   "provisioned": [
+    "61/92",
+    "60/92"
+   ],
+   "OPL": [
+    0.066,
+    0.066
+   ],
+   "CI": [
+    [
+     0.0594,
+     0.0721
+    ],
+    [
+     0.0594,
+     0.0721
+    ]
+   ],
+   "sufficiency": [
+    0.878,
+    0.871
+   ],
+   "attacks": [
+    "1/609",
+    "1/609"
+   ]
+  },
+  "c_oracle": {
+   "provisioned": [
+    "92/92",
+    "92/92"
+   ],
+   "OPL": [
+    0.066,
+    0.066
+   ],
+   "CI": [
+    [
+     0.0594,
+     0.0721
+    ],
+    [
+     0.0594,
+     0.0721
+    ]
+   ],
+   "sufficiency": [
+    1.0,
+    1.0
+   ],
+   "attacks": [
+    "1/609",
+    "1/609"
+   ]
+  }
+ },
+ "Table3_axor_rope52": {
+  "a_origin": {
+   "provisioned": [
+    "27/52",
+    "25/52"
+   ],
+   "OPL": [
+    0.0632,
+    0.0612
+   ],
+   "sufficiency": [
+    0.845,
+    0.815
+   ],
+   "attacks": [
+    "1/369",
+    "1/369"
+   ]
+  },
+  "b_L1+L2s": {
+   "provisioned": [
+    "30/52",
+    "29/52"
+   ],
+   "OPL": [
+    0.0637,
+    0.0637
+   ],
+   "sufficiency": [
+    0.859,
+    0.847
+   ],
+   "attacks": [
+    "1/369",
+    "1/369"
+   ]
+  },
+  "c_oracle": {
+   "provisioned": [
+    "52/52",
+    "52/52"
+   ],
+   "OPL": [
+    0.0637,
+    0.0637
+   ],
+   "sufficiency": [
+    1.0,
+    1.0
+   ],
+   "attacks": [
+    "1/369",
+    "1/369"
+   ]
+  }
+ },
+ "Table3_ROPE_replay_1167": {
+  "origin_no_grants": [
+   11,
+   9
+  ],
+  "grants_L1L2s": [
+   7,
+   7
+  ],
+  "note": "old 11/7 from paper; new ROPE"
+ },
+ "Table3_metamorphic_20": {
+  "axor_violations": [
+   0,
+   0
+  ],
+  "json": "results/mech_symmetry_fx5.json"
+ },
+ "Table5_combined_corruption_landed": {
+  "no_handle_table": [
+   9,
+   9
+  ],
+  "origin": [
+   "?",
+   173
+  ],
+  "grants": [
+   7,
+   7
+  ],
+  "note": "combined taint+reference corruption; see part2_labeler_sanity_c9v5.json (new)"
+ },
+ "Table5_Ajar_provisioned": {
+  "a": [
+   "57/92",
+   "55/92"
+  ],
+  "b": [
+   "61/92",
+   "60/92"
+  ]
+ },
+ "Replay_1887_full": {
+  "undefended": [
+   478,
+   478
+  ],
+  "origin_no_grants": [
+   11,
+   9
+  ],
+  "grants_L1L2s": [
+   7,
+   7
+  ],
+  "view": [
+   17,
+   17
+  ],
+  "naive": [
+   73,
+   73
+  ]
+ },
+ "Table6_route2": {
+  "L1_admitted_existing": [
+   [
+    55,
+    26
+   ],
+   [
+    55,
+    26
+   ]
+  ],
+  "L2_admitted": [
+   4923,
+   4923
+  ],
+  "attacker_values_admitted_broad": [
+   14,
+   14
+  ],
+  "injected_read_placed_admitted": [
+   0,
+   0
+  ],
+  "note": "route2 old=new identical (fix innocent); committed 74/44 is a different candidate-set path; the 14 broad-attacker rows are all request-L1 (external_0, request emails), not read-placed -> injected=0"
+ },
+ "Table7_chains": {
+  "stopped": [
+   28,
+   28
+  ],
+  "harm_within_grants": [
+   0,
+   0
+  ],
+  "json": "results/chains_c9v6.json (byte-identical)"
+ },
+ "audience_ground": {
+  "ground_pass": [
+   134,
+   121
+  ],
+  "by_mech_TASK": [
+   103,
+   90
+  ],
+  "by_mech_grantL1": [
+   31,
+   31
+  ],
+  "landed": [
+   0,
+   0
+  ],
+  "Ajar": [
+   13,
+   "see replay_ajar_ground"
+  ],
+  "json": "results/audience_ground_1887_nsfix.json"
+ },
+ "Table8": {
+  "origin": {
+   "OPL": [
+    0.0402,
+    0.0373
+   ],
+   "attacks": [
+    "0/144",
+    "0/144"
+   ]
+  },
+  "without_US133": {
+   "OPL": [
+    0.0602,
+    0.0602
+   ],
+   "attacks": [
+    "0/144",
+    "0/144"
+   ]
+  },
+  "with_US133_in_O": {
+   "OPL": [
+    0.2135,
+    0.2135
+   ],
+   "attacks": [
+    "0/144",
+    "0/144"
+   ]
+  }
+ },
+ "Table8_with_US133_enum_landed_replay": [
+  23,
+  16
+ ],
+ "InjecAgent": {
+  "direct_harm": [
+   "510/510",
+   "510/510"
+  ],
+  "data_stealing": [
+   "544/544",
+   "544/544"
+  ],
+  "consequence_only": [
+   34,
+   34
+  ],
+  "floor_alone": [
+   "500/44",
+   "500/44"
+  ],
+  "json": "experiments/injecagent/full_attack_set_fx5.json"
+ },
+ "grants_vs_origin_probes": {
+  "required_a": [
+   296,
+   290
+  ],
+  "required_b": [
+   299,
+   296
+  ],
+  "unneeded_a": [
+   974,
+   970
+  ],
+  "unneeded_b": [
+   969,
+   967
+  ]
+ },
+ "live_Table4_verdict_changes": 0,
+ "cont_verdict_changes": "NOT verifiable offline (stored artifact has outcomes only, no per-call tool outputs); monotone-tightening => no blocked attack becomes admitted; already-0 cells invariant"
+}
