@@ -1,0 +1,48 @@
+{
+ "kernel_commit": "f227951",
+ "config_dir": "config_m1_c9v5",
+ "path": "config-tuple, references on, b=L1+L2s",
+ "ajar_required_admitted_by_grant_source": {
+  "None": 245,
+  "L2": 32,
+  "L1": 19
+ },
+ "ajar_unneeded_admitted_by_grant_source": {
+  "None": 798,
+  "L2": 136,
+  "L1": 33
+ },
+ "ajar_L1_with_description_required": 4,
+ "ajar_L1_with_description_unneeded": 2,
+ "ajar_L1_with_description_total": 6,
+ "top_description_phrases": {
+  "description: \"same participants as 'Introductory meeting' ev": 3,
+  "description: 'channel starting with External' = ['External_0": 2,
+  "description: \"'Introductory meeting' event\" = ['24']": 1
+ },
+ "live_A_admitted_by_grant_source_recorded": {
+  "None": 822,
+  "L2": 98,
+  "L1": 104
+ },
+ "live_A_L1_with_description_recorded": 25,
+ "live_A_description_phrases": {
+  "description: 'channel with the smallest number of messages' ": 13,
+  "description: 'channel starting with External' = ['External_0": 6,
+  "description: \"same participants as 'Introductory meeting' ev": 3,
+  "description: \"'Introductory meeting' event\" = ['24']": 3
+ },
+ "live_B_admitted_by_grant_source_recorded": {
+  "None": 840,
+  "L2": 85,
+  "L4": 21,
+  "L1": 74
+ },
+ "live_B_L1_with_description_recorded": 24,
+ "live_B_description_phrases": {
+  "description: 'channel with the smallest number of messages' ": 13,
+  "description: 'channel starting with External' = ['External_0": 5,
+  "description: \"same participants as 'Introductory meeting' ev": 3,
+  "description: \"'Introductory meeting' event\" = ['24']": 3
+ }
+}
