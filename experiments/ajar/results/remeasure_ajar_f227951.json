@@ -1,0 +1,147 @@
+{
+ "kernel_commit": "f227951",
+ "config_dir": "config_m1_c9v5",
+ "path": "GRANT_ARGS_FROM_CONFIG=1 + L2=tuple, references on",
+ "table2_full": {
+  "a_origin": {
+   "opl": 0.0675,
+   "ci95_opl": [
+    0.0599,
+    0.0744
+   ],
+   "sufficiency": 0.849,
+   "ci95_suff": [
+    0.805,
+    0.889
+   ],
+   "provisioned": "55/92",
+   "attacks": "1/609"
+  },
+  "b_L1+L2s": {
+   "opl": 0.066,
+   "ci95_opl": [
+    0.0594,
+    0.0721
+   ],
+   "sufficiency": 0.871,
+   "ci95_suff": [
+    0.83,
+    0.91
+   ],
+   "provisioned": "60/92",
+   "attacks": "1/609"
+  },
+  "c_oracle": {
+   "opl": 0.066,
+   "ci95_opl": [
+    0.0594,
+    0.0721
+   ],
+   "sufficiency": 1.0,
+   "ci95_suff": [
+    1.0,
+    1.0
+   ],
+   "provisioned": "92/92",
+   "attacks": "1/609"
+  }
+ },
+ "table3_rope52": {
+  "a_origin": {
+   "opl": 0.0612,
+   "ci95_opl": [
+    0.0505,
+    0.0709
+   ],
+   "sufficiency": 0.815,
+   "ci95_suff": [
+    0.754,
+    0.87
+   ],
+   "provisioned": "25/52",
+   "attacks": "1/369"
+  },
+  "b_L1+L2s": {
+   "opl": 0.0637,
+   "ci95_opl": [
+    0.0543,
+    0.0722
+   ],
+   "sufficiency": 0.847,
+   "ci95_suff": [
+    0.786,
+    0.897
+   ],
+   "provisioned": "29/52",
+   "attacks": "1/369"
+  },
+  "c_oracle": {
+   "opl": 0.0637,
+   "ci95_opl": [
+    0.0543,
+    0.0722
+   ],
+   "sufficiency": 1.0,
+   "ci95_suff": [
+    1.0,
+    1.0
+   ],
+   "provisioned": "52/52",
+   "attacks": "1/369"
+  }
+ },
+ "table8_banking": {
+  "origin": {
+   "opl": 0.0373,
+   "ci95_opl": [
+    0.0314,
+    0.0447
+   ],
+   "sufficiency": 0.694,
+   "ci95_suff": [
+    0.573,
+    0.827
+   ],
+   "provisioned": "3/11",
+   "attacks": "0/144"
+  },
+  "without_US133": {
+   "opl": 0.0602,
+   "ci95_opl": [
+    0.0474,
+    0.0749
+   ],
+   "sufficiency": 0.785,
+   "ci95_suff": [
+    0.652,
+    0.906
+   ],
+   "provisioned": "5/11",
+   "attacks": "0/144"
+  },
+  "with_US133_in_O": {
+   "opl": 0.2135,
+   "ci95_opl": [
+    0.1913,
+    0.2346
+   ],
+   "sufficiency": 0.785,
+   "ci95_suff": [
+    0.652,
+    0.906
+   ],
+   "provisioned": "5/11",
+   "attacks": "0/144"
+  }
+ },
+ "grants_vs_origin": {
+  "required_a_admits": 290,
+  "required_b_admits": 296,
+  "unneeded_a_admits": 970,
+  "unneeded_b_admits": 967,
+  "old_618c4a9": {
+   "required": "a 296 / b 299",
+   "unneeded": "a 974 / b 969"
+  }
+ }
+}

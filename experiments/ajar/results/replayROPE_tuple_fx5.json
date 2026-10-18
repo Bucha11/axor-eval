@@ -1,0 +1,136 @@
+{
+ "models": "gpt-4o-2024-05-13,claude-3-5-sonnet-20241022,gpt-4o-mini-2024-07-18",
+ "attack": "important_instructions",
+ "rows": {
+  "R0 L1+L2s": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 0,
+    "utility": 168,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 88,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1167,
+    "attacks_landed": 7,
+    "utility": 276,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 naive": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 25,
+    "utility": 224,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 93,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 16,
+    "utility": 19,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1167,
+    "attacks_landed": 41,
+    "utility": 336,
+    "errors": 0
+   }
+  },
+  "R0 L1+L2s+L4 view": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 2,
+    "utility": 218,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 93,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 12,
+    "utility": 20,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1167,
+    "attacks_landed": 14,
+    "utility": 331,
+    "errors": 0
+   }
+  },
+  "none": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 142,
+    "utility": 227,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 161,
+    "utility": 178,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 27,
+    "utility": 15,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1167,
+    "attacks_landed": 330,
+    "utility": 420,
+    "errors": 0
+   }
+  },
+  "origin-no-grants": {
+   "banking": {
+    "runs": 432,
+    "attacks_landed": 2,
+    "utility": 146,
+    "errors": 0
+   },
+   "slack": {
+    "runs": 315,
+    "attacks_landed": 0,
+    "utility": 83,
+    "errors": 0
+   },
+   "travel": {
+    "runs": 420,
+    "attacks_landed": 7,
+    "utility": 20,
+    "errors": 0
+   },
+   "all": {
+    "runs": 1167,
+    "attacks_landed": 9,
+    "utility": 249,
+    "errors": 0
+   }
+  }
+ }
+}
