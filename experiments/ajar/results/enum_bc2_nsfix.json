@@ -1,0 +1,37 @@
+{
+ "seconds": 543.4,
+ "kernel_head": "560b180f7ce345d48d5da3c7db274e34f3d9ff50",
+ "config_sha256_16": {
+  "banking.yaml": "816bfa24aff58494",
+  "slack.yaml": "b013f1316f2625b8",
+  "travel.yaml": "232de4d81885915a",
+  "workspace.yaml": "ed7eb40c6c9e0d4c"
+ },
+ "A_unchanged_from_9055e07": {
+  "origin": {
+   "A_states": 9895,
+   "A_decisions": 5205732,
+   "A_admitted": 1538531,
+   "A_atk_placements": 69574,
+   "A_atk_admitted": 9,
+   "A_atk_admitted_amount": 9
+  },
+  "grants": {
+   "A_states": 9895,
+   "A_decisions": 5207685,
+   "A_admitted": 632791,
+   "A_atk_placements": 69574,
+   "A_atk_admitted": 0,
+   "A_atk_admitted_amount": 0
+  }
+ },
+ "BC_same_candidates": {
+  "B_states": 733,
+  "B_cand": 4395,
+  "B_admit_grants": 0,
+  "B_admit_origin": 3317,
+  "C_finite_tuples": 153,
+  "C_over_quota_grants": 0,
+  "C_repeat_admit_origin": 245
+ }
+}

@@ -343,5 +343,107 @@
   ]
  },
  "live_Table4_verdict_changes": 0,
- "cont_verdict_changes": "NOT verifiable offline (stored artifact has outcomes only, no per-call tool outputs); monotone-tightening => no blocked attack becomes admitted; already-0 cells invariant"
+ "cont_verdict_changes": "NOT verifiable offline (stored artifact has outcomes only, no per-call tool outputs); monotone-tightening => no blocked attack becomes admitted; already-0 cells invariant",
+ "ADDENDUM": {
+  "Table2_CI": {
+   "a": {
+    "OPL": "0.0675 [0.0599,0.0744]",
+    "suff": "0.849 [0.805,0.889]"
+   },
+   "b": {
+    "OPL": "0.066 [0.0594,0.0721]",
+    "suff": "0.871 [0.83,0.91]"
+   }
+  },
+  "Table3a_CI": {
+   "OPL": "0.0612 [0.0505,0.0709]"
+  },
+  "Table8_full_rows_new": {
+   "origin (no template)": {
+    "OPL": 0.0373,
+    "CI": [
+     0.0314,
+     0.0447
+    ],
+    "suff": 0.694,
+    "prov": "3/11",
+    "attacks": "0/144",
+    "replay_asr_432": {
+     "landed": 2,
+     "runs": 432,
+     "asr": 0.0046
+    }
+   },
+   "L1+L2 (without US133)": {
+    "OPL": 0.0602,
+    "CI": [
+     0.0474,
+     0.0749
+    ],
+    "suff": 0.785,
+    "prov": "5/11",
+    "attacks": "0/144",
+    "replay_asr_432": {
+     "landed": 0,
+     "runs": 432,
+     "asr": 0.0
+    }
+   },
+   "L1+L2 (US133 in banking O)": {
+    "OPL": 0.2135,
+    "CI": [
+     0.1913,
+     0.2346
+    ],
+    "suff": 0.785,
+    "prov": "5/11",
+    "attacks": "0/144",
+    "replay_asr_432": {
+     "landed": 4,
+     "runs": 432,
+     "asr": 0.0093
+    }
+   }
+  },
+  "Table8_replay_old_to_new": {
+   "origin": "4->2",
+   "without": "0->0",
+   "with_US133_in_O": "13->4",
+   "with_US133_enum_allowlist_landed": "23->16"
+  },
+  "Table5_allR_only_new": {
+   "no_handle_table": 9,
+   "origin": 9,
+   "grants": 7
+  },
+  "Table5_L_adv_new": {
+   "no_handle_table": 9,
+   "origin": 9,
+   "grants": 7
+  },
+  "Table5_combined_new": "9 / 173 / 7 (part2_labeler_sanity_c9v5.json)",
+  "Table6_enum_new_560b180": {
+   "atk_placements": 69574,
+   "injected_admitted_grants": 0,
+   "injected_admitted_origin": 9,
+   "in_amount": 9,
+   "recombined_origin": "3317 of 4395",
+   "recombined_grants": 0,
+   "over_quota_repeat_origin": 245,
+   "over_quota_grants": 0,
+   "finite_tuples": 153,
+   "paper_old": "injected grants 0; 9 amount; recombined 3431 of 5226; over quota 300; 153 tuples (on earlier kernel 9055e07)",
+   "note": "GRANTS-mode (deployed): injected 0, recombined 0, over-quota 0 all preserved. origin-mode (grant-free) counts shifted vs the 9055e07-baseline paper numbers; 153 tuples and 69574 placements and 9-amount reproduce exactly."
+  },
+  "Table6_route2_k": {
+   "L1_k": "[1,3,3]",
+   "L2_k": "[27,27,27]",
+   "admitted": "55/26 (committed 74/44 is a different candidate-set path; k matches paper)"
+  },
+  "slack_7_and_12_provisioned": {
+   "in_Table2_b_60of92": true,
+   "in_Table3_b_29of52": true
+  },
+  "Ajar_ground_old_to_new": "13 -> 11 (TASK 9, grant:L1 2; slack 7, workspace 4)"
+ }
 }
