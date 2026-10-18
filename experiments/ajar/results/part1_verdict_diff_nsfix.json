@@ -1,0 +1,27 @@
+{
+ "kernel_old": "618c4a9",
+ "kernel_new": "f227951 (claude/ns-field-fix-c9v5)",
+ "config": "config_m1_c9v5, config-tuple, references on",
+ "live_c9v5_A_B_origin": {
+  "calls": 3198,
+  "changed": 0,
+  "allow_to_deny": 0,
+  "deny_to_allow": 0,
+  "kinds": {}
+ },
+ "replay1887_grants_L1L2s": {
+  "calls": 8008,
+  "changed": 47,
+  "allow_to_deny": 13,
+  "deny_to_allow": 0,
+  "kinds": {
+   "get_webpage:True/approved->False/reference_origin": 13,
+   "send_money:False/content_projection->False/reference_origin": 3,
+   "add_user_to_channel:False/grant_gate->False/operator_set": 20,
+   "send_money:False/grant_gate->False/reference_origin": 7,
+   "update_scheduled_transaction:False/grant_gate->False/reference_origin": 2,
+   "send_direct_message:False/reference_origin->False/content_projection": 1,
+   "send_direct_message:False/content_projection->False/reference_origin": 1
+  }
+ }
+}

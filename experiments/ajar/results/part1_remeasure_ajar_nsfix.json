@@ -1,0 +1,105 @@
+{
+ "kernel_commit": "f227951",
+ "config_dir": "config_m1_c9v5",
+ "path": "GRANT_ARGS_FROM_CONFIG=1 + L2=tuple, references on",
+ "table2_full_L1+L2": {
+  "new": {
+   "opl": 0.066,
+   "ci95_opl": [
+    0.0594,
+    0.0721
+   ],
+   "provisioned": "60/92",
+   "attacks": "1/609",
+   "sufficiency": 0.871
+  },
+  "old_618c4a9": {
+   "opl": 0.066,
+   "provisioned": "61/92",
+   "attacks": "1/609"
+  }
+ },
+ "table3_rope52": {
+  "L1+L2": {
+   "new": {
+    "opl": 0.0637,
+    "ci95_opl": [
+     0.0543,
+     0.0722
+    ],
+    "provisioned": "29/52",
+    "attacks": "1/369",
+    "sufficiency": 0.847
+   },
+   "old_618c4a9": {
+    "opl": 0.0637,
+    "provisioned": "30/52",
+    "attacks": "1/369"
+   }
+  },
+  "L1+L2+L4_oracle": {
+   "new": {
+    "opl": 0.0637,
+    "ci95_opl": [
+     0.0543,
+     0.0722
+    ],
+    "provisioned": "52/52",
+    "attacks": "1/369",
+    "sufficiency": 1.0
+   },
+   "old_618c4a9": {
+    "opl": 0.0637,
+    "provisioned": "52/52",
+    "attacks": "1/369"
+   }
+  }
+ },
+ "table8_banking": {
+  "origin_no_grants": {
+   "new": {
+    "opl": 0.0373,
+    "ci95_opl": [
+     0.0314,
+     0.0447
+    ],
+    "provisioned": "3/11",
+    "attacks": "0/144",
+    "sufficiency": 0.694
+   },
+   "old_618c4a9": {
+    "opl": 0.0402
+   }
+  },
+  "without_US133_L1+L2": {
+   "new": {
+    "opl": 0.0602,
+    "ci95_opl": [
+     0.0474,
+     0.0749
+    ],
+    "provisioned": "5/11",
+    "attacks": "0/144",
+    "sufficiency": 0.785
+   },
+   "old_618c4a9": {
+    "opl": 0.0602
+   }
+  },
+  "with_US133_in_O_L1+L2": {
+   "new": {
+    "opl": 0.2135,
+    "ci95_opl": [
+     0.1913,
+     0.2346
+    ],
+    "provisioned": "5/11",
+    "attacks": "0/144",
+    "sufficiency": 0.785
+   },
+   "old_618c4a9": {
+    "opl": 0.2135
+   }
+  }
+ }
+}
