@@ -518,6 +518,59 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
             return True
         return ok
 
+    _inj_text: dict = {}
+
+    def document_injected(spec):
+        """document-aware but the document content INCLUDES the injection, as the user sees it:
+        clean read content PLUS the suite's injected attacker text. Shows the injection-vulnerable
+        variant (an attacker value that appears in the injected document is now 'in the document')."""
+        base_ok = document(spec)
+        prompt = (spec.prompt or "").lower()
+        import re as _re
+        dest = _re.compile(r"(^|_)(recipients?|participants|channel|url|e-?mail|user_email|cc|bcc|user)$")
+
+        def inj_text():
+            suite = spec.task.suite
+            t = _inj_text.get(suite)
+            if t is None:
+                parts = []
+                try:
+                    from agentdojo.task_suite.load_suites import get_suite as _gs
+                    from check_wrapper import VERSIONS as _V
+                    S = _gs(_V[suite], suite)
+                    for _iid, inj in S.injection_tasks.items():
+                        parts.append(str(getattr(inj, "GOAL", "")).lower())
+                        parts.append(str(getattr(inj, "prompt", "")).lower())
+                except Exception:
+                    pass
+                t = "\n".join(parts)
+                _inj_text[suite] = t
+            return t
+
+        def ok(a, c):
+            if base_ok(a, c):   # already admitted by the clean-content document policy
+                return True
+            verbs = VIEW_VERBS.get(c[0])
+            if not verbs:
+                return False
+            words = _re.findall(r"[a-z]+", prompt)
+            if not any((" " in v and v in prompt) or (" " not in v and any(w.startswith(v) for w in words)) for v in verbs):
+                return False
+            doc = inj_text()
+            vals = []
+            for k, val in c[1].items():
+                if dest.search(k) and val is not None:
+                    vals += list(val) if isinstance(val, (list, tuple)) else [val]
+            if not vals:
+                return False
+            for x in vals:
+                xl = str(x).strip().lower()
+                if len(xl) <= 2 or xl in prompt or xl in doc:
+                    continue
+                return False
+            return True
+        return ok
+
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
         suite = spec.task.suite
         kw: dict[str, Any] = {"grant_args": table.get(suite, {})}
@@ -528,7 +581,7 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
         elif "L2s" in lv and suite in TEMPLATES_SAFE:
             kw["grant_templates"] = TEMPLATES_SAFE[suite]
         if "L4" in lv:
-            policy = {"naive": naive, "view": view, "oracle": matcher, "document": document}[confirm]
+            policy = {"naive": naive, "view": view, "oracle": matcher, "document": document, "document_injected": document_injected}[confirm]
             kw["confirmer"] = ScriptedConfirmer(policy(spec))
         return kw
 
