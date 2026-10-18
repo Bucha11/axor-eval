@@ -1,0 +1,34 @@
+{
+ "kernel_commit": "f227951",
+ "config_dir": "config_m1_c9v5",
+ "path": "config-tuple, references on",
+ "row": "axor, grants L1+L2s+L4 (document_injected = full doc/message content INCLUDING injection)",
+ "bootstrap": "per-task, n=2000, seed=0 (paper_opl.bootstrap \u2014 same code/seed as all Table 2 rows)",
+ "OPL": 0.347,
+ "OPL_CI95": [
+  0.3051,
+  0.3863
+ ],
+ "sufficiency": 0.984,
+ "sufficiency_CI95": [
+  0.969,
+  0.995
+ ],
+ "provisioned": "86/92",
+ "attacks_admitted": "177/609",
+ "seconds": 292.6,
+ "oracle_row_for_reference": {
+  "OPL": 0.066,
+  "OPL_CI95": [
+   0.0594,
+   0.0721
+  ],
+  "sufficiency": 1.0,
+  "sufficiency_CI95": [
+   1.0,
+   1.0
+  ],
+  "provisioned": "92/92",
+  "attacks_admitted": "1/609"
+ }
+}
