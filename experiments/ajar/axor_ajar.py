@@ -465,6 +465,59 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
             return False
         return ok
 
+    _doc_content: dict = {}
+
+    def document(spec):
+        """document-aware: the view verb test (the tool's verb is in the request) AND every driving
+        destination value is either in the request OR in the CLEAN content of the documents/messages
+        the task reads (the reference plan's read outputs, materialised with NO injection). An
+        attacker value injected into a read is not in the clean content, so it is not approved."""
+        dest_ok_view = view(spec)  # verb-in-request + naive dest-in-request
+        prompt = (spec.prompt or "").lower()
+        import re as _re
+        dest = _re.compile(r"(^|_)(recipients?|participants|channel|url|e-?mail|user_email|cc|bcc|user)$")
+
+        def content_text():
+            key = str(spec.task)
+            t = _doc_content.get(key)
+            if t is None:
+                parts = []
+                try:
+                    import dataclasses as _dc
+                    base = ContextRef(task=spec.task, injections={}, prefix=tuple(range(len(spec.plan))))
+                    for _call, out in PREFIXES.outputs(spec, base):
+                        if out:
+                            parts.append(str(out).lower())
+                except Exception:
+                    pass
+                t = "\n".join(parts)
+                _doc_content[key] = t
+            return t
+
+        def ok(a, c):
+            if dest_ok_view(a, c):   # already covered by the strict view policy (dest in request)
+                return True
+            verbs = VIEW_VERBS.get(c[0])
+            if not verbs:
+                return False
+            words = _re.findall(r"[a-z]+", prompt)
+            if not any((" " in v and v in prompt) or (" " not in v and any(w.startswith(v) for w in words)) for v in verbs):
+                return False
+            doc = content_text()
+            vals = []
+            for k, val in c[1].items():
+                if dest.search(k) and val is not None:
+                    vals += list(val) if isinstance(val, (list, tuple)) else [val]
+            if not vals:
+                return False
+            for x in vals:
+                xl = str(x).strip().lower()
+                if len(xl) <= 2 or xl in prompt or xl in doc:
+                    continue
+                return False
+            return True
+        return ok
+
     def kwargs(spec: TaskSpec) -> dict[str, Any]:
         suite = spec.task.suite
         kw: dict[str, Any] = {"grant_args": table.get(suite, {})}
@@ -475,7 +528,7 @@ def grants_kwargs(levels: str, tuple_grants: bool = True, counters: bool = True,
         elif "L2s" in lv and suite in TEMPLATES_SAFE:
             kw["grant_templates"] = TEMPLATES_SAFE[suite]
         if "L4" in lv:
-            policy = {"naive": naive, "view": view, "oracle": matcher}[confirm]
+            policy = {"naive": naive, "view": view, "oracle": matcher, "document": document}[confirm]
             kw["confirmer"] = ScriptedConfirmer(policy(spec))
         return kw
 

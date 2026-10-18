@@ -59,6 +59,7 @@ def variants():
         "R0 L1+L2s+L4 oracle": ("ctx", "L1+L2s+L4", "R0", "oracle"),
         "R0 L1+L2s+L4 naive": ("ctx", "L1+L2s+L4", "R0", "naive"),
         "R0 L1+L2s+L4 view": ("ctx", "L1+L2s+L4", "R0", "view"),
+        "R0 L1+L2s+L4 document": ("ctx", "L1+L2s+L4", "R0", "document"),
         # allowlist control: the known-payee template WITH the attacker IBAN US133…
         "R0 L1+L2": ("ctx", "L1+L2", "R0"),
         "R0 L1+L2+L4 oracle": ("ctx", "L1+L2+L4", "R0", "oracle"),
