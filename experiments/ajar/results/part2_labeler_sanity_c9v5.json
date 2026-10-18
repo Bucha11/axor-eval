@@ -1,0 +1,37 @@
+{
+ "kernel_commit": "f227951",
+ "config_dir": "config_m1_c9v5",
+ "path": "config-tuple, references on",
+ "i_per_call_verdict_diffs_vs_honest_grants": {
+  "allR": {
+   "calls_differing_from_honest": 277,
+   "calls_total": 8008
+  },
+  "L_adv": {
+   "calls_differing_from_honest": 780,
+   "calls_total": 8008
+  }
+ },
+ "ii_combined_corruption_both_layers": {
+  "no_handle_table": {
+   "landed": 9,
+   "runs": 1887,
+   "asr": 0.0048
+  },
+  "origin": {
+   "landed": 173,
+   "runs": 1887,
+   "asr": 0.0917
+  },
+  "grants": {
+   "landed": 7,
+   "runs": 1887,
+   "asr": 0.0037
+  }
+ },
+ "reference_37_18_12": {
+  "no_handle_table": 37,
+  "origin": 18,
+  "grants": 12
+ }
+}
