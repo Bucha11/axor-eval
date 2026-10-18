@@ -1,0 +1,42 @@
+{
+ "kernel_commit": "618c4a9",
+ "config_dir": "config_m1_c9v5",
+ "caption": "Table 5: 'every value attributed to the request'",
+ "matrix": {
+  "allR": {
+   "no_handle_table": {
+    "landed": 9,
+    "runs": 1887,
+    "asr": 0.0048
+   },
+   "origin": {
+    "landed": 11,
+    "runs": 1887,
+    "asr": 0.0058
+   },
+   "grants": {
+    "landed": 7,
+    "runs": 1887,
+    "asr": 0.0037
+   }
+  },
+  "L_adv": {
+   "no_handle_table": {
+    "landed": 9,
+    "runs": 1887,
+    "asr": 0.0048
+   },
+   "origin": {
+    "landed": 9,
+    "runs": 1887,
+    "asr": 0.0048
+   },
+   "grants": {
+    "landed": 7,
+    "runs": 1887,
+    "asr": 0.0037
+   }
+  }
+ },
+ "verdict": "allR patches only the taint labeler; the \u00a79 reference layer (is_request/shown_raw) is independent, so reference_origin still fires -> allR does NOT attribute values to the request. L_adv patches is_request->True, so every value is shown_raw and reference_origin never fires -> L_adv is the corruption that matches the caption 'every value attributed to the request'."
+}
