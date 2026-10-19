@@ -1,0 +1,115 @@
+{
+ "suite": "banking",
+ "aborted": null,
+ "final_cost": 0.245,
+ "log": [
+  {
+   "cond": "undefended",
+   "pass": 1,
+   "n": 16,
+   "util": 10,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "undefended",
+   "pass": 2,
+   "n": 16,
+   "util": 11,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "undefended",
+   "pass": 3,
+   "n": 16,
+   "util": 10,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "origin",
+   "pass": 1,
+   "n": 16,
+   "util": 7,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "origin",
+   "pass": 2,
+   "n": 16,
+   "util": 7,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "origin",
+   "pass": 3,
+   "n": 16,
+   "util": 7,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants",
+   "pass": 1,
+   "n": 16,
+   "util": 8,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants",
+   "pass": 2,
+   "n": 16,
+   "util": 7,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants",
+   "pass": 3,
+   "n": 16,
+   "util": 8,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 1,
+   "n": 16,
+   "util": 9,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 2,
+   "n": 16,
+   "util": 10,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 3,
+   "n": 16,
+   "util": 9,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.245
+  }
+ ]
+}
