@@ -894,3 +894,8 @@
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0002537, "prompt_tokens": 1957, "completion_tokens": 116, "reasoning_tokens": 64}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0004575, "prompt_tokens": 2145, "completion_tokens": 486, "reasoning_tokens": 347}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0005055, "prompt_tokens": 2295, "completion_tokens": 552, "reasoning_tokens": 275}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0002212, "prompt_tokens": 1957, "completion_tokens": 51, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0004485, "prompt_tokens": 2145, "completion_tokens": 468, "reasoning_tokens": 363}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0003305, "prompt_tokens": 2255, "completion_tokens": 210, "reasoning_tokens": 93}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0002075, "prompt_tokens": 1940, "completion_tokens": 27, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.000316, "prompt_tokens": 1985, "completion_tokens": 235, "reasoning_tokens": 29}
