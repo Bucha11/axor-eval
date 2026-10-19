@@ -1,0 +1,98 @@
+{
+ "source": "real o4-mini token logs (spend.jsonl); repriced at claude.com/pricing",
+ "pricing_$per_1M": {
+  "haiku-5-5": [
+   0.1,
+   0.5
+  ],
+  "sonnet-5-5": [
+   2.0,
+   10.0
+  ]
+ },
+ "multiplier": {
+  "central": 1.15,
+  "upper": 1.5
+ },
+ "note": "output includes reasoning/thinking tokens; o4-mini out is ~84% reasoning. Disabling Claude thinking (haiku: disabled@\u2264high; sonnet: between_tools@\u2264high) cuts output ~5x.",
+ "per_condition_3pass_tokens_o4mini": {
+  "undefended": {
+   "in": 3141750,
+   "out": 761813,
+   "src": "\u2248 L1+L2 profile (no undef spend.jsonl; near-identical loop)"
+  },
+  "origin_only": {
+   "in": 3289976,
+   "out": 696119,
+   "src": "live_origin_c9v5_v2/spend.jsonl"
+  },
+  "grants_L1L2": {
+   "in": 3141750,
+   "out": 761813,
+   "src": "live_v5/spend.jsonl"
+  },
+  "grants_L1L2_L4view": {
+   "in": 3339145,
+   "out": 712618,
+   "src": "live_c9v5/spend.jsonl (B = A+B/2)"
+  }
+ },
+ "full_run_4cond": {
+  "haiku-5-5": {
+   "1pass": {
+    "central_$": 1.06,
+    "upper_$": 1.38
+   },
+   "2pass": {
+    "central_$": 2.11,
+    "upper_$": 2.76
+   },
+   "3pass": {
+    "central_$": 3.17,
+    "upper_$": 4.14
+   }
+  },
+  "sonnet-5-5": {
+   "1pass": {
+    "central_$": 21.14,
+    "upper_$": 27.57
+   },
+   "2pass": {
+    "central_$": 42.28,
+    "upper_$": 55.15
+   },
+   "3pass": {
+    "central_$": 63.42,
+    "upper_$": 82.72
+   }
+  }
+ },
+ "one_undefended_pass": {
+  "haiku-5-5": {
+   "central_$": 0.27,
+   "upper_$": 0.35
+  },
+  "sonnet-5-5": {
+   "central_$": 5.33,
+   "upper_$": 6.95
+  }
+ },
+ "budget": {
+  "cap_$": 50.0,
+  "margin": 0.3,
+  "spend_ceiling_$": 35.0
+ },
+ "fits_with_margin": {
+  "haiku-5-5": {
+   "1pass": true,
+   "2pass": true,
+   "3pass": true
+  },
+  "sonnet-5-5": {
+   "1pass": true,
+   "2pass": false,
+   "3pass": false
+  }
+ },
+ "recommendation": "Haiku-5-5 full 3 passes x 4 conditions (upper $4) + Sonnet-5-5 1 pass x 4 conditions (upper $28) = $32 upper, within $35 ceiling."
+}
