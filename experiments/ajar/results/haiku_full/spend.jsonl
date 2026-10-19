@@ -3676,3 +3676,17 @@
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0020158, "prompt_tokens": 17263, "completion_tokens": 579, "reasoning_tokens": 355}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0020295, "prompt_tokens": 17650, "completion_tokens": 529, "reasoning_tokens": 207}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0021187, "prompt_tokens": 18252, "completion_tokens": 587, "reasoning_tokens": 360}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0026456, "prompt_tokens": 19491, "completion_tokens": 1393, "reasoning_tokens": 784}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.002623, "prompt_tokens": 20735, "completion_tokens": 1099, "reasoning_tokens": 582}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005763, "prompt_tokens": 5078, "completion_tokens": 137, "reasoning_tokens": 46}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006269, "prompt_tokens": 5479, "completion_tokens": 158, "reasoning_tokens": 16}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0011256, "prompt_tokens": 7476, "completion_tokens": 756, "reasoning_tokens": 205}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0011226, "prompt_tokens": 9436, "completion_tokens": 358, "reasoning_tokens": 126}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.000566, "prompt_tokens": 5115, "completion_tokens": 109, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.000973, "prompt_tokens": 6230, "completion_tokens": 700, "reasoning_tokens": 256}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005742, "prompt_tokens": 5177, "completion_tokens": 113, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.000809, "prompt_tokens": 6170, "completion_tokens": 384, "reasoning_tokens": 200}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0009173, "prompt_tokens": 6473, "completion_tokens": 540, "reasoning_tokens": 143}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005858, "prompt_tokens": 5133, "completion_tokens": 145, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0007991, "prompt_tokens": 6146, "completion_tokens": 369, "reasoning_tokens": 217}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0012719, "prompt_tokens": 8149, "completion_tokens": 914, "reasoning_tokens": 394}
