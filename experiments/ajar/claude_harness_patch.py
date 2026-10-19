@@ -250,6 +250,19 @@ def _patch_save_and_runbenign():
                 R._save_trajectory(pipeline._recorder, ut_id, governed, None, ex,
                                    cost=round(_spend_total() - before, 6), api_error=True)
                 continue
+            except Exception as e:                     # AgentDojo utility-checker error (e.g. KeyError
+                # when a governed-blocked step means the checked artifact is absent): same as the
+                # stock harness's generic catch — count as a governed failure (utility=False), save a
+                # trajectory so resume skips it, mark utility_error. Not an API error, not a rerun.
+                print(f"  [{label}] {ut_id}: UTILITY_ERROR {type(e).__name__}: {e} -> utility=False")
+                R._save_trajectory(pipeline._recorder, ut_id, governed, False, ex,
+                                   cost=round(_spend_total() - before, 6))
+                p2 = R._traj_path(ut_id, governed)
+                if p2 and os.path.exists(p2):
+                    dd = json.load(open(p2)); dd["utility_error"] = f"{type(e).__name__}: {e}"
+                    json.dump(dd, open(p2, "w"), indent=1, default=str)
+                utils.append(False)
+                continue
             utils.append(utility)
             R._save_trajectory(pipeline._recorder, ut_id, governed, utility, ex,
                                cost=round(_spend_total() - before, 6))
