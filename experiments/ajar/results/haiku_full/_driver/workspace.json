@@ -1,0 +1,115 @@
+{
+ "suite": "workspace",
+ "aborted": null,
+ "final_cost": 2.6436,
+ "log": [
+  {
+   "cond": "undefended",
+   "pass": 1,
+   "n": 40,
+   "util": 33,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "undefended",
+   "pass": 2,
+   "n": 40,
+   "util": 31,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "undefended",
+   "pass": 3,
+   "n": 40,
+   "util": 33,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "origin",
+   "pass": 1,
+   "n": 40,
+   "util": 23,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "origin",
+   "pass": 2,
+   "n": 40,
+   "util": 23,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "origin",
+   "pass": 3,
+   "n": 40,
+   "util": 21,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "grants",
+   "pass": 1,
+   "n": 40,
+   "util": 22,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "grants",
+   "pass": 2,
+   "n": 40,
+   "util": 22,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
+  },
+  {
+   "cond": "grants",
+   "pass": 3,
+   "n": 40,
+   "util": 22,
+   "denied": 6,
+   "confirmations": 0,
+   "cost_so_far": 2.3198
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 1,
+   "n": 40,
+   "util": 28,
+   "denied": 0,
+   "confirmations": 7,
+   "cost_so_far": 2.4275
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 2,
+   "n": 40,
+   "util": 28,
+   "denied": 0,
+   "confirmations": 7,
+   "cost_so_far": 2.5412
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 3,
+   "n": 40,
+   "util": 28,
+   "denied": 0,
+   "confirmations": 7,
+   "cost_so_far": 2.6436
+  }
+ ]
+}
