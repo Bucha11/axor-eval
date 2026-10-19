@@ -1,0 +1,30 @@
+{
+ "t1_retry_then_success": {
+  "retries": 2,
+  "expected_retries": 2,
+  "tool_calls_parsed": 1,
+  "thinking_blocks_seen": 1,
+  "pass": true
+ },
+ "t2_terminal_ApiError": {
+  "raised_ApiError": true,
+  "attempts_made": 5,
+  "expected_attempts": 5,
+  "msg": "anthropic failed after 5 attempt(s): HTTPError: HTTP Error 503: err",
+  "pass": true
+ },
+ "t3_spend_cap_fires": {
+  "capped": true,
+  "pass": true
+ },
+ "t4_usage_logged": {
+  "spend_lines": 1,
+  "cost_written": 0.00025,
+  "expected_cost": 0.00025,
+  "thinking_cfg_sent": {
+   "type": "adaptive"
+  },
+  "pass": true
+ },
+ "ALL_PASS": true
+}

@@ -1,0 +1,28 @@
+{
+ "suite": "banking",
+ "user_task": "user_task_0",
+ "case_A_success": {
+  "utils_counted": [
+   false
+  ],
+  "thinking": {
+   "type": "adaptive"
+  },
+  "max_tokens": 4096,
+  "api_error": false,
+  "thinking_blocks_seen": 0,
+  "pass": true
+ },
+ "case_B_api_error": {
+  "utils_counted": [],
+  "utility_NOT_zero_counted": true,
+  "api_error_flag": true,
+  "trajectory_utility": false,
+  "rerun_list": [
+   "user_task_0"
+  ],
+  "note": "trajectory utility reads false (bool(None)); api_error=True gates it out of analysis",
+  "pass": true
+ },
+ "ALL_PASS": true
+}
