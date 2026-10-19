@@ -1,0 +1,115 @@
+{
+ "suite": "slack",
+ "aborted": null,
+ "final_cost": 0.5701,
+ "log": [
+  {
+   "cond": "undefended",
+   "pass": 1,
+   "n": 21,
+   "util": 19,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.3651
+  },
+  {
+   "cond": "undefended",
+   "pass": 2,
+   "n": 21,
+   "util": 19,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.3651
+  },
+  {
+   "cond": "undefended",
+   "pass": 3,
+   "n": 21,
+   "util": 19,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.3651
+  },
+  {
+   "cond": "origin",
+   "pass": 1,
+   "n": 21,
+   "util": 5,
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 0.3651
+  },
+  {
+   "cond": "origin",
+   "pass": 2,
+   "n": 21,
+   "util": 5,
+   "denied": 12,
+   "confirmations": 0,
+   "cost_so_far": 0.3892
+  },
+  {
+   "cond": "origin",
+   "pass": 3,
+   "n": 21,
+   "util": 5,
+   "denied": 9,
+   "confirmations": 0,
+   "cost_so_far": 0.4153
+  },
+  {
+   "cond": "grants",
+   "pass": 1,
+   "n": 21,
+   "util": 9,
+   "denied": 7,
+   "confirmations": 0,
+   "cost_so_far": 0.4417
+  },
+  {
+   "cond": "grants",
+   "pass": 2,
+   "n": 21,
+   "util": 9,
+   "denied": 5,
+   "confirmations": 0,
+   "cost_so_far": 0.4673
+  },
+  {
+   "cond": "grants",
+   "pass": 3,
+   "n": 21,
+   "util": 9,
+   "denied": 6,
+   "confirmations": 0,
+   "cost_so_far": 0.4935
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 1,
+   "n": 21,
+   "util": 9,
+   "denied": 6,
+   "confirmations": 7,
+   "cost_so_far": 0.5191
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 2,
+   "n": 21,
+   "util": 9,
+   "denied": 3,
+   "confirmations": 4,
+   "cost_so_far": 0.5455
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 3,
+   "n": 21,
+   "util": 9,
+   "denied": 4,
+   "confirmations": 5,
+   "cost_so_far": 0.5701
+  }
+ ]
+}
