@@ -1,0 +1,38 @@
+{
+ "t1_parse_meta": {
+  "tool_calls": 1,
+  "provider": "Anthropic",
+  "thinking_blocks": 1,
+  "truncated": false,
+  "reasoning_sent": {
+   "max_tokens": 1024
+  },
+  "provider_pin": {
+   "order": [
+    "anthropic"
+   ],
+   "allow_fallbacks": false
+  },
+  "pass": true
+ },
+ "t2_truncated": {
+  "truncated": true,
+  "pass": true
+ },
+ "t3_terminal_ApiError": {
+  "raised": "openrouter terminal: OpenRouter 503: upstream",
+  "pass": true
+ },
+ "t4_spend_cap": {
+  "capped": true,
+  "pass": true
+ },
+ "t5_provider_visible": {
+  "provider": "Together",
+  "is_anthropic": false,
+  "pass": true
+ },
+ "kernel_commit": "f22795152ff5c7ea4e9fe362a3af3efe1dba49d2",
+ "kernel_is_f227951": true,
+ "ALL_PASS": true
+}

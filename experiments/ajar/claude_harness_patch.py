@@ -114,6 +114,59 @@ def _query(self, query, runtime, env=EmptyEnv(), messages=[], extra_args={}):
     return query, runtime, env, [*messages, assistant], extra_args
 
 
+def _or_reasoning():
+    """OpenRouter unified reasoning param for Anthropic Claude (effort OR max_tokens>=1024).
+    Returns (reasoning_dict | None). Default: effort from AXOR_BENCH_EFFORT, else max_tokens budget."""
+    if os.environ.get("AXOR_BENCH_THINKING", "1") == "0":
+        return None
+    eff = os.environ.get("AXOR_BENCH_EFFORT")
+    if eff:
+        return {"effort": eff}
+    # fixed, safe budget (<< request max_tokens so finish_reason != length): records a concrete value
+    return {"max_tokens": int(os.environ.get("AXOR_BENCH_REASONING_TOKENS", "1024"))}
+
+
+def _or_query(self, query, runtime, env=EmptyEnv(), messages=[], extra_args={}):
+    import json as _j
+    tools = [{"type": "function", "function": {"name": f.name, "description": f.description,
+              "parameters": f.parameters.model_json_schema()}} for f in runtime.functions.values()]
+    body = {"model": self.model, "max_tokens": self.max_tokens,
+            "messages": A._messages_to_openai(messages), "temperature": 0.0,
+            "usage": {"include": True},
+            # pin the provider to Anthropic; no silent fallback to a re-host
+            "provider": {"order": ["anthropic"], "allow_fallbacks": False}}
+    if tools:
+        body["tools"] = tools; body["tool_choice"] = "auto"
+    self.think_cfg = _or_reasoning()
+    if self.think_cfg is not None:
+        body["reasoning"] = self.think_cfg
+    A._spend_guard()
+    try:
+        resp = self._post(body)                        # OpenRouterLLM._post already retries 7x w/ backoff
+    except RuntimeError as e:                           # retries exhausted / terminal -> rerun, not utility 0
+        raise ApiError(f"openrouter terminal: {e}")
+    A._spend_record(self.model, resp.get("usage") or {})
+    self.last_usage = resp.get("usage") or {}
+    self.last_provider = resp.get("provider")
+    choice = (resp.get("choices") or [{}])[0]
+    self.last_truncated = choice.get("finish_reason") == "length"
+    msg = choice.get("message") or {}
+    self.last_thinking_blocks = len(msg.get("reasoning_details") or [])
+    text = msg.get("content") or ""
+    tool_calls = []
+    for tc in (msg.get("tool_calls") or []):
+        fn = tc["function"]
+        try:
+            args = _j.loads(fn["arguments"]) if fn.get("arguments") else {}
+        except _j.JSONDecodeError:
+            args = {}
+        tool_calls.append(FunctionCall(id=tc.get("id"), function=fn["name"], args=args))
+    assistant = ChatAssistantMessage(role="assistant",
+                                     content=[text_content_block_from_string(text)] if text else [],
+                                     tool_calls=tool_calls or None)
+    return query, runtime, env, [*messages, assistant], extra_args
+
+
 def kernel_commit():
     """Full HEAD of the worktree that provides the installed axor_core (the --with-editable kernel)."""
     import subprocess, axor_core
@@ -139,6 +192,7 @@ def apply():
     A.RawAnthropicLLM._http = _http_real
     A.RawAnthropicLLM._post = _post_retry
     A.RawAnthropicLLM.query = _query
+    A.OpenRouterLLM.query = _or_query          # OpenRouter path (reasoning, provider pin, api_error, metadata)
     A.ApiError = ApiError
     _patch_save_and_runbenign()
 
@@ -162,6 +216,8 @@ def _patch_save_and_runbenign():
         d["effort"] = effort_sent()
         d["max_tokens"] = getattr(llm, "max_tokens", None)
         d["thinking_blocks_seen"] = getattr(llm, "last_thinking_blocks", None)
+        d["provider"] = getattr(llm, "last_provider", None)
+        d["truncated_max_tokens"] = getattr(llm, "last_truncated", None)
         d["kernel_commit"] = _KERNEL_COMMIT
         d["api_error"] = api_error
         d["retries"] = getattr(llm, "_retries", 0)
