@@ -1,0 +1,115 @@
+{
+ "suite": "travel",
+ "aborted": null,
+ "final_cost": 1.4285,
+ "log": [
+  {
+   "cond": "undefended",
+   "pass": 1,
+   "n": 20,
+   "util": 15,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.6433
+  },
+  {
+   "cond": "undefended",
+   "pass": 2,
+   "n": 20,
+   "util": 15,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.7148
+  },
+  {
+   "cond": "undefended",
+   "pass": 3,
+   "n": 20,
+   "util": 14,
+   "denied": null,
+   "confirmations": 0,
+   "cost_so_far": 0.7885
+  },
+  {
+   "cond": "origin",
+   "pass": 1,
+   "n": 20,
+   "util": 12,
+   "denied": 2,
+   "confirmations": 0,
+   "cost_so_far": 0.8572
+  },
+  {
+   "cond": "origin",
+   "pass": 2,
+   "n": 20,
+   "util": 12,
+   "denied": 2,
+   "confirmations": 0,
+   "cost_so_far": 0.927
+  },
+  {
+   "cond": "origin",
+   "pass": 3,
+   "n": 20,
+   "util": 13,
+   "denied": 3,
+   "confirmations": 0,
+   "cost_so_far": 0.9985
+  },
+  {
+   "cond": "grants",
+   "pass": 1,
+   "n": 20,
+   "util": 13,
+   "denied": 2,
+   "confirmations": 0,
+   "cost_so_far": 1.0692
+  },
+  {
+   "cond": "grants",
+   "pass": 2,
+   "n": 20,
+   "util": 12,
+   "denied": 4,
+   "confirmations": 0,
+   "cost_so_far": 1.1455
+  },
+  {
+   "cond": "grants",
+   "pass": 3,
+   "n": 20,
+   "util": 12,
+   "denied": 2,
+   "confirmations": 0,
+   "cost_so_far": 1.2173
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 1,
+   "n": 20,
+   "util": 16,
+   "denied": 0,
+   "confirmations": 3,
+   "cost_so_far": 1.2893
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 2,
+   "n": 20,
+   "util": 15,
+   "denied": 0,
+   "confirmations": 2,
+   "cost_so_far": 1.3598
+  },
+  {
+   "cond": "grants_l4",
+   "pass": 3,
+   "n": 20,
+   "util": 15,
+   "denied": 0,
+   "confirmations": 2,
+   "cost_so_far": 1.4285
+  }
+ ]
+}
