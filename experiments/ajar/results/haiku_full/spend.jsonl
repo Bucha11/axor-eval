@@ -3344,3 +3344,16 @@
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.000551, "prompt_tokens": 5110, "completion_tokens": 80, "reasoning_tokens": 0}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0007922, "prompt_tokens": 5382, "completion_tokens": 508, "reasoning_tokens": 225}
 {"model": "anthropic/claude-haiku-5.5", "cost": 0.0005357, "prompt_tokens": 5067, "completion_tokens": 58, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0007441, "prompt_tokens": 5631, "completion_tokens": 362, "reasoning_tokens": 115}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.000567, "prompt_tokens": 5065, "completion_tokens": 121, "reasoning_tokens": 29}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006388, "prompt_tokens": 5443, "completion_tokens": 189, "reasoning_tokens": 115}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005875, "prompt_tokens": 5070, "completion_tokens": 161, "reasoning_tokens": 81}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006423, "prompt_tokens": 5743, "completion_tokens": 136, "reasoning_tokens": 77}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005544, "prompt_tokens": 5089, "completion_tokens": 91, "reasoning_tokens": 32}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006783, "prompt_tokens": 5653, "completion_tokens": 226, "reasoning_tokens": 165}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005412, "prompt_tokens": 5122, "completion_tokens": 58, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0007146, "prompt_tokens": 5501, "completion_tokens": 329, "reasoning_tokens": 81}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006534, "prompt_tokens": 5869, "completion_tokens": 133, "reasoning_tokens": 0}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0005506, "prompt_tokens": 5061, "completion_tokens": 89, "reasoning_tokens": 32}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0007404, "prompt_tokens": 5429, "completion_tokens": 395, "reasoning_tokens": 304}
+{"model": "anthropic/claude-haiku-5.5", "cost": 0.0006449, "prompt_tokens": 5639, "completion_tokens": 162, "reasoning_tokens": 89}

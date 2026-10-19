@@ -1,7 +1,7 @@
 {
  "suite": "banking",
  "aborted": null,
- "final_cost": 0.3651,
+ "final_cost": 2.2306,
  "log": [
   {
    "cond": "undefended",
@@ -10,7 +10,7 @@
    "util": 10,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "undefended",
@@ -19,7 +19,7 @@
    "util": 11,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "undefended",
@@ -28,7 +28,7 @@
    "util": 10,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
@@ -37,7 +37,7 @@
    "util": 7,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
@@ -46,7 +46,7 @@
    "util": 7,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
@@ -55,7 +55,7 @@
    "util": 7,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
@@ -64,7 +64,7 @@
    "util": 8,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
@@ -73,7 +73,7 @@
    "util": 7,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
@@ -82,7 +82,7 @@
    "util": 8,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
@@ -91,7 +91,7 @@
    "util": 9,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
@@ -100,7 +100,7 @@
    "util": 10,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
@@ -109,7 +109,7 @@
    "util": 9,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   }
  ]
 }

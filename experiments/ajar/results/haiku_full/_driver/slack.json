@@ -1,7 +1,7 @@
 {
  "suite": "slack",
  "aborted": null,
- "final_cost": 0.5701,
+ "final_cost": 2.2306,
  "log": [
   {
    "cond": "undefended",
@@ -10,7 +10,7 @@
    "util": 19,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "undefended",
@@ -19,7 +19,7 @@
    "util": 19,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "undefended",
@@ -28,7 +28,7 @@
    "util": 19,
    "denied": null,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
@@ -37,79 +37,79 @@
    "util": 5,
    "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3651
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
    "pass": 2,
    "n": 21,
    "util": 5,
-   "denied": 12,
+   "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.3892
+   "cost_so_far": 2.2306
   },
   {
    "cond": "origin",
    "pass": 3,
    "n": 21,
    "util": 5,
-   "denied": 9,
+   "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.4153
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
    "pass": 1,
    "n": 21,
    "util": 9,
-   "denied": 7,
+   "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.4417
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
    "pass": 2,
    "n": 21,
    "util": 9,
-   "denied": 5,
+   "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.4673
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants",
    "pass": 3,
    "n": 21,
    "util": 9,
-   "denied": 6,
+   "denied": 0,
    "confirmations": 0,
-   "cost_so_far": 0.4935
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
    "pass": 1,
    "n": 21,
    "util": 9,
-   "denied": 6,
-   "confirmations": 7,
-   "cost_so_far": 0.5191
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
    "pass": 2,
    "n": 21,
    "util": 9,
-   "denied": 3,
-   "confirmations": 4,
-   "cost_so_far": 0.5455
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
   },
   {
    "cond": "grants_l4",
    "pass": 3,
    "n": 21,
    "util": 9,
-   "denied": 4,
-   "confirmations": 5,
-   "cost_so_far": 0.5701
+   "denied": 0,
+   "confirmations": 0,
+   "cost_so_far": 2.2306
   }
  ]
 }
