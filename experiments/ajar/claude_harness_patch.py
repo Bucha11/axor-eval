@@ -184,7 +184,7 @@ def effort_sent():
     e = os.environ.get("AXOR_BENCH_EFFORT")
     if e:
         return e
-    m = os.environ.get("AXOR_BENCH_MODEL", "")
+    m = os.environ.get("AXOR_BENCH_MODEL", "").replace(".", "-")
     return "model_default(medium)" if ("haiku-5-5" in m or "opus-5-5" in m) else "model_default(high)"
 
 

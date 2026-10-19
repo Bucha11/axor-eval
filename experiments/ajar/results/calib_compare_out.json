@@ -1,0 +1,26 @@
+{
+ "model": "claude-haiku-5-5",
+ "calib_calls": 46,
+ "calib_tasks": 16,
+ "calib_cost_$": 0.0207,
+ "actual_tokens_per_call": {
+  "in_mean": 2686,
+  "out_mean": 362
+ },
+ "o4mini_baseline_per_call": {
+  "in_mean": 2302,
+  "out_mean": 558
+ },
+ "realized_multiplier": {
+  "input": 1.167,
+  "output": 0.65,
+  "assumed_was": 1.15
+ },
+ "calls_per_task_actual": 2.88,
+ "full_run_4cond_reprojected_$": {
+  "1pass": 0.82,
+  "2pass": 1.64,
+  "3pass": 2.46
+ },
+ "verdict": "estimate LOW \u2014 realized in x1.17/out x0.65 exceed x1.15; scale the cost table up accordingly before the full run"
+}
