@@ -114,6 +114,27 @@ def _query(self, query, runtime, env=EmptyEnv(), messages=[], extra_args={}):
     return query, runtime, env, [*messages, assistant], extra_args
 
 
+def kernel_commit():
+    """Full HEAD of the worktree that provides the installed axor_core (the --with-editable kernel)."""
+    import subprocess, axor_core
+    d = os.path.dirname(os.path.dirname(os.path.abspath(axor_core.__file__)))
+    try:
+        return subprocess.run(["git", "-C", d, "rev-parse", "HEAD"],
+                              capture_output=True, text=True).stdout.strip() or None
+    except Exception:
+        return None
+
+
+def effort_sent():
+    """The effort actually in force: AXOR_BENCH_EFFORT if set, else the model default (medium for
+    claude-haiku-5-5 / claude-opus-5-5; high for the other current models)."""
+    e = os.environ.get("AXOR_BENCH_EFFORT")
+    if e:
+        return e
+    m = os.environ.get("AXOR_BENCH_MODEL", "")
+    return "model_default(medium)" if ("haiku-5-5" in m or "opus-5-5" in m) else "model_default(high)"
+
+
 def apply():
     A.RawAnthropicLLM._http = _http_real
     A.RawAnthropicLLM._post = _post_retry
@@ -122,7 +143,12 @@ def apply():
     _patch_save_and_runbenign()
 
 
+_KERNEL_COMMIT = None
+
+
 def _patch_save_and_runbenign():
+    global _KERNEL_COMMIT
+    _KERNEL_COMMIT = kernel_commit()
     _orig_save = R._save_trajectory
 
     def save(rec, ut_id, governed, utility, tools_executor, cost=None, api_error=False):
@@ -133,8 +159,10 @@ def _patch_save_and_runbenign():
         d = json.load(open(p))
         llm = getattr(rec, "inner", rec)
         d["thinking"] = getattr(llm, "think_cfg", None)
+        d["effort"] = effort_sent()
         d["max_tokens"] = getattr(llm, "max_tokens", None)
         d["thinking_blocks_seen"] = getattr(llm, "last_thinking_blocks", None)
+        d["kernel_commit"] = _KERNEL_COMMIT
         d["api_error"] = api_error
         d["retries"] = getattr(llm, "_retries", 0)
         json.dump(d, open(p, "w"), indent=1, default=str)
