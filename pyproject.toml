@@ -23,7 +23,7 @@ dependencies = [
     # 0.11 took ownership of the shared trace / tool-manifest /
     # predicate schemas; nothing here reads them directly, but a
     # consumer that pins 0.11 must still be able to resolve this.
-    "axor-core>=0.8,<0.12",
+    "axor-core>=0.8,<0.13",
     # the wrap engine. Not an integration convenience: it is where the one
     # gating path lives (`WrappedToolset` + the `enforcement` flag), and eval
     # runs it with enforcement off. Before this, eval reimplemented that path

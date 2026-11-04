@@ -32,7 +32,12 @@ MIN_AXOR_CORE = (0, 8, 0)
 # `policy.from_record`; the deep surfaces above are untouched. Measured against
 # an installed 0.11.0 — 134 tests pass and the only failure was this bound
 # itself declaring the version it was running on unsupported.
-MAX_AXOR_CORE = (0, 12, 0)
+# 0.12.x validated: STRICT-only breaking changes (record closure, a required
+# consumption ground per guarded sink, the consequence/driving_args obligations)
+# — eval constructs no STRICT governor and imports none of the new surfaces.
+# Measured against an installed 0.12.0: 138 tests pass and the only failure was
+# this bound itself declaring the version it was running on unsupported.
+MAX_AXOR_CORE = (0, 13, 0)
 
 _checked = False
 
