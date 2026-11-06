@@ -49,19 +49,20 @@ wheels = [
 
 [[package]]
 name = "axor-core"
-version = "0.9.2"
+version = "0.12.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/1e/4f/c756329105d742ca68cc063ba3091a3527fa6eea9a29a21d2f3c5144f36a/axor_core-0.9.2.tar.gz", hash = "sha256:ff905fbc0482b15892f6d07b7e8a748ba030ef69268b7bcaf22d1e4dba5e06f0", size = 598248, upload-time = "2026-07-13T04:16:07.499Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/55/e7/1833642e01f610cadd7299c265faf1502354a10f8f082aecbd17c09255ea/axor_core-0.12.0.tar.gz", hash = "sha256:d4bccf8bf19bb4fc0e4350c890e5aa559d9d650ee85c1855338e351544a6b10c", size = 866174, upload-time = "2026-11-06T18:58:11.217Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/65/f5aaef4a41ac8902a3efde52a1ceb410a8ddabd814384bb5672e09c75baf/axor_core-0.9.2-py3-none-any.whl", hash = "sha256:0fa85f3de63fe0bb3b5d4da3e14b1fcdbc45868325db55d54153c13118ee04b3", size = 301568, upload-time = "2026-07-13T04:16:05.943Z" },
+    { url = "https://files.pythonhosted.org/packages/35/a9/cb3706d7078794db448ddf0a78f51544ae5ce8985455bd93015495527d56/axor_core-0.12.0-py3-none-any.whl", hash = "sha256:cdd9099a480875d852d8774cd1be8e9e55b1c37b66bc5c21627bbb62d0390c9e", size = 395028, upload-time = "2026-11-06T18:58:09.533Z" },
 ]
 
 [[package]]
 name = "axor-eval"
-version = "0.1.1"
+version = "0.2.2"
 source = { editable = "." }
 dependencies = [
     { name = "axor-core" },
+    { name = "axor-wrap" },
 ]
 
 [package.optional-dependencies]
@@ -75,7 +76,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "axor-core", specifier = ">=0.8,<0.11" },
+    { name = "axor-core", specifier = ">=0.8,<0.13" },
+    { name = "axor-wrap", specifier = ">=0.2,<0.3" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23" },
@@ -83,6 +85,18 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.5,<0.17" },
 ]
 provides-extras = ["dev"]
+
+[[package]]
+name = "axor-wrap"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "axor-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/60/225454b535ca136d7a3d6b57672bc35bb38bf72812d8c04531aeed36f285/axor_wrap-0.2.1.tar.gz", hash = "sha256:e7764e0ecafed36b0d4b89ddd500685464ba36cc92247458b355b098ac94fd85", size = 121664, upload-time = "2026-11-06T19:14:50.259Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/5a/018fac43c19c6159c46022808f18b4399ac5986bda062297b46e988ba6f0/axor_wrap-0.2.1-py3-none-any.whl", hash = "sha256:2f4571d36973b860819eb4c64c84161f0ae80df9dfff98c296632e83386219b7", size = 69821, upload-time = "2026-11-06T19:14:48.622Z" },
+]
 
 [[package]]
 name = "colorama"
