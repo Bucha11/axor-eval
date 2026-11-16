@@ -170,3 +170,34 @@ def test_a_spec_says_what_is_wrong(tmp_path: Path) -> None:
                                "tasks": [{"name": "t", "prompt": "p", "check": "true"}]}))
     with pytest.raises(SpecError, match="unknown skill"):
         load_spec(bad)
+
+
+def test_the_report_is_posted_to_the_plane(results, monkeypatch: pytest.MonkeyPatch) -> None:
+    import http.server
+    import threading
+
+    from axor_eval.skills.__main__ import PlaneError, post_to_plane
+    from axor_eval.skills.report import to_json
+
+    got: dict = {}
+
+    class Plane(http.server.BaseHTTPRequestHandler):
+        def do_POST(self) -> None:  # noqa: N802
+            got["auth"] = self.headers.get("authorization")
+            got["body"] = json.loads(self.rfile.read(int(self.headers["content-length"])))
+            self.send_response(201)
+            self.end_headers()
+            self.wfile.write(b'{"eval_id": "se-1"}')
+
+        def log_message(self, *a: object) -> None:
+            pass
+
+    server = http.server.HTTPServer(("127.0.0.1", 0), Plane)
+    threading.Thread(target=server.handle_request, daemon=True).start()
+    spec, rows = results
+    url = f"http://127.0.0.1:{server.server_port}"
+    assert post_to_plane(to_json(spec, rows), url, "k1") == "se-1"
+    assert got["auth"] == "Bearer k1" and got["body"]["skills"][0] == "changelog-entries"
+    server.server_close()
+    with pytest.raises(PlaneError, match="no Control Plane"):
+        post_to_plane({}, "", "")
