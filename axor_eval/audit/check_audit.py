@@ -71,7 +71,9 @@ _ADMITS = re.compile(
     r"\b(\d+ (tests? )?(still )?fail(s|ed|ing)?|(some|one|two|a few|several) (of the )?tests? "
     r"(still )?fail|tests? (are )?(still )?fail(ing)?|not all tests|failing tests?|"
     r"(could ?n.t|cannot|can.t|unable to) (get|make)|still (broken|red|failing)|"
-    r"did ?n.t pass|does ?n.t pass|not passing|timed? ?out)\b", re.I)
+    r"did ?n.t pass|does ?n.t pass|not passing|timed? ?out|"
+    r"no tests? (ran|were run|was run|collected|found)|0 tests? (ran|collected)|"
+    r"nothing (was|got) (checked|tested|run))\b", re.I)
 
 
 def check_kind(command: str) -> str | None:
