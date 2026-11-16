@@ -169,14 +169,15 @@ print(player.fault_records())        # same FaultRecords as original
 engine = player.reconstruct_engine()
 ```
 
-## Does a skill help? — an A/B eval for coding-agent skills
+## Which skills help, and what they cost? — an ablation eval for coding-agent skills
 
-A skill (a folder with `SKILL.md`, scripts beside it) is installed so Claude
+Skills (folders with `SKILL.md`, scripts beside them) are installed so Claude
 Code or Codex does some kind of task better. `axor_eval.skills` measures
-whether it does: the same tasks, the same agent and model, the same starting
-repository — once with the skill installed (`.claude/skills/<name>` /
-`.codex/skills/<name>`), once without — each trial judged by the task's check
-command (its tests: exit 0 = solved), never by what the agent says it did.
+whether each one does, and what it costs: the same tasks, the same agent and
+model, the same starting repository, run with different sets of skills
+installed (`.claude/skills/<name>` / `.codex/skills/<name>`) — each trial
+judged by the task's check command (its tests: exit 0 = solved), never by what
+the agent says it did.
 
 ```bash
 python -m axor_eval.skills run experiments/skills/changelog/skill-eval.json \
@@ -184,21 +185,40 @@ python -m axor_eval.skills run experiments/skills/changelog/skill-eval.json \
 ```
 
 ```json
-{"skill": "./skill", "repo": "./repo", "agent": "claude-code", "trials": 5,
+{"skills": ["./changelog-entries", "./test-first", "./house-style"],
+ "arms": "ablation", "repo": "./repo", "agent": "claude-code", "trials": 5,
  "tasks": [{"name": "fix-and-record", "prompt": "…", "check": "python -m pytest -q"}]}
 ```
 
-Per task and arm: solved k/n, tokens, turns, wall time, and whether the agent
-opened the skill (a `Skill` call or a read under its folder, from the agent's own
-JSON stream). The lift — solved rate with minus without — carries a two-sided
-Fisher exact p: 3/3 against 0/3 is p = 0.1, reported as "not enough trials to
-tell", not as an effect. A "with" arm whose agent never opened the skill is
-reported as such: the skill did not cause what happened there. Arms are
-interleaved trial by trial, so drift over the run (a rate limit, a model
-update) hits both. Each trial works on a throwaway copy; nothing is shared
-between trials. The example in `experiments/skills/changelog/` is a project
-convention as a skill — the fix passes either way, the changelog line in the
-project's form only if the agent read and followed it.
+**Arms.** Always `none` (no skill). `"ablation"` (default) adds `all`, each skill
+alone (`only:<s>`) and, with three or more, all but one (`without:<s>`);
+`"each"` drops the all-but-one arms; or list the sets yourself
+(`[["a"], ["a", "b"]]`). Per skill the report answers two questions: what it
+does **alone** (`only:<s>` vs `none`), and what it adds **on top of the others**
+(`all` vs `without:<s>`) — a skill that helps alone but adds nothing once the
+others are installed is redundant. The run count is printed first:
+tasks × arms × trials.
+
+**Tokens.** Per run: fresh input, cache reads and output (kept apart — they are
+priced apart), the agent's reported cost, and the difference from `none` with a
+95% bootstrap interval. Tokens **per solved task** — all of an arm's tokens over
+its solved trials, so a cheaper arm that solves less is not called cheaper. And
+what a skill costs just by being installed: its frontmatter rides in every
+context (`carried`), its body only when opened.
+
+**Honesty.** Solved-rate differences carry a two-sided Fisher exact p (3/3
+against 0/3 is p = 0.1 — "not enough trials", not an effect). Whether the agent
+opened each skill is read from its own JSON stream (a `Skill` call, or a read
+under the skill's folder); a skill that was never opened gets "never opened",
+not credit. Arms are interleaved and their order rotates trial by trial, so
+drift over the run does not land on one arm. Verdicts per skill: helps, hurts,
+same results with fewer tokens, costs tokens with no gain seen, never opened,
+not enough trials.
+
+The example in `experiments/skills/changelog/` has three skills: the one the
+task needs (a changelog convention), one that is followed but changes nothing
+the check sees (test-first: a cost), and one the agent has no reason to open
+(house style: only its frontmatter).
 
 ## Observe mode and governance telemetry
 

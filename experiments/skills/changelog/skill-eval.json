@@ -1,5 +1,10 @@
 {
-  "skill": "./skill",
+  "skills": [
+    "./changelog-entries",
+    "./test-first",
+    "./house-style"
+  ],
+  "arms": "ablation",
   "repo": "./repo",
   "agent": "claude-code",
   "trials": 5,

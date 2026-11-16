@@ -1,18 +1,26 @@
-"""The eval spec: which skill, which starting repository, which tasks.
+"""The eval spec: which skills, which starting repository, which tasks, which arms.
 
 JSON (or YAML, when PyYAML is installed), paths relative to the spec file::
 
     {
-      "skill": "./release-helper",
+      "skills": ["./changelog-entries", "./test-first", "./release-notes"],
       "repo": "./fixture",
       "agent": "claude-code",
       "trials": 5,
-      "timeout": 600,
+      "arms": "ablation",
       "tasks": [
-        {"name": "changelog", "prompt": "Add a changelog entry for the fix in src/limits.py",
-         "check": "python -m pytest -q tests/test_changelog.py"}
+        {"name": "fix-and-record", "prompt": "…", "check": "python -m pytest -q"}
       ]
     }
+
+``"skill": "./one"`` (a single skill) still works. ``arms`` says which skill
+sets are compared, always against ``none`` (no skill installed):
+
+- ``"ablation"`` (default): ``all``, each skill ``only:<s>``, and — with more
+  than one — ``without:<s>`` (all but one). What a skill does alone, and what
+  it adds on top of the others.
+- ``"each"``: ``none``, ``all`` and ``only:<s>``.
+- an explicit list of sets: ``[["a"], ["a", "b"]]``.
 
 A task may name its own ``repo``. ``check`` runs in the trial's workspace after
 the agent finishes, through the shell: exit 0 means the task was solved.
@@ -24,6 +32,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 AGENTS = ("claude-code", "codex")
+BASELINE = "none"
 
 
 @dataclass(frozen=True)
@@ -35,9 +44,38 @@ class Task:
 
 
 @dataclass(frozen=True)
+class Skill:
+    name: str
+    path: Path
+
+    @property
+    def description_chars(self) -> int:
+        """What the agent carries in context for an INSTALLED skill before it
+        uses it: the frontmatter (name, description). The body is read only
+        when the skill is used."""
+        text = _skill_md(self.path).read_text(encoding="utf-8", errors="replace")
+        if text.startswith("---"):
+            end = text.find("\n---", 3)
+            if end > 0:
+                return len(text[3:end].strip())
+        return len(self.name)
+
+    @property
+    def body_chars(self) -> int:
+        return len(_skill_md(self.path).read_text(encoding="utf-8", errors="replace"))
+
+
+@dataclass(frozen=True)
+class Arm:
+    label: str
+    skills: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class EvalSpec:
-    skill: Path
+    skills: tuple[Skill, ...]
     tasks: tuple[Task, ...]
+    arms: tuple[Arm, ...]
     agent: str = "claude-code"
     model: str = ""
     trials: int = 3
@@ -47,23 +85,62 @@ class EvalSpec:
     # double): `{prompt}` and `{model}` are substituted
     agent_command: tuple[str, ...] = field(default_factory=tuple)
 
+    def skill(self, name: str) -> Skill:
+        return next(s for s in self.skills if s.name == name)
+
     @property
-    def skill_name(self) -> str:
-        return skill_name(self.skill)
+    def runs(self) -> int:
+        return len(self.tasks) * len(self.arms) * self.trials
+
+
+def _skill_md(folder: Path) -> Path:
+    md = next((p for p in folder.iterdir() if p.name.lower() == "skill.md"), None)
+    if md is None:
+        raise SpecError(f"skill {folder} has no SKILL.md")
+    return md
 
 
 def skill_name(folder: Path) -> str:
     """The skill's ``name:`` from SKILL.md's frontmatter, else its folder's."""
-    md = next((p for p in folder.iterdir() if p.name.lower() == "skill.md"), None)
-    if md is not None:
-        text = md.read_text(encoding="utf-8", errors="replace")
-        if text.startswith("---"):
-            end = text.find("\n---", 3)
-            for line in text[3:end if end > 0 else 0].splitlines():
-                key, _, value = line.partition(":")
-                if key.strip().lower() == "name" and value.strip():
-                    return value.strip().strip("'\"")
+    text = _skill_md(folder).read_text(encoding="utf-8", errors="replace")
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        for line in text[3:end if end > 0 else 0].splitlines():
+            key, _, value = line.partition(":")
+            if key.strip().lower() == "name" and value.strip():
+                return value.strip().strip("'\"")
     return folder.resolve().name
+
+
+def build_arms(names: list[str], how: object) -> tuple[Arm, ...]:
+    """``none`` first, then the sets to compare with it — each set once."""
+    arms: list[Arm] = [Arm(BASELINE, ())]
+    if isinstance(how, list):
+        for combo in how:
+            if not isinstance(combo, list) or not combo:
+                raise SpecError("an explicit arm is a non-empty list of skill names")
+            unknown = [c for c in combo if c not in names]
+            if unknown:
+                raise SpecError(f"arm {combo}: unknown skill(s) {unknown}; known: {names}")
+            arms.append(Arm("+".join(combo), tuple(combo)))
+    else:
+        mode = str(how or "ablation")
+        if mode not in ("ablation", "each"):
+            raise SpecError('arms must be "ablation", "each" or a list of skill sets')
+        arms.append(Arm("all", tuple(names)))
+        if len(names) > 1:
+            arms += [Arm(f"only:{n}", (n,)) for n in names]
+            # with two skills "without a" is "only b": the same set, run once
+            if mode == "ablation" and len(names) > 2:
+                arms += [Arm(f"without:{n}", tuple(x for x in names if x != n)) for n in names]
+    seen: set[frozenset[str]] = set()
+    unique: list[Arm] = []
+    for arm in arms:
+        key = frozenset(arm.skills)
+        if key not in seen:
+            seen.add(key)
+            unique.append(arm)
+    return tuple(unique)
 
 
 class SpecError(ValueError):
@@ -86,8 +163,8 @@ def _load(path: Path) -> dict:
 
 
 def load_spec(path: Path, **override: object) -> EvalSpec:
-    """Read and validate a spec. ``override`` (trials, agent, model, timeout)
-    wins over the file — the CLI's flags."""
+    """Read and validate a spec. ``override`` (trials, agent, model, timeout,
+    agent_command) wins over the file — the CLI's flags."""
     path = path.resolve()
     data = _load(path)
     base = path.parent
@@ -100,9 +177,17 @@ def load_spec(path: Path, **override: object) -> EvalSpec:
             raise SpecError(f"{what} {raw!r} is not a folder")
         return p
 
-    skill = where(data.get("skill"), "skill")
-    if not any(p.name.lower() == "skill.md" for p in skill.iterdir()):
-        raise SpecError(f"skill {skill} has no SKILL.md")
+    raw_skills = data.get("skills", [data["skill"]] if "skill" in data else None)
+    if not isinstance(raw_skills, list) or not raw_skills:
+        raise SpecError('give "skills": [folders] (or "skill": folder)')
+    skills: list[Skill] = []
+    for i, raw in enumerate(raw_skills):
+        folder = where(raw, f"skills[{i}]")
+        skills.append(Skill(skill_name(folder), folder))
+    names = [s.name for s in skills]
+    if len(set(names)) != len(names):
+        raise SpecError(f"two skills share a name: {names}")
+
     default_repo = data.get("repo")
     raw_tasks = data.get("tasks")
     if not isinstance(raw_tasks, list) or not raw_tasks:
@@ -121,6 +206,7 @@ def load_spec(path: Path, **override: object) -> EvalSpec:
         tasks.append(Task(name, prompt, check, repo))
     if len({t.name for t in tasks}) != len(tasks):
         raise SpecError("task names must be unique")
+
     values = {**data, **{k: v for k, v in override.items() if v is not None}}
     agent = str(values.get("agent", "claude-code"))
     command = values.get("agent_command") or ()
@@ -130,7 +216,8 @@ def load_spec(path: Path, **override: object) -> EvalSpec:
     if trials < 1:
         raise SpecError("trials must be at least 1")
     return EvalSpec(
-        skill=skill, tasks=tuple(tasks), agent=agent, model=str(values.get("model", "") or ""),
+        skills=tuple(skills), tasks=tuple(tasks), arms=build_arms(names, values.get("arms")),
+        agent=agent, model=str(values.get("model", "") or ""),
         trials=trials, timeout=float(values.get("timeout", 600)),
         check_timeout=float(values.get("check_timeout", 300)),
         agent_command=tuple(str(c) for c in command) if isinstance(command, (list, tuple)) else (),
