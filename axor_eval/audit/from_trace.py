@@ -35,6 +35,7 @@ from typing import Any
 
 from axor_core.contracts.trace import DecisionTrace
 
+from axor_eval.audit.check_audit import CheckClaimAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.audit.tool_audit import ToolAuditLayer
 from axor_eval.contracts import AgentClaims, EvidenceCase
@@ -148,4 +149,5 @@ def evidence_from_trace(
     cases = ToolAuditLayer().analyze(trace, faults, text, scenario=scenario,
                                      claims=claims)
     cases += RetrievalAuditLayer().analyze(trace, faults, text, scenario=scenario)
+    cases += CheckClaimAuditLayer().analyze(trace, trace_lines, text, scenario=scenario)
     return cases
