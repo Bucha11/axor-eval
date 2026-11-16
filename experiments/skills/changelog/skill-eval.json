@@ -1,0 +1,14 @@
+{
+  "skill": "./skill",
+  "repo": "./repo",
+  "agent": "claude-code",
+  "trials": 5,
+  "timeout": 600,
+  "tasks": [
+    {
+      "name": "fix-and-record",
+      "prompt": "Limiter.allow() in src/limits.py admits one call too many. Fix it, and record the change the way this project records changes.",
+      "check": "python -m pytest -q tests/test_limits.py"
+    }
+  ]
+}

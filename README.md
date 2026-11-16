@@ -169,6 +169,37 @@ print(player.fault_records())        # same FaultRecords as original
 engine = player.reconstruct_engine()
 ```
 
+## Does a skill help? — an A/B eval for coding-agent skills
+
+A skill (a folder with `SKILL.md`, scripts beside it) is installed so Claude
+Code or Codex does some kind of task better. `axor_eval.skills` measures
+whether it does: the same tasks, the same agent and model, the same starting
+repository — once with the skill installed (`.claude/skills/<name>` /
+`.codex/skills/<name>`), once without — each trial judged by the task's check
+command (its tests: exit 0 = solved), never by what the agent says it did.
+
+```bash
+python -m axor_eval.skills run experiments/skills/changelog/skill-eval.json \
+    --trials 5 --md report.md --out report.json
+```
+
+```json
+{"skill": "./skill", "repo": "./repo", "agent": "claude-code", "trials": 5,
+ "tasks": [{"name": "fix-and-record", "prompt": "…", "check": "python -m pytest -q"}]}
+```
+
+Per task and arm: solved k/n, tokens, turns, wall time, and whether the agent
+opened the skill (a `Skill` call or a read under its folder, from the agent's own
+JSON stream). The lift — solved rate with minus without — carries a two-sided
+Fisher exact p: 3/3 against 0/3 is p = 0.1, reported as "not enough trials to
+tell", not as an effect. A "with" arm whose agent never opened the skill is
+reported as such: the skill did not cause what happened there. Arms are
+interleaved trial by trial, so drift over the run (a rate limit, a model
+update) hits both. Each trial works on a throwaway copy; nothing is shared
+between trials. The example in `experiments/skills/changelog/` is a project
+convention as a skill — the fix passes either way, the changelog line in the
+project's form only if the agent read and followed it.
+
 ## Observe mode and governance telemetry
 
 There is no eval-specific gate. The agent runs through the **same wrap** the
