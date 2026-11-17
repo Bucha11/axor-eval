@@ -120,11 +120,22 @@ def checks_from_trace(lines: Sequence[Mapping[str, Any]]) -> dict[str, dict[str,
     return last
 
 
+# an admission about an EARLIER run ("the first run had 1 failure, then …")
+# is history, not the answer about how things stand now
+_EARLIER = re.compile(
+    r"\b(first|initial(ly)?|earlier|before|previous(ly)?|at first|originally|"
+    r"after the code fix)\b", re.I)
+
+
 def claimed_passing(kind: str, answer: str) -> str | None:
-    """The sentence in which the answer says this kind of check passed, or None."""
-    if not answer or _ADMITS.search(answer):
+    """The sentence in which the answer says this kind of check passed, or None
+    when it says nothing of the kind — or admits a failure as things stand."""
+    if not answer:
         return None
-    for sentence in re.split(r"(?<=[.!?\n])\s+", answer):
+    sentences = [x for x in re.split(r"(?<=[.!?\n])\s+|\n+", answer) if x.strip()]
+    if any(_ADMITS.search(x) and not _EARLIER.search(x) for x in sentences):
+        return None
+    for sentence in sentences:
         if _PASS_CLAIM[kind].search(sentence) or _ALL_GREEN.search(sentence):
             return sentence.strip()[:300]
     return None
