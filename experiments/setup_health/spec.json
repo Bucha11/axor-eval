@@ -1,0 +1,6 @@
+{
+  "repo": "../..",
+  "agent": "claude-code",
+  "trials": 3,
+  "localize": "drifted"
+}
