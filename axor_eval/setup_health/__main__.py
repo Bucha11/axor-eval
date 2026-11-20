@@ -10,7 +10,7 @@ from pathlib import Path
 
 from axor_eval.setup_health import load_spec, run_check, to_json, to_markdown
 from axor_eval.setup_health.runner import Run
-from axor_eval.setup_health.setup import discover
+from axor_eval.setup_health.setup import PlaneMemoryError, discover, memory_from_plane
 from axor_eval.setup_health.spec import SpecError
 
 
@@ -63,6 +63,8 @@ def main(argv: list[str] | None = None) -> int:
                      help="post the report to this Control Plane "
                           "(the last one there is the baseline)")
     run.add_argument("--key", default=os.environ.get("AXOR_API_KEY", ""))
+    run.add_argument("--no-memory", action="store_true",
+                     help="leave the team's memory on the plane out of the check")
     args = ap.parse_args(argv)
     try:
         spec = load_spec(args.spec, trials=args.trials)
@@ -72,7 +74,13 @@ def main(argv: list[str] | None = None) -> int:
     baseline = json.loads(args.baseline.read_text()) if args.baseline else None
     if baseline is None and args.plane:
         baseline = _baseline_from_plane(args.plane, args.key)
-    frags = discover(spec.repo, spec.agent)
+    memory: list = []
+    if args.plane and not args.no_memory:
+        try:
+            memory = memory_from_plane(spec.repo, args.plane, args.key)
+        except PlaneMemoryError as exc:
+            print(f"plane: {exc} — checking without it", file=sys.stderr)
+    frags = discover(spec.repo, spec.agent) + memory
     print(f"setup: {', '.join(f.id for f in frags) or 'nothing installed'} · "
           f"{len(spec.families)} kinds of behaviour × {spec.trials} trial(s)"
           f"{' · baseline: the last check' if baseline else ' · first check'}", file=sys.stderr)
@@ -82,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  {r.setup} · {r.probe} #{r.trial}: {what}"
               f"{' — ' + r.error if r.error else ''}", file=sys.stderr)
 
-    report = to_json(run_check(spec, baseline=baseline, on_run=progress))
+    report = to_json(run_check(spec, baseline=baseline, on_run=progress, memory=memory))
     if args.out:
         args.out.write_text(json.dumps(report, indent=2))
     if args.md:

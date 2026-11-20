@@ -96,7 +96,10 @@ def run_probe(spec: HealthSpec, probe: Probe, frags: list[Fragment], trial: int,
             p = bin_dir / name
             p.write_text(_LOGGER.format(python=sys.executable, log=str(log), name=name))
             p.chmod(p.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-        env = {**os.environ, "PATH": f"{bin_dir}{os.pathsep}{os.environ.get('PATH', '')}"}
+        env = {**os.environ, "PATH": f"{bin_dir}{os.pathsep}{os.environ.get('PATH', '')}",
+               # the sandbox gets the memory facts under test, not the plane's
+               # live ones through a developer's own axor hooks
+               "AXOR_TEAM_MEMORY": "0"}
         argv = agent_argv(EvalSpec(skills=(), arms=(), tasks=(), agent=spec.agent,
                                    model=spec.model, agent_command=spec.agent_command),
                           probe.prompt)
@@ -146,8 +149,11 @@ def worse(now: tuple[int, int], before: tuple[int, int] | None, trials: int) -> 
 
 
 def run_check(spec: HealthSpec, *, baseline: dict | None = None,
-              on_run: Callable[[Run], None] | None = None) -> dict:
-    frags = discover(spec.repo, spec.agent)
+              on_run: Callable[[Run], None] | None = None,
+              memory: list[Fragment] | None = None) -> dict:
+    """``memory``: the team memory's facts (setup.memory_from_plane), checked
+    and traced like any other piece of the setup."""
+    frags = discover(spec.repo, spec.agent) + list(memory or [])
     probes = [p for p in PROBES if p.family in spec.families]
     runs: list[Run] = []
 
@@ -178,7 +184,8 @@ def run_check(spec: HealthSpec, *, baseline: dict | None = None,
                 causes.append({"family": family, "fragment": frag.id, "kind": frag.kind,
                                "name": frag.name, "words": frag.words,
                                "with": now, "without": w,
-                               "text": frag.text[:600] if frag.kind == "instructions" else ""})
+                               "text": frag.text[:600]
+                               if frag.kind in ("instructions", "memory") else ""})
     return {
         "kind": "setup-health", "agent": spec.agent, "model": spec.model, "trials": spec.trials,
         "setup": [{"id": f.id, "kind": f.kind, "name": f.name} for f in frags],

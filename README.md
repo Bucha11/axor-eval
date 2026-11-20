@@ -290,6 +290,15 @@ the check is run again without each piece of the setup — every skill, every
 back is named. On the Control Plane a skill named that way can be turned off
 for the team in one click.
 
+With `--plane`, the team's memory is part of the setup too: each fact the
+Control Plane gives agents in this repository (`GET /v1/coding/memory`) is a
+piece the check takes out in turn, given to the sandbox agent the way the axor
+hooks give it — Claude Code's `SessionStart` context (Codex: a section of
+AGENTS.md). A fact named as the cause is turned off on the Control Plane in
+one click. `--no-memory` leaves it out. The sandbox agent runs with
+`AXOR_TEAM_MEMORY=0`, so a developer's own axor hooks do not add the live
+memory on top of the facts under test.
+
 ## Observe mode and governance telemetry
 
 There is no eval-specific gate. The agent runs through the **same wrap** the
