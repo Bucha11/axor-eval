@@ -167,10 +167,12 @@ def run_check(spec: HealthSpec, *, baseline: dict | None = None,
     for p in probes:
         go(p, frags, "full")
     full = _rates([r for r in runs if r.setup == "full"])
-    before = {f: tuple(c) for f, c in ((baseline or {}).get("families_raw") or {}).items()}
+    before: dict[str, tuple[int, int]] = {
+        f: (int(c[0]), int(c[1]))
+        for f, c in ((baseline or {}).get("families_raw") or {}).items()}
     to_trace = [f for f, c in full.items() if c[0] and (
         spec.localize == "any" or (spec.localize == "drifted" and worse(
-            tuple(c), before.get(f), spec.trials)))]
+            (c[0], c[1]), before.get(f), spec.trials)))]
     causes: list[dict] = []
     for family in to_trace:
         for frag in frags:

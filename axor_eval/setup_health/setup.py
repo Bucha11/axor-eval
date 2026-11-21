@@ -44,7 +44,7 @@ def skills_root(agent: str) -> str:
 def _sections(path: Path) -> list[tuple[str, str]]:
     """(title, text) per `## ` section; what comes before the first is "intro"."""
     out: list[tuple[str, str]] = []
-    title, lines = "intro", []
+    title, lines = "intro", list[str]()
     for line in path.read_text().splitlines(keepends=True):
         if line.startswith("## "):
             if "".join(lines).strip():
