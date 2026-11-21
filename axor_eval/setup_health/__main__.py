@@ -62,7 +62,9 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--plane", nargs="?", const=os.environ.get("AXOR_PLANE_URL", ""),
                      help="post the report to this Control Plane "
                           "(the last one there is the baseline)")
-    run.add_argument("--key", default=os.environ.get("AXOR_API_KEY", ""))
+    # the key every other axor command reads; AXOR_API_KEY was this one's alone
+    run.add_argument("--key", default=os.environ.get("AXOR_INGEST_KEY")
+                     or os.environ.get("AXOR_API_KEY", ""))
     run.add_argument("--no-memory", action="store_true",
                      help="leave the team's memory on the plane out of the check")
     args = ap.parse_args(argv)
