@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -56,7 +55,7 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--md", type=Path, help="write the summary table as Markdown")
     run.add_argument("--plane", nargs="?", const="", metavar="URL",
                      help="post the report to the Control Plane (default: $AXOR_PLANE_URL; "
-                          "key: $AXOR_INGEST_KEY) — it shows under Skill evals")
+                          "key: the ones `axor-wrap connect` saved) — it shows under Skill evals")
     args = ap.parse_args(argv)
 
     try:
@@ -85,8 +84,9 @@ def main(argv: list[str] | None = None) -> int:
         args.out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     if args.plane is not None:
         try:
-            eval_id = post_to_plane(report, args.plane or os.environ.get("AXOR_PLANE_URL", ""),
-                                    os.environ.get("AXOR_INGEST_KEY", ""))
+            from axor_eval.plane_connection import ingest_key, plane_url
+
+            eval_id = post_to_plane(report, args.plane or plane_url(), ingest_key())
         except PlaneError as exc:
             print(f"error: the report was not posted: {exc}", file=sys.stderr)
             return 1

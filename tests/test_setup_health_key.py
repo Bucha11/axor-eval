@@ -33,3 +33,14 @@ def test_the_ingest_key_is_read(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_the_old_name_still_works(monkeypatch: pytest.MonkeyPatch) -> None:
     assert _key(monkeypatch, AXOR_API_KEY="k-old") == "k-old"
+
+
+def test_the_connection_axor_wrap_saved_is_used(monkeypatch: pytest.MonkeyPatch, tmp_path) -> None:
+    from axor_wrap import connection
+
+    monkeypatch.setattr(connection, "path", lambda: tmp_path / "connection.json")
+    connection.save("https://plane.example", "k-saved")
+    assert _key(monkeypatch) == "k-saved"
+    from axor_eval.plane_connection import plane_url
+
+    assert plane_url() == "https://plane.example"

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -59,12 +58,13 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--baseline", type=Path, help="the last check's report (JSON)")
     run.add_argument("--out", type=Path)
     run.add_argument("--md", type=Path)
-    run.add_argument("--plane", nargs="?", const=os.environ.get("AXOR_PLANE_URL", ""),
+    from axor_eval.plane_connection import ingest_key, plane_url
+
+    # the plane and key `axor-wrap connect` saved (the environment still wins)
+    run.add_argument("--plane", nargs="?", const=plane_url(),
                      help="post the report to this Control Plane "
                           "(the last one there is the baseline)")
-    # the key every other axor command reads; AXOR_API_KEY was this one's alone
-    run.add_argument("--key", default=os.environ.get("AXOR_INGEST_KEY")
-                     or os.environ.get("AXOR_API_KEY", ""))
+    run.add_argument("--key", default=ingest_key())
     run.add_argument("--no-memory", action="store_true",
                      help="leave the team's memory on the plane out of the check")
     args = ap.parse_args(argv)

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 — 2026-11-21
+
+- `--plane` uses the Control Plane and key saved by `axor-wrap connect` (axor-wrap
+  0.3.1); nothing to export. The environment still wins.
+- Setup health reads `AXOR_INGEST_KEY` like every other command (it read
+  `AXOR_API_KEY` alone, so a machine connected the documented way posted with no
+  key). `AXOR_API_KEY` still works.
+
 ## 0.3.0 — 2026-11-20
 
 Needs `axor-core>=0.8,<0.14` and `axor-wrap>=0.3,<0.4` (setup health names the

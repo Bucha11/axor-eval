@@ -223,8 +223,8 @@ drift over the run does not land on one arm. Verdicts per skill: helps, hurts,
 same results with fewer tokens, costs tokens with no gain seen, never opened,
 not enough trials.
 
-**On the Control Plane.** `--plane [URL]` (default `$AXOR_PLANE_URL`, key
-`$AXOR_INGEST_KEY`) posts the report; it shows under Skill evals — a card per
+**On the Control Plane.** `--plane` posts the report to the plane this machine
+was connected to with `axor-wrap connect` (or `--plane URL`); it shows under Skill evals — a card per
 skill with its verdict, and every arm's solved rate and spend.
 
 The example in `experiments/skills/changelog/` has three skills: the one the
