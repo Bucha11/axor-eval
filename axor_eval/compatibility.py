@@ -37,7 +37,9 @@ MIN_AXOR_CORE = (0, 8, 0)
 # — eval constructs no STRICT governor and imports none of the new surfaces.
 # Measured against an installed 0.12.0: 138 tests pass and the only failure was
 # this bound itself declaring the version it was running on unsupported.
-MAX_AXOR_CORE = (0, 13, 0)
+# 0.13.x validated: a replay fix and a new integrity signal (code fetched by
+# name); none of the surfaces above moved. Full suite green against 0.13.0.
+MAX_AXOR_CORE = (0, 14, 0)
 
 _checked = False
 

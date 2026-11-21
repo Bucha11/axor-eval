@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "axor-eval"
-version = "0.2.2"
+version = "0.3.0"
 description = "Execution-integrity evaluator using fault injection across the agent input perimeter"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
@@ -23,7 +23,7 @@ dependencies = [
     # 0.11 took ownership of the shared trace / tool-manifest /
     # predicate schemas; nothing here reads them directly, but a
     # consumer that pins 0.11 must still be able to resolve this.
-    "axor-core>=0.8,<0.13",
+    "axor-core>=0.8,<0.14",
     # the wrap engine. Not an integration convenience: it is where the one
     # gating path lives (`WrappedToolset` + the `enforcement` flag), and eval
     # runs it with enforcement off. Before this, eval reimplemented that path
@@ -37,7 +37,11 @@ dependencies = [
     # unmerged branch, so `>=0.1,<0.2` resolved to 0.1.0 and died on the import
     # — mypy never got that far, it fails one step earlier on the missing
     # py.typed marker. 0.2.0 is the release that carries them.
-    "axor-wrap>=0.2,<0.3",
+    #
+    # >=0.3: setup health names the repository the way the sidecar does
+    # (`axor_wrap.agents.repo`), so the team's memory it asks the plane for is
+    # the memory the sidecar would give. That module is new in 0.3.0.
+    "axor-wrap>=0.3,<0.4",
 ]
 
 [project.optional-dependencies]

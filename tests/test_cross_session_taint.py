@@ -35,7 +35,14 @@ def test_external_tool_value_is_tainted():
 def test_constant_value_stays_clean():
     engine = TaintEngine(node_id="n")
     engine.register_value({"x": "external"}, CausalRoot.external_read(TaintSource.MCP))
-    assert not engine.derive_value("a literal the agent typed").is_tainted
+    # The ledger carries nothing for it. axor-core 0.13 defaults to context
+    # integrity, under which a value the agent writes after an untrusted read also
+    # carries the node's context root; older kernels answer "clean".
+    if getattr(engine, "integrity_default", "clean") == "context":
+        assert not engine.derive_carried("a literal the agent typed").is_tainted
+        assert engine.derive_value("a literal the agent typed").sources == {TaintSource.MCP}
+    else:
+        assert not engine.derive_value("a literal the agent typed").is_tainted
 
 
 def test_session_shadow_reflects_external_registration():
