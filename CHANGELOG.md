@@ -7,6 +7,10 @@
 - Setup health reads `AXOR_INGEST_KEY` like every other command (it read
   `AXOR_API_KEY` alone, so a machine connected the documented way posted with no
   key). `AXOR_API_KEY` still works.
+- **A skill eval of one's own skill works.** A skill under evaluation that the
+  repository already holds (`./.claude/skills/<name>`) crashed the run
+  (`FileExistsError`) — and, had it not, the "none" arm would have run with the
+  skill too. The copy now drops the evaluated skills; the arm alone installs them.
 
 ## 0.3.0 — 2026-11-20
 

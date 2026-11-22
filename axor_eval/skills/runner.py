@@ -62,11 +62,17 @@ def skills_dir(agent: str) -> str:
     return ".codex/skills" if agent == "codex" else ".claude/skills"
 
 
-def prepare(repo: Path, into: Path, *, skills: dict[str, Path], agent: str) -> Path:
+def prepare(repo: Path, into: Path, *, skills: dict[str, Path], agent: str,
+            evaluated: tuple[str, ...] = ()) -> Path:
     """A throwaway copy of ``repo`` — a git repository of its own, so the agent
-    sees a project — with the arm's skills installed."""
+    sees a project — with the arm's skills installed. A skill under evaluation
+    that the repository already holds (``./.claude/skills/<name>``, the usual
+    place for one's own) is taken out of the copy first: the arm alone decides
+    whether the agent has it — else "none" would run with it too."""
     work = into / "repo"
     shutil.copytree(repo, work, ignore=_SKIP, symlinks=True)
+    for name in {*evaluated, *skills}:
+        shutil.rmtree(work / skills_dir(agent) / name, ignore_errors=True)
     for name, folder in skills.items():
         shutil.copytree(folder, work / skills_dir(agent) / name,
                         ignore=shutil.ignore_patterns(".git"))
@@ -190,7 +196,8 @@ def run_trial(spec: EvalSpec, task: Task, arm: Arm, trial: int, *,
     tmp = Path(tempfile.mkdtemp(prefix="axor-skill-eval-"))
     error = ""
     try:
-        work = prepare(task.repo, tmp, skills=installed, agent=spec.agent)
+        work = prepare(task.repo, tmp, skills=installed, agent=spec.agent,
+                       evaluated=tuple(s.name for s in spec.skills))
         start = time.monotonic()
         try:
             proc = subprocess.run(agent_argv(spec, task.prompt), cwd=work,
