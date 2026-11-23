@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.3.1 — 2026-11-21
+## 0.3.2 — 2026-11-23
+
+Needs **axor-wrap 0.4.0**: the `axor_wrap.connection` module `--plane` reads
+below never shipped in a 0.3.x, so the floor now names a version that has it.
+0.3.1 was tagged and never published — its release failed on exactly that
+import.
+
 
 - `--plane` uses the Control Plane and key saved by `axor-wrap connect` (axor-wrap
   0.3.1); nothing to export. The environment still wins.
