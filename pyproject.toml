@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "axor-eval"
-version = "0.3.1"
+version = "0.3.2"
 description = "Execution-integrity evaluator using fault injection across the agent input perimeter"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
@@ -41,7 +41,13 @@ dependencies = [
     # >=0.3: setup health names the repository the way the sidecar does
     # (`axor_wrap.agents.repo`), so the team's memory it asks the plane for is
     # the memory the sidecar would give. That module is new in 0.3.0.
-    "axor-wrap>=0.3,<0.4",
+    #
+    # >=0.4: `--plane` reads the connection `axor-wrap connect` saved, from
+    # `axor_wrap.connection`. That module landed after 0.3.0 was published and
+    # no 0.3.x carries it — so `>=0.3,<0.4` resolved to 0.3.0 and the test that
+    # covers the saved connection died on the import, with the release tag
+    # already pushed. The floor has to name the version that actually has it.
+    "axor-wrap>=0.4,<0.5",
 ]
 
 [project.optional-dependencies]
