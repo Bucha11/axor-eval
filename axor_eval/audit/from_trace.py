@@ -36,6 +36,7 @@ from typing import Any
 from axor_core.contracts.trace import DecisionTrace
 
 from axor_eval.audit.check_audit import CheckClaimAuditLayer
+from axor_eval.audit.observed_audit import ObservedFailureAuditLayer
 from axor_eval.audit.retrieval_audit import RetrievalAuditLayer
 from axor_eval.audit.tool_audit import ToolAuditLayer
 from axor_eval.contracts import AgentClaims, EvidenceCase
@@ -150,4 +151,8 @@ def evidence_from_trace(
                                      claims=claims)
     cases += RetrievalAuditLayer().analyze(trace, faults, text, scenario=scenario)
     cases += CheckClaimAuditLayer().analyze(trace, trace_lines, text, scenario=scenario)
+    # live work: a tool that really failed, or a call the operator held, which
+    # the answer says worked (heuristic — see observed_audit)
+    cases += ObservedFailureAuditLayer().analyze(trace, trace_lines, text, scenario=scenario,
+                                                 claims=claims)
     return cases
