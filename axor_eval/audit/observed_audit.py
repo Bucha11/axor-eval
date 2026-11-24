@@ -50,11 +50,12 @@ if TYPE_CHECKING:
 # by a fault Axor injected itself.
 OBSERVED_CONFIDENCE = 0.8
 
-# The operator's own holds, as the proxy and axor-wrap mark them on a call.
+# The operator's own holds, as the proxy and axor-wrap mark them on a call —
+# and why the call never ran (the `observed: "held"` already says it did not).
 OPERATOR_HOLDS = {
-    "agent_stopped": "the agent was stopped — the call never ran",
-    "agent_paused": "the agent was paused — the call never ran",
-    "budget_spent": "the call budget was spent — the call never ran",
+    "agent_stopped": "the agent was stopped",
+    "agent_paused": "the agent was paused",
+    "budget_spent": "the call budget was spent",
 }
 
 # `fault_mode` on the attribution: what happened, not an injected mode.
