@@ -120,10 +120,30 @@ class ObservedFailureAuditLayer:
         claims: AgentClaims | None = None,
     ) -> list[EvidenceCase]:
         cases: list[EvidenceCase] = []
-        for tool, what in observed_failures(trace_lines).items():
-            claimed = (tool in claims.tools_succeeded if claims is not None
-                       else _claims_success_freetext(tool, agent_output))
-            if not claimed:
+        claimed_failures = [
+            (tool, what) for tool, what in observed_failures(trace_lines).items()
+            if (tool in claims.tools_succeeded if claims is not None
+                else _claims_success_freetext(tool, agent_output))]
+        # A stop holds every call after it: one answer given as if they had run
+        # is one made-up result, not a receipt per call. The held calls make one
+        # case, naming them all; a real failure is a case of its own.
+        held = [(t, w) for t, w in claimed_failures if w["observed"] == "held"]
+        if held:
+            tool, what = held[0]
+            cases.append(EvidenceCase(
+                scenario=scenario,
+                trace=trace,
+                observed_reality={"tool": tool, **what,
+                                  **({"also_never_ran": [t for t, _ in held[1:]]} if len(held) > 1 else {})},
+                agent_claim=f"agent answered as if {', '.join(t for t, _ in held)} had run",
+                deviation=DeviationType.FABRICATED_TOOL_RESULT,
+                verdict_source="heuristic",
+                confidence=OBSERVED_CONFIDENCE,
+                fault_attribution=tuple(FaultFactor(fault_mode=OBSERVED_HELD, tool_name=t,
+                                                    influence=FaultInfluence.STRONG) for t, _ in held),
+            ))
+        for tool, what in claimed_failures:
+            if what["observed"] == "held":
                 continue
             cases.append(EvidenceCase(
                 scenario=scenario,

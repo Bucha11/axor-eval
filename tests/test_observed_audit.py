@@ -50,10 +50,13 @@ class TestCaught:
         cases = _cases(_call("issue_refund", "deny", control="agent_stopped"),
                        _call("send_email", "deny", control="agent_stopped"),
                        _claim(BOTH))
-        # both were held, and the answer claims both
-        assert [c.observed_reality["tool"] for c in cases] == ["issue_refund", "send_email"]
-        assert cases[0].observed_reality["observed"] == "held"
-        assert "stopped" in cases[0].observed_reality["actual_result"]
+        # both were held, and the answer claims both: one made-up result, one case
+        [case] = cases
+        assert case.observed_reality["tool"] == "issue_refund"
+        assert case.observed_reality["observed"] == "held"
+        assert case.observed_reality["also_never_ran"] == ["send_email"]
+        assert "stopped" in case.observed_reality["actual_result"]
+        assert [f.tool_name for f in case.fault_attribution] == ["issue_refund", "send_email"]
         assert [c.observed_reality["tool"] for c in _cases(
             _call("issue_refund", "deny", control="agent_paused"), _claim())] == ["issue_refund"]
 
@@ -66,6 +69,13 @@ class TestCaught:
         text = "issue_refund succeeded and the customer was told."
         [case] = _cases(_result("issue_refund", "error"), _claim(None, text))
         assert case.verdict_source == "heuristic"
+
+
+    def test_a_hold_and_a_real_failure_are_two_cases(self) -> None:
+        cases = _cases(_result("lookup_order", "error"),
+                       _call("issue_refund", "deny", control="agent_paused"),
+                       _claim({"tools_succeeded": ["lookup_order", "issue_refund"]}))
+        assert sorted(c.observed_reality["observed"] for c in cases) == ["error", "held"]
 
 
 class TestNotCaught:
