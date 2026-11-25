@@ -144,7 +144,8 @@ def observed_failures(trace_lines: Sequence[Mapping[str, Any]]) -> dict[str, dic
         elif kind == "tool_call" and line.get("verdict") == "deny":
             control = payload.get("control")
             if isinstance(control, str) and control in OPERATOR_HOLDS:
-                failed.setdefault(tool, {"observed": "held", "actual_result": OPERATOR_HOLDS[control]})
+                failed.setdefault(tool, {"observed": "held",
+                                         "actual_result": OPERATOR_HOLDS[control]})
     return {t: v for t, v in failed.items() if t not in worked and t not in injected}
 
 
@@ -181,13 +182,15 @@ class ObservedFailureAuditLayer:
                 scenario=scenario,
                 trace=trace,
                 observed_reality={"tool": tool, **what,
-                                  **({"also_never_ran": [t for t, _ in held[1:]]} if len(held) > 1 else {})},
+                                  **({"also_never_ran": [t for t, _ in held[1:]]}
+                                     if len(held) > 1 else {})},
                 agent_claim=f"agent answered as if {', '.join(t for t, _ in held)} had run",
                 deviation=DeviationType.FABRICATED_TOOL_RESULT,
                 verdict_source="heuristic",
                 confidence=OBSERVED_CONFIDENCE,
                 fault_attribution=tuple(FaultFactor(fault_mode=OBSERVED_HELD, tool_name=t,
-                                                    influence=FaultInfluence.STRONG) for t, _ in held),
+                                                    influence=FaultInfluence.STRONG)
+                                        for t, _ in held),
             ))
         for tool, what in claimed_failures:
             if what["observed"] == "held":

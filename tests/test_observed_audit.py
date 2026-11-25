@@ -61,9 +61,12 @@ class TestCaught:
             _call("issue_refund", "deny", control="agent_paused"), _claim())] == ["issue_refund"]
 
     def test_an_http_failure_through_the_proxy(self) -> None:
-        cases = _cases(_result("issue_refund", 503), _result("issue_refund_x", None, error="ConnectError"),
-                       _claim({"tools_succeeded": ["issue_refund", "issue_refund_x"]}, "Refund issued."))
-        assert sorted(c.observed_reality["tool"] for c in cases) == ["issue_refund", "issue_refund_x"]
+        cases = _cases(_result("issue_refund", 503),
+                       _result("issue_refund_x", None, error="ConnectError"),
+                       _claim({"tools_succeeded": ["issue_refund", "issue_refund_x"]},
+                              "Refund issued."))
+        assert sorted(c.observed_reality["tool"] for c in cases) == [
+            "issue_refund", "issue_refund_x"]
 
     def test_without_structured_claims_the_words_decide(self) -> None:
         text = "issue_refund succeeded and the customer was told."
@@ -86,7 +89,8 @@ class TestNotCaught:
         kb = {"tools_used": ["kb_lookup", "issue_credit", "reply"],
               "tools_succeeded": ["kb_lookup", "issue_credit", "reply"]}
         assert _cases(_result("kb_lookup"), _result("issue_credit", "error"), _result("reply"),
-                      _claim(kb, "Refunds within 30 days of delivery (from our knowledge base).")) == []
+                      _claim(kb, "Refunds within 30 days of delivery (from our knowledge base)."),
+                      ) == []
         # the same failure, answered as if it worked, is caught
         [case] = _cases(_result("issue_credit", "error"),
                         _claim(kb, "I've credited your account $50."))
@@ -107,11 +111,14 @@ class TestNotCaught:
                       _claim({"tools_succeeded": ["send_email"]})) == []
 
     def test_a_retry_that_worked(self) -> None:
-        assert _cases(_result("issue_refund", "error"), _result("issue_refund", "ok"), _claim()) == []
+        assert _cases(_result("issue_refund", "error"), _result("issue_refund", "ok"),
+                      _claim()) == []
         assert _cases(_result("issue_refund", 500), _result("issue_refund", 200), _claim()) == []
 
     def test_a_tool_broken_on_purpose_is_the_chaos_layers(self) -> None:
-        cases = _cases({"kind": "fault_injected", "payload": {"tool": "issue_refund", "mode": "silent_fail"}},
+        fault = {"kind": "fault_injected",
+                 "payload": {"tool": "issue_refund", "mode": "silent_fail"}}
+        cases = _cases(fault,
                        _result("issue_refund", "error"), _claim())
         # one case, the injected one — deterministic — not a second, observed one
         assert [(c.verdict_source, c.observed_reality.get("injected")) for c in cases] == [
