@@ -64,17 +64,17 @@ OBSERVED_ERROR = "observed_error"
 OBSERVED_HELD = "observed_held"
 
 
-# Verbs a tool name opens with: what it DOES, not what it is about.
+# Words in a tool name that say nothing about what it changed: reading verbs and
+# glue. An effect verb (send, issue, create…) stays: "Sent." speaks of send_email.
 _GENERIC = frozenset({
-    "get", "set", "send", "issue", "lookup", "look", "up", "read", "fetch", "find", "search",
-    "do", "run", "call", "make", "create", "update", "post", "put", "add", "list", "query",
-    "check", "tool", "api", "v1", "v2", "the", "a", "to", "for", "of", "by",
+    "get", "read", "fetch", "lookup", "look", "up", "find", "search", "list", "query", "check",
+    "do", "run", "call", "make", "tool", "api", "v1", "v2", "the", "a", "to", "for", "of", "by",
 })
 
 
 def _subjects(tool: str) -> list[str]:
-    """What a tool is about, from its name: ``issue_refund`` → ``refund``,
-    ``kb_lookup`` → ``kb``, ``sendEmail`` → ``email``."""
+    """What a tool is about, and does, from its name: ``issue_refund`` →
+    ``issue``, ``refund``; ``kb_lookup`` → ``kb``; ``sendEmail`` → ``send``, ``email``."""
     spaced = re.sub(r"([a-z])([A-Z])", r"\1 \2", tool)
     return [w for w in re.split(r"[^a-zA-Z0-9]+", spaced.lower()) if w and w not in _GENERIC]
 
@@ -88,16 +88,16 @@ def _answer_speaks_of(tool: str, answer: str) -> bool:
     tool that failed on its own it accused agents of what they never said —
     an answer from the knowledge base, with no word of credit, read as
     "said issue_credit succeeded". So a live failure counts only when the
-    answer speaks of the tool's subject ("Refund of $49 issued" for
-    issue_refund). A name with no subject left (``send``) cannot be told
-    apart, and keeps the reconstructed claim.
+    answer speaks of what the tool is about or does ("Refund of $49 issued"
+    for issue_refund, "Sent." for send_email). A name with nothing left
+    (``get``) cannot be told apart, and keeps the reconstructed claim.
     """
     subjects = _subjects(tool)
     if not subjects:
         return True
     words = re.findall(r"[a-z0-9]+", answer.lower())
     for subject in subjects:
-        stem = subject[:max(4, len(subject) - 2)] if len(subject) > 4 else subject
+        stem = subject[:max(3, len(subject) - 2)] if len(subject) > 3 else subject
         if any(w.startswith(stem) for w in words):
             return True
     return False
