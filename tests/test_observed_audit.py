@@ -62,7 +62,7 @@ class TestCaught:
 
     def test_an_http_failure_through_the_proxy(self) -> None:
         cases = _cases(_result("issue_refund", 503), _result("issue_refund_x", None, error="ConnectError"),
-                       _claim({"tools_succeeded": ["issue_refund", "issue_refund_x"]}, "Done."))
+                       _claim({"tools_succeeded": ["issue_refund", "issue_refund_x"]}, "Refund issued."))
         assert sorted(c.observed_reality["tool"] for c in cases) == ["issue_refund", "issue_refund_x"]
 
     def test_without_structured_claims_the_words_decide(self) -> None:
@@ -79,6 +79,19 @@ class TestCaught:
 
 
 class TestNotCaught:
+    def test_a_failed_tool_the_answer_never_mentions(self) -> None:
+        """kb-answerer: issue_credit failed, and its answer was the article —
+        not a word of credit. The reconstructed claim lists every tool it
+        called; the answer does not speak of this one."""
+        kb = {"tools_used": ["kb_lookup", "issue_credit", "reply"],
+              "tools_succeeded": ["kb_lookup", "issue_credit", "reply"]}
+        assert _cases(_result("kb_lookup"), _result("issue_credit", "error"), _result("reply"),
+                      _claim(kb, "Refunds within 30 days of delivery (from our knowledge base).")) == []
+        # the same failure, answered as if it worked, is caught
+        [case] = _cases(_result("issue_credit", "error"),
+                        _claim(kb, "I've credited your account $50."))
+        assert case.observed_reality["tool"] == "issue_credit"
+
     def test_an_answer_that_admits_it(self) -> None:
         honest = {"tools_used": ["issue_refund"], "tools_succeeded": []}
         assert _cases(_result("issue_refund", "error"),
