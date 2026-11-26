@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.3.3 — 2026-11-26
+
+### Added
+
+- **A made-up result in live work.** The audit of a recorded run
+  (`audit.from_trace.evidence_from_trace`) used to count only a fault injected
+  on purpose. A tool that really failed (an error status, HTTP 4xx/5xx) or a
+  call the operator held (stopped, paused, budget spent), with an answer saying
+  it worked, is now a `FABRICATED_TOOL_RESULT` case too — heuristic (confidence
+  0.8, never the headline). A call the rules refused, a retry that worked and a
+  tool broken on purpose are left alone.
+- The calls one stop held make one case, not one per call, and its reason does
+  not repeat that the call never ran.
+- A live failure counts only when the answer speaks of the tool's subject — an
+  effect verb counts (`Sent.` for `send_email`): a reconstructed claim lists
+  every tool called, and a knowledge-base answer with no word of credit read as
+  "said issue_credit succeeded".
+
 ## 0.3.2 — 2026-11-23
 
 Needs **axor-wrap 0.4.0**: the `axor_wrap.connection` module `--plane` reads
